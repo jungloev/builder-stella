@@ -10,3 +10,38 @@
 export interface DemoResponse {
   message: string;
 }
+
+/**
+ * Booking type
+ */
+export interface Booking {
+  id: string;
+  name: string;
+  startTime: string; // HH:MM format
+  endTime: string; // HH:MM format
+  date: string; // YYYY-MM-DD format
+}
+
+/**
+ * Response type for /api/bookings GET
+ */
+export interface GetBookingsResponse {
+  bookings: Booking[];
+}
+
+/**
+ * Request type for /api/bookings POST
+ */
+export interface CreateBookingRequest {
+  name: string;
+  startTime: string;
+  endTime: string;
+  date: string;
+}
+
+/**
+ * Response type for /api/bookings POST
+ */
+export interface CreateBookingResponse {
+  booking: Booking;
+}
