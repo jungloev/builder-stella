@@ -187,6 +187,7 @@ export function BookingDrawer({
                       const val = Number(e.target.value);
                       if (val < endTime - 15) {
                         setStartTime(val);
+                        setOverlapError("");
                       }
                     }}
                     className="absolute w-full h-2 cursor-pointer z-20 appearance-none bg-transparent"
@@ -206,6 +207,7 @@ export function BookingDrawer({
                       const val = Number(e.target.value);
                       if (val > startTime + 15) {
                         setEndTime(val);
+                        setOverlapError("");
                       }
                     }}
                     className="absolute w-full h-2 cursor-pointer z-10 appearance-none bg-transparent"
