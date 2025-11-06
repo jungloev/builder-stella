@@ -54,13 +54,21 @@ interface BookingDrawerProps {
   onClose: () => void;
   currentDate: string;
   onBookingCreated: () => void;
+  existingBookings?: Array<{ id: string; startTime: string; endTime: string }>;
 }
 
-export function BookingDrawer({ isOpen, onClose, currentDate, onBookingCreated }: BookingDrawerProps) {
+export function BookingDrawer({
+  isOpen,
+  onClose,
+  currentDate,
+  onBookingCreated,
+  existingBookings = []
+}: BookingDrawerProps) {
   const [step, setStep] = useState<1 | 2>(1);
   const [startTime, setStartTime] = useState(420); // 07:00 in minutes
   const [endTime, setEndTime] = useState(600); // 10:00 in minutes
   const [name, setName] = useState("");
+  const [overlapError, setOverlapError] = useState("");
 
   useEffect(() => {
     if (!isOpen) {
@@ -70,6 +78,7 @@ export function BookingDrawer({ isOpen, onClose, currentDate, onBookingCreated }
         setStartTime(420);
         setEndTime(600);
         setName("");
+        setOverlapError("");
       }, 300);
     }
   }, [isOpen]);
