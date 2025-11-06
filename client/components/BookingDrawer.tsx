@@ -161,9 +161,8 @@ export function BookingDrawer({ isOpen, onClose, currentDate, onBookingCreated }
                         setStartTime(val);
                       }
                     }}
-                    className="absolute w-full h-2 cursor-pointer z-20 appearance-none bg-transparent pointer-events-none"
+                    className="absolute w-full h-2 cursor-pointer z-20 appearance-none bg-transparent"
                     style={{
-                      WebkitAppearance: 'slider-horizontal',
                       zIndex: startTime > 1080 - (1080 - 420) / 2 ? 5 : 3,
                     }}
                   />
@@ -181,22 +180,11 @@ export function BookingDrawer({ isOpen, onClose, currentDate, onBookingCreated }
                         setEndTime(val);
                       }
                     }}
-                    className="absolute w-full h-2 cursor-pointer z-10 appearance-none bg-transparent pointer-events-none"
+                    className="absolute w-full h-2 cursor-pointer z-10 appearance-none bg-transparent"
                     style={{
-                      WebkitAppearance: 'slider-horizontal',
                       zIndex: endTime < 1080 - (1080 - 420) / 2 ? 5 : 4,
                     }}
                   />
-
-                  {/* Visual knobs */}
-                  <div
-                    className="absolute w-4 h-4 bg-white rounded-full border-4 border-[#2C2C2C] top-1/2 -translate-y-1/2 -translate-x-1/2 pointer-events-auto cursor-grab active:cursor-grabbing"
-                    style={{ left: `${((startTime - 420) / (1080 - 420)) * 100}%` }}
-                  ></div>
-                  <div
-                    className="absolute w-4 h-4 bg-white rounded-full border-4 border-[#2C2C2C] top-1/2 -translate-y-1/2 -translate-x-1/2 pointer-events-auto cursor-grab active:cursor-grabbing"
-                    style={{ left: `${((endTime - 420) / (1080 - 420)) * 100}%` }}
-                  ></div>
                 </div>
 
                 {/* Description */}
