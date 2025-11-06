@@ -1,0 +1,224 @@
+import { useState, useEffect } from "react";
+import { X, ArrowRight, ArrowLeft, Zap } from "lucide-react";
+import { CreateBookingRequest } from "@shared/api";
+
+interface BookingDrawerProps {
+  isOpen: boolean;
+  onClose: () => void;
+  currentDate: string;
+  onBookingCreated: () => void;
+}
+
+export function BookingDrawer({ isOpen, onClose, currentDate, onBookingCreated }: BookingDrawerProps) {
+  const [step, setStep] = useState<1 | 2>(1);
+  const [startTime, setStartTime] = useState(420); // 07:00 in minutes
+  const [endTime, setEndTime] = useState(600); // 10:00 in minutes
+  const [name, setName] = useState("");
+
+  useEffect(() => {
+    if (!isOpen) {
+      // Reset on close
+      setTimeout(() => {
+        setStep(1);
+        setStartTime(420);
+        setEndTime(600);
+        setName("");
+      }, 300);
+    }
+  }, [isOpen]);
+
+  const minutesToTime = (minutes: number) => {
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
+  };
+
+  const handleNext = () => {
+    setStep(2);
+  };
+
+  const handleBack = () => {
+    setStep(1);
+  };
+
+  const handleCancel = () => {
+    onClose();
+  };
+
+  const handleBookIt = async () => {
+    if (!name.trim()) return;
+
+    try {
+      const booking: CreateBookingRequest = {
+        name: name.trim(),
+        startTime: minutesToTime(startTime),
+        endTime: minutesToTime(endTime),
+        date: currentDate,
+      };
+
+      const response = await fetch('/api/bookings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(booking),
+      });
+
+      if (response.ok) {
+        onBookingCreated();
+      }
+    } catch (error) {
+      console.error('Error creating booking:', error);
+    }
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <>
+      {/* Backdrop */}
+      <div
+        className="fixed inset-0 bg-black/40 z-30 transition-opacity duration-300"
+        onClick={onClose}
+      />
+      
+      {/* Drawer */}
+      <div className={`fixed bottom-0 left-0 right-0 z-40 transition-transform duration-300 ${isOpen ? 'translate-y-0' : 'translate-y-full'}`}>
+        <div className="max-w-[390px] mx-auto bg-[#2C2C2C] rounded-t-2xl p-6 flex flex-col gap-4">
+          {step === 1 ? (
+            <>
+              {/* Duration Step */}
+              <div className="flex flex-col gap-3">
+                {/* Labels */}
+                <div className="flex justify-between items-start">
+                  <span className="text-white text-base font-inter">Time start</span>
+                  <span className="text-white text-sm font-inter">Time End</span>
+                </div>
+                
+                {/* Dual Range Slider */}
+                <div className="relative h-8 flex items-center">
+                  <div className="absolute inset-0 h-2 bg-[#E6E6E6] rounded-full top-1/2 -translate-y-1/2"></div>
+                  
+                  {/* Active range */}
+                  <div 
+                    className="absolute h-2 bg-[#E6E6E6] rounded-full top-1/2 -translate-y-1/2"
+                    style={{
+                      left: `${((startTime - 420) / (1080 - 420)) * 100}%`,
+                      right: `${100 - ((endTime - 420) / (1080 - 420)) * 100}%`,
+                    }}
+                  ></div>
+                  
+                  {/* Start knob */}
+                  <input
+                    type="range"
+                    min={420}
+                    max={1080}
+                    step={15}
+                    value={startTime}
+                    onChange={(e) => {
+                      const val = Number(e.target.value);
+                      if (val < endTime - 15) {
+                        setStartTime(val);
+                      }
+                    }}
+                    className="absolute w-full h-2 opacity-0 cursor-pointer z-10"
+                  />
+                  <div 
+                    className="absolute w-4 h-4 bg-[#2C2C2C] rounded-full pointer-events-none top-1/2 -translate-y-1/2 -translate-x-1/2"
+                    style={{ left: `${((startTime - 420) / (1080 - 420)) * 100}%` }}
+                  ></div>
+                  
+                  {/* End knob */}
+                  <input
+                    type="range"
+                    min={420}
+                    max={1080}
+                    step={15}
+                    value={endTime}
+                    onChange={(e) => {
+                      const val = Number(e.target.value);
+                      if (val > startTime + 15) {
+                        setEndTime(val);
+                      }
+                    }}
+                    className="absolute w-full h-2 opacity-0 cursor-pointer z-10"
+                  />
+                  <div 
+                    className="absolute w-4 h-4 bg-[#2C2C2C] rounded-full pointer-events-none top-1/2 -translate-y-1/2 -translate-x-1/2"
+                    style={{ left: `${((endTime - 420) / (1080 - 420)) * 100}%` }}
+                  ></div>
+                </div>
+
+                {/* Description */}
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-white/70 font-inter">
+                    {minutesToTime(startTime)} - {minutesToTime(endTime)}
+                  </span>
+                  <span className="text-white/70 font-inter">
+                    {Math.round((endTime - startTime) / 60 * 10) / 10}h
+                  </span>
+                </div>
+              </div>
+
+              {/* Buttons */}
+              <div className="flex justify-between items-center gap-3">
+                <button
+                  onClick={handleCancel}
+                  className="flex items-center gap-2 px-3 py-3 bg-white border border-white rounded-lg hover:bg-gray-50 transition-colors"
+                >
+                  <X className="w-4 h-4 text-[#1E1E1E]" strokeWidth={1.6} />
+                  <span className="text-[#1E1E1E] text-base font-inter">Cancel</span>
+                </button>
+                
+                <button
+                  onClick={handleNext}
+                  className="flex items-center gap-2 px-3 py-3 bg-white border border-white rounded-lg hover:bg-gray-50 transition-colors"
+                >
+                  <span className="text-[#1E1E1E] text-base font-inter">Next</span>
+                  <ArrowRight className="w-4 h-4 text-[#1E1E1E]" strokeWidth={1.6} />
+                </button>
+              </div>
+            </>
+          ) : (
+            <>
+              {/* Name Step */}
+              <div className="flex flex-col gap-2">
+                <label className="text-white text-base font-inter">
+                  Your name
+                </label>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Enter your name"
+                  className="px-4 py-3 bg-white border border-[#D9D9D9] rounded-lg text-[#1E1E1E] text-base font-inter placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6750A4]"
+                  autoFocus
+                />
+              </div>
+
+              {/* Buttons */}
+              <div className="flex justify-between items-center gap-3">
+                <button
+                  onClick={handleBack}
+                  className="flex items-center gap-2 px-3 py-3 bg-white border border-white rounded-lg hover:bg-gray-50 transition-colors"
+                >
+                  <ArrowLeft className="w-4 h-4 text-[#1E1E1E]" strokeWidth={1.6} />
+                  <span className="text-[#1E1E1E] text-base font-inter">Back</span>
+                </button>
+                
+                <button
+                  onClick={handleBookIt}
+                  disabled={!name.trim()}
+                  className="flex items-center gap-2 px-3 py-3 bg-white border border-white rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <span className="text-[#1E1E1E] text-base font-inter">Book it</span>
+                  <Zap className="w-4 h-4 text-[#1E1E1E]" strokeWidth={1.6} />
+                </button>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    </>
+  );
+}

@@ -1,0 +1,161 @@
+import { useState, useEffect, useMemo } from "react";
+import { format, addDays, subDays, parseISO } from "date-fns";
+import { Booking } from "@shared/api";
+import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
+import { BookingDrawer } from "./BookingDrawer";
+
+interface BookingCalendarProps {
+  initialDate?: Date;
+}
+
+const TIME_SLOTS = [
+  "07:00", "08:00", "09:00", "10:00", "11:00", "12:00",
+  "13:00", "14:00", "15:00", "16:00", "17:00", "18:00"
+];
+
+export function BookingCalendar({ initialDate = new Date() }: BookingCalendarProps) {
+  const [currentDate, setCurrentDate] = useState(initialDate);
+  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const dateString = format(currentDate, "yyyy-MM-dd");
+
+  // Fetch bookings for current date
+  useEffect(() => {
+    fetchBookings();
+  }, [dateString]);
+
+  const fetchBookings = async () => {
+    try {
+      setIsLoading(true);
+      const response = await fetch(`/api/bookings?date=${dateString}`);
+      const data = await response.json();
+      setBookings(data.bookings || []);
+    } catch (error) {
+      console.error("Error fetching bookings:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handlePreviousDay = () => {
+    setCurrentDate(prev => subDays(prev, 1));
+  };
+
+  const handleNextDay = () => {
+    setCurrentDate(prev => addDays(prev, 1));
+  };
+
+  const handleBookingCreated = () => {
+    setIsDrawerOpen(false);
+    fetchBookings();
+  };
+
+  // Calculate booking positions
+  const bookingElements = useMemo(() => {
+    return bookings.map(booking => {
+      const [startHour, startMin] = booking.startTime.split(':').map(Number);
+      const [endHour, endMin] = booking.endTime.split(':').map(Number);
+      
+      const startMinutes = startHour * 60 + startMin;
+      const endMinutes = endHour * 60 + endMin;
+      const duration = endMinutes - startMinutes;
+      
+      // Position from 07:00
+      const offsetMinutes = startMinutes - (7 * 60);
+      const totalDayMinutes = 11 * 60; // 07:00 to 18:00
+      
+      // Calculate position percentage
+      const topPercent = (offsetMinutes / totalDayMinutes) * 100;
+      const heightPercent = (duration / totalDayMinutes) * 100;
+      
+      return {
+        ...booking,
+        topPercent,
+        heightPercent
+      };
+    });
+  }, [bookings]);
+
+  return (
+    <div className="min-h-screen bg-white flex flex-col max-w-[390px] mx-auto relative">
+      {/* Header with date navigation */}
+      <div className="flex items-center justify-between px-0 py-4 sticky top-0 bg-white z-10">
+        <button
+          onClick={handlePreviousDay}
+          className="w-12 h-12 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
+          aria-label="Previous day"
+        >
+          <ChevronLeft className="w-6 h-6 text-gray-600" />
+        </button>
+        
+        <h1 className="font-alegreya text-[36px] leading-[44px] text-[#6750A4] text-center flex-1">
+          {format(currentDate, "EEE, d MMM")}
+        </h1>
+        
+        <button
+          onClick={handleNextDay}
+          className="w-12 h-12 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
+          aria-label="Next day"
+        >
+          <ChevronRight className="w-6 h-6 text-gray-600" />
+        </button>
+      </div>
+
+      {/* Calendar grid */}
+      <div className="flex-1 px-[10px] pb-24 relative">
+        {/* Time slots */}
+        <div className="flex flex-col gap-[42px]">
+          {TIME_SLOTS.map((time, index) => (
+            <div key={time} className="flex items-center gap-2 py-[2px]">
+              <span className="text-[11px] font-medium text-black opacity-50 font-inter leading-3">
+                {time}
+              </span>
+              <div className="flex-1 h-[1px] bg-black opacity-5"></div>
+            </div>
+          ))}
+        </div>
+
+        {/* Bookings overlay */}
+        {!isLoading && bookingElements.length > 0 && (
+          <div className="absolute top-0 left-[10px] right-[10px]" style={{ height: `${TIME_SLOTS.length * 44}px` }}>
+            {bookingElements.map(booking => (
+              <div
+                key={booking.id}
+                className="absolute left-0 right-0 mx-[10px]"
+                style={{
+                  top: `${booking.topPercent}%`,
+                  height: `${booking.heightPercent}%`,
+                }}
+              >
+                <div className="w-full h-full bg-[#6750A4] rounded-md shadow-md p-1.5 flex items-start">
+                  <span className="text-white text-sm font-medium font-roboto leading-5 tracking-[0.1px]">
+                    {booking.name}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Floating Action Button */}
+      <button
+        onClick={() => setIsDrawerOpen(true)}
+        className="fixed bottom-8 left-1/2 -translate-x-1/2 w-11 h-11 bg-[#2C2C2C] rounded-full flex items-center justify-center shadow-lg hover:bg-[#3C3C3C] transition-colors z-20"
+        aria-label="Add booking"
+      >
+        <Plus className="w-5 h-5 text-white" strokeWidth={2} />
+      </button>
+
+      {/* Booking Drawer */}
+      <BookingDrawer
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        currentDate={dateString}
+        onBookingCreated={handleBookingCreated}
+      />
+    </div>
+  );
+}
