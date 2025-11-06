@@ -143,7 +143,7 @@ export function BookingCalendar({ initialDate = new Date() }: BookingCalendarPro
       {/* Floating Action Button */}
       <button
         onClick={() => setIsDrawerOpen(true)}
-        className="fixed bottom-8 left-1/2 -translate-x-1/2 w-11 h-11 bg-[#2C2C2C] rounded-full flex items-center justify-center shadow-lg hover:bg-[#3C3C3C] transition-colors z-20"
+        className="fixed bottom-16 left-1/2 -translate-x-1/2 w-11 h-11 bg-[#2C2C2C] rounded-full flex items-center justify-center shadow-lg hover:bg-[#3C3C3C] transition-colors z-20"
         aria-label="Add booking"
       >
         <Plus className="w-5 h-5 text-white" strokeWidth={2} />
