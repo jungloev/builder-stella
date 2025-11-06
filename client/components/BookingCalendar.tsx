@@ -119,7 +119,7 @@ export function BookingCalendar({ initialDate = new Date() }: BookingCalendarPro
 
         {/* Bookings overlay */}
         {!isLoading && bookingElements.length > 0 && (
-          <div className="absolute top-0 left-[10px] right-[10px]" style={{ height: `${TIME_SLOTS.length * 44}px` }}>
+          <div className="absolute top-0 left-[10px] right-[10px] pointer-events-none" style={{ height: `${TIME_SLOTS.length * 44}px`, zIndex: 5 }}>
             {bookingElements.map(booking => (
               <div
                 key={booking.id}
@@ -155,6 +155,7 @@ export function BookingCalendar({ initialDate = new Date() }: BookingCalendarPro
         onClose={() => setIsDrawerOpen(false)}
         currentDate={dateString}
         onBookingCreated={handleBookingCreated}
+        existingBookings={bookings}
       />
     </div>
   );
