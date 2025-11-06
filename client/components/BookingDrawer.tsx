@@ -123,6 +123,7 @@ export function BookingDrawer({ isOpen, onClose, currentDate, onBookingCreated }
 
   return (
     <>
+      <style>{rangeSliderStyles}</style>
       {/* Backdrop */}
       <div
         className="fixed inset-0 bg-black/40 z-30 transition-opacity duration-300"
