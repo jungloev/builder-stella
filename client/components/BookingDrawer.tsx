@@ -226,6 +226,13 @@ export function BookingDrawer({
                 </div>
               </div>
 
+              {/* Error Message */}
+              {overlapError && (
+                <div className="bg-red-100 border border-red-400 text-red-700 px-3 py-2 rounded text-sm font-inter">
+                  {overlapError}
+                </div>
+              )}
+
               {/* Buttons */}
               <div className="flex justify-between items-center gap-3">
                 <button
@@ -235,10 +242,11 @@ export function BookingDrawer({
                   <X className="w-4 h-4 text-[#1E1E1E]" strokeWidth={1.6} />
                   <span className="text-[#1E1E1E] text-base font-inter">Cancel</span>
                 </button>
-                
+
                 <button
                   onClick={handleNext}
-                  className="flex items-center gap-2 px-3 py-3 bg-white border border-white rounded-lg hover:bg-gray-50 transition-colors"
+                  disabled={overlapError !== ""}
+                  className="flex items-center gap-2 px-3 py-3 bg-white border border-white rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <span className="text-[#1E1E1E] text-base font-inter">Next</span>
                   <ArrowRight className="w-4 h-4 text-[#1E1E1E]" strokeWidth={1.6} />
