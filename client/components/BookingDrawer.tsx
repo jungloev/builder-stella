@@ -89,7 +89,26 @@ export function BookingDrawer({
     return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
   };
 
+  const timeToMinutes = (timeStr: string) => {
+    const [hours, mins] = timeStr.split(':').map(Number);
+    return hours * 60 + mins;
+  };
+
+  const checkOverlap = (newStart: number, newEnd: number): boolean => {
+    return existingBookings.some(booking => {
+      const bookingStart = timeToMinutes(booking.startTime);
+      const bookingEnd = timeToMinutes(booking.endTime);
+      // Check if ranges overlap
+      return !(newEnd <= bookingStart || newStart >= bookingEnd);
+    });
+  };
+
   const handleNext = () => {
+    if (checkOverlap(startTime, endTime)) {
+      setOverlapError(`Time slot from ${minutesToTime(startTime)} to ${minutesToTime(endTime)} is already booked. Please select a different time.`);
+      return;
+    }
+    setOverlapError("");
     setStep(2);
   };
 
