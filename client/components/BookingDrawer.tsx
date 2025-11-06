@@ -81,7 +81,7 @@ export function BookingDrawer({ isOpen, onClose, currentDate, onBookingCreated }
         className="fixed inset-0 bg-black/40 z-30 transition-opacity duration-300"
         onClick={onClose}
       />
-      
+
       {/* Drawer */}
       <div className={`fixed bottom-0 left-0 right-0 z-40 transition-transform duration-300 ${isOpen ? 'translate-y-0' : 'translate-y-full'}`}>
         <div className="max-w-[390px] mx-auto bg-[#2C2C2C] rounded-t-2xl p-6 flex flex-col gap-4">
@@ -94,21 +94,13 @@ export function BookingDrawer({ isOpen, onClose, currentDate, onBookingCreated }
                   <span className="text-white text-base font-inter">Time start</span>
                   <span className="text-white text-sm font-inter">Time End</span>
                 </div>
-                
+
                 {/* Dual Range Slider */}
-                <div className="relative h-8 flex items-center">
-                  <div className="absolute inset-0 h-2 bg-[#E6E6E6] rounded-full top-1/2 -translate-y-1/2"></div>
-                  
-                  {/* Active range */}
-                  <div 
-                    className="absolute h-2 bg-[#E6E6E6] rounded-full top-1/2 -translate-y-1/2"
-                    style={{
-                      left: `${((startTime - 420) / (1080 - 420)) * 100}%`,
-                      right: `${100 - ((endTime - 420) / (1080 - 420)) * 100}%`,
-                    }}
-                  ></div>
-                  
-                  {/* Start knob */}
+                <div className="relative py-2">
+                  {/* Background track */}
+                  <div className="absolute left-0 right-0 h-2 bg-[#E6E6E6] rounded-full top-1/2 -translate-y-1/2"></div>
+
+                  {/* Start input */}
                   <input
                     type="range"
                     min={420}
@@ -121,14 +113,14 @@ export function BookingDrawer({ isOpen, onClose, currentDate, onBookingCreated }
                         setStartTime(val);
                       }
                     }}
-                    className="absolute w-full h-2 opacity-0 cursor-pointer z-10"
+                    className="absolute w-full h-2 cursor-pointer z-20 appearance-none bg-transparent pointer-events-none"
+                    style={{
+                      WebkitAppearance: 'slider-horizontal',
+                      zIndex: startTime > 1080 - (1080 - 420) / 2 ? 5 : 3,
+                    }}
                   />
-                  <div 
-                    className="absolute w-4 h-4 bg-[#2C2C2C] rounded-full pointer-events-none top-1/2 -translate-y-1/2 -translate-x-1/2"
-                    style={{ left: `${((startTime - 420) / (1080 - 420)) * 100}%` }}
-                  ></div>
-                  
-                  {/* End knob */}
+
+                  {/* End input */}
                   <input
                     type="range"
                     min={420}
@@ -141,10 +133,20 @@ export function BookingDrawer({ isOpen, onClose, currentDate, onBookingCreated }
                         setEndTime(val);
                       }
                     }}
-                    className="absolute w-full h-2 opacity-0 cursor-pointer z-10"
+                    className="absolute w-full h-2 cursor-pointer z-10 appearance-none bg-transparent pointer-events-none"
+                    style={{
+                      WebkitAppearance: 'slider-horizontal',
+                      zIndex: endTime < 1080 - (1080 - 420) / 2 ? 5 : 4,
+                    }}
                   />
-                  <div 
-                    className="absolute w-4 h-4 bg-[#2C2C2C] rounded-full pointer-events-none top-1/2 -translate-y-1/2 -translate-x-1/2"
+
+                  {/* Visual knobs */}
+                  <div
+                    className="absolute w-4 h-4 bg-white rounded-full border-4 border-[#2C2C2C] top-1/2 -translate-y-1/2 -translate-x-1/2 pointer-events-auto cursor-grab active:cursor-grabbing"
+                    style={{ left: `${((startTime - 420) / (1080 - 420)) * 100}%` }}
+                  ></div>
+                  <div
+                    className="absolute w-4 h-4 bg-white rounded-full border-4 border-[#2C2C2C] top-1/2 -translate-y-1/2 -translate-x-1/2 pointer-events-auto cursor-grab active:cursor-grabbing"
                     style={{ left: `${((endTime - 420) / (1080 - 420)) * 100}%` }}
                   ></div>
                 </div>
