@@ -2,6 +2,53 @@ import { useState, useEffect } from "react";
 import { X, ArrowRight, ArrowLeft, Zap } from "lucide-react";
 import { CreateBookingRequest } from "@shared/api";
 
+// Add styles for range input
+const rangeSliderStyles = `
+  input[type="range"] {
+    pointer-events: auto;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: white;
+    border: 4px solid #2C2C2C;
+    cursor: grab;
+    pointer-events: auto;
+  }
+
+  input[type="range"]::-webkit-slider-thumb:active {
+    cursor: grabbing;
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: white;
+    border: 4px solid #2C2C2C;
+    cursor: grab;
+    pointer-events: auto;
+  }
+
+  input[type="range"]::-moz-range-thumb:active {
+    cursor: grabbing;
+  }
+
+  input[type="range"]::-webkit-slider-runnable-track {
+    appearance: none;
+    background: transparent;
+    height: 8px;
+  }
+
+  input[type="range"]::-moz-range-track {
+    background: transparent;
+    border: none;
+  }
+`;
+
 interface BookingDrawerProps {
   isOpen: boolean;
   onClose: () => void;
