@@ -267,18 +267,18 @@ export function BookingDrawer({
               <div className="flex justify-between items-center gap-3">
                 <button
                   onClick={handleCancel}
-                  className="flex items-center gap-2 px-3 py-3 bg-[#2C2C2C] border border-[#2C2C2C] rounded-lg hover:bg-[#3C3C3C] transition-colors"
+                  className="flex items-center gap-2 px-3 py-3 bg-[#E3E3E3] border border-[#767676] rounded-lg hover:bg-[#D5D5D5] transition-colors"
                 >
-                  <X className="w-4 h-4 text-white" strokeWidth={1.6} />
-                  <span className="text-white text-base font-inter">Cancel</span>
+                  <X className="w-4 h-4 text-[#1E1E1E]" strokeWidth={1.6} />
+                  <span className="text-[#1E1E1E] text-base font-inter">Cancel</span>
                 </button>
 
                 <button
                   onClick={handleNext}
-                  className="flex items-center gap-2 px-3 py-3 bg-[#2C2C2C] border border-[#2C2C2C] rounded-lg hover:bg-[#3C3C3C] transition-colors"
+                  className="flex items-center gap-2 px-3 py-3 bg-[#F5F5F5] border border-[#2C2C2C] rounded-lg hover:bg-[#ECECEC] transition-colors"
                 >
-                  <span className="text-white text-base font-inter">Next</span>
-                  <ArrowRight className="w-4 h-4 text-white" strokeWidth={1.6} />
+                  <span className="text-[#1E1E1E] text-base font-inter">Next</span>
+                  <ArrowRight className="w-4 h-4 text-[#1E1E1E]" strokeWidth={1.6} />
                 </button>
               </div>
             </>
@@ -303,10 +303,10 @@ export function BookingDrawer({
               <div className="flex justify-between items-center gap-3">
                 <button
                   onClick={handleBack}
-                  className="flex items-center gap-2 px-3 py-3 bg-[#2C2C2C] border border-[#2C2C2C] rounded-lg hover:bg-[#3C3C3C] transition-colors"
+                  className="flex items-center gap-2 px-3 py-3 bg-[#E3E3E3] border border-[#767676] rounded-lg hover:bg-[#D5D5D5] transition-colors"
                 >
-                  <ArrowLeft className="w-4 h-4 text-white" strokeWidth={1.6} />
-                  <span className="text-white text-base font-inter">Back</span>
+                  <ArrowLeft className="w-4 h-4 text-[#1E1E1E]" strokeWidth={1.6} />
+                  <span className="text-[#1E1E1E] text-base font-inter">Back</span>
                 </button>
 
                 <button
