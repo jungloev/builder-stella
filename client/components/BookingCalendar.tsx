@@ -69,8 +69,21 @@ export function BookingCalendar({ initialDate = new Date() }: BookingCalendarPro
   };
 
   const handleBookingDeleted = () => {
-    setSelectedBooking(null);
-    fetchBookings();
+    if (selectedBooking) {
+      // Add to fading set
+      setFadingOutBookingIds(prev => new Set(prev).add(selectedBooking.id));
+
+      // Remove after fade animation completes
+      setTimeout(() => {
+        setSelectedBooking(null);
+        fetchBookings();
+        setFadingOutBookingIds(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(selectedBooking.id);
+          return newSet;
+        });
+      }, 200);
+    }
   };
 
   // Calculate booking positions
