@@ -13,8 +13,8 @@ const rangeSliderStyles = `
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    background: white;
-    border: 4px solid #2C2C2C;
+    background: #2C2C2C;
+    border: none;
     cursor: grab;
     pointer-events: auto;
   }
@@ -27,8 +27,8 @@ const rangeSliderStyles = `
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    background: white;
-    border: 4px solid #2C2C2C;
+    background: #2C2C2C;
+    border: none;
     cursor: grab;
     pointer-events: auto;
   }
