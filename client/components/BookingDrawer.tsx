@@ -187,16 +187,16 @@ export function BookingDrawer({
                 </div>
 
                 {/* Dual Range Slider */}
-                <div className="relative py-2">
+                <div className="relative py-4 px-1">
                   {/* Background track */}
-                  <div className="absolute left-0 right-0 h-2 bg-[#E6E6E6] rounded-full top-1/2 -translate-y-1/2"></div>
+                  <div className="absolute left-4 right-4 h-2 bg-[#E6E6E6] rounded-full top-1/2 -translate-y-1/2"></div>
 
                   {/* Active green track */}
                   <div
                     className="absolute h-2 bg-[#14AE5C] rounded-full top-1/2 -translate-y-1/2"
                     style={{
-                      left: `${((startTime - 420) / (1080 - 420)) * 100}%`,
-                      right: `${100 - ((endTime - 420) / (1080 - 420)) * 100}%`,
+                      left: `calc(${((startTime - 420) / (1080 - 420)) * 100}% + 1rem)`,
+                      right: `calc(${100 - ((endTime - 420) / (1080 - 420)) * 100}% + 1rem)`,
                     }}
                   ></div>
 
@@ -214,7 +214,7 @@ export function BookingDrawer({
                         setOverlapError("");
                       }
                     }}
-                    className="absolute w-full h-2 cursor-pointer z-20 appearance-none bg-transparent"
+                    className="relative w-full cursor-pointer z-20 appearance-none bg-transparent px-4"
                     style={{
                       zIndex: startTime > 1080 - (1080 - 420) / 2 ? 5 : 3,
                     }}
@@ -234,8 +234,9 @@ export function BookingDrawer({
                         setOverlapError("");
                       }
                     }}
-                    className="absolute w-full h-2 cursor-pointer z-10 appearance-none bg-transparent"
+                    className="relative w-full cursor-pointer z-10 appearance-none bg-transparent px-4"
                     style={{
+                      marginTop: "-24px",
                       zIndex: endTime < 1080 - (1080 - 420) / 2 ? 5 : 4,
                     }}
                   />
