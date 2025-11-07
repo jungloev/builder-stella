@@ -7,44 +7,46 @@ const rangeSliderStyles = `
   input[type="range"] {
     pointer-events: auto;
     width: 100%;
-    height: 24px;
+    height: 32px;
     -webkit-appearance: none;
     appearance: none;
     background: transparent;
     cursor: pointer;
+    padding: 0;
+    margin: 0;
   }
 
   input[type="range"]::-webkit-slider-thumb {
     appearance: none;
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
-    background: #2C2C2C;
-    border: none;
+    background: white;
+    border: 2px solid #2C2C2C;
     cursor: grab;
     pointer-events: auto;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   }
 
   input[type="range"]::-webkit-slider-thumb:active {
     cursor: grabbing;
-    transform: scale(1.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
   }
 
   input[type="range"]::-moz-range-thumb {
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
-    background: #2C2C2C;
-    border: none;
+    background: white;
+    border: 2px solid #2C2C2C;
     cursor: grab;
     pointer-events: auto;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   }
 
   input[type="range"]::-moz-range-thumb:active {
     cursor: grabbing;
-    transform: scale(1.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
   }
 
   input[type="range"]::-webkit-slider-runnable-track {
@@ -52,6 +54,7 @@ const rangeSliderStyles = `
     background: transparent;
     height: 8px;
     border-radius: 4px;
+    border: none;
   }
 
   input[type="range"]::-moz-range-track {
@@ -187,13 +190,13 @@ export function BookingDrawer({
                 </div>
 
                 {/* Dual Range Slider */}
-                <div className="relative h-12 flex items-center">
+                <div className="relative flex items-center justify-center py-2">
                   {/* Background track */}
-                  <div className="absolute left-0 right-0 h-2 bg-[#E6E6E6] rounded-full top-1/2 -translate-y-1/2"></div>
+                  <div className="absolute left-0 right-0 h-2 bg-[#E6E6E6] rounded-full"></div>
 
                   {/* Active green track */}
                   <div
-                    className="absolute h-2 bg-[#14AE5C] rounded-full top-1/2 -translate-y-1/2"
+                    className="absolute h-2 bg-[#14AE5C] rounded-full"
                     style={{
                       left: `${((startTime - 420) / (1080 - 420)) * 100}%`,
                       right: `${100 - ((endTime - 420) / (1080 - 420)) * 100}%`,
