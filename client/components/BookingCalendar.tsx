@@ -168,6 +168,8 @@ export function BookingCalendar({ initialDate = new Date() }: BookingCalendarPro
                   height: `${booking.heightPixels}px`,
                   marginLeft: '36px',
                   marginRight: '10px',
+                  opacity: fadingOutBookingIds.has(booking.id) ? 0 : 1,
+                  transition: 'opacity 200ms linear',
                 }}
               >
                 <button
