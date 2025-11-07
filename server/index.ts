@@ -23,6 +23,7 @@ export function createServer() {
   // Booking routes
   app.get("/api/bookings", getBookings);
   app.post("/api/bookings", createBooking);
+  app.delete("/api/bookings/:id", deleteBooking);
 
   return app;
 }
