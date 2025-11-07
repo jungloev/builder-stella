@@ -132,14 +132,14 @@ export function BookingCalendar({ initialDate = new Date() }: BookingCalendarPro
 
         {/* Bookings overlay */}
         {!isLoading && bookingElements.length > 0 && (
-          <div className="absolute top-0 left-[10px] right-[10px] pointer-events-none" style={{ height: `${TIME_SLOTS.length * 44}px`, zIndex: 5 }}>
+          <div className="absolute top-0 left-[10px] right-[10px] pointer-events-none" style={{ height: `${(TIME_SLOTS.length - 1) * 42}px`, zIndex: 5 }}>
             {bookingElements.map(booking => (
               <div
                 key={booking.id}
-                className="absolute left-0 right-0 mx-[40px] pointer-events-auto"
+                className="absolute left-0 right-0 mx-[10px] pointer-events-auto"
                 style={{
-                  top: `${booking.topPercent}%`,
-                  height: `${booking.heightPercent}%`,
+                  top: `${booking.topPixels}px`,
+                  height: `${booking.heightPixels}px`,
                 }}
               >
                 <button
