@@ -201,7 +201,7 @@ export function BookingDrawer({
         setTimeout(() => {
           onBookingCreated();
           setIsAnimatingOut(false);
-        }, 300);
+        }, 200);
       }
     } catch (error) {
       console.error('Error creating booking:', error);
