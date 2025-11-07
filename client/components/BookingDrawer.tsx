@@ -301,8 +301,8 @@ export function BookingDrawer({
                   onClick={handleCancel}
                   className="flex items-center gap-2 px-3 py-3 bg-[#303030] text-[#ffffff] border border-[#767676] rounded-lg hover:bg-[#242424] hover:text-[#ffffff] transition-colors"
                 >
-                  <X className="w-4 h-4 text-[#1E1E1E]" strokeWidth={1.6} />
-                  <span className="text-[#1E1E1E] text-base font-inter">Cancel</span>
+                  <X className="w-4 h-4 text-[#ffffff]" strokeWidth={1.6} />
+                  <span className="text-[#ffffff] text-base font-inter">Cancel</span>
                 </button>
 
                 <button
