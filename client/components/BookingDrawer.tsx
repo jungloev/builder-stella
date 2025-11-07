@@ -88,6 +88,7 @@ export function BookingDrawer({
   const [endTime, setEndTime] = useState(600); // 10:00 in minutes
   const [name, setName] = useState("");
   const [overlapError, setOverlapError] = useState("");
+  const [activeInputZIndex, setActiveInputZIndex] = useState(5); // which input is on top
 
   useEffect(() => {
     if (!isOpen) {
@@ -137,6 +138,21 @@ export function BookingDrawer({
 
   const handleCancel = () => {
     onClose();
+  };
+
+  const handleSliderPointerMove = (e: React.PointerEvent) => {
+    // Get the slider container position
+    const rect = e.currentTarget.getBoundingClientRect();
+    const pointerX = e.clientX - rect.left;
+    const percentage = pointerX / rect.width;
+    const pointerValue = 420 + percentage * (1080 - 420);
+
+    // Determine which knob is closer
+    const distToStart = Math.abs(pointerValue - startTime);
+    const distToEnd = Math.abs(pointerValue - endTime);
+
+    // Set z-index based on which is closer
+    setActiveInputZIndex(distToStart <= distToEnd ? 5 : 4);
   };
 
   const handleBookIt = async () => {
@@ -190,7 +206,10 @@ export function BookingDrawer({
                 </div>
 
                 {/* Dual Range Slider */}
-                <div className="relative flex items-center justify-center py-2">
+                <div
+                  className="relative flex items-center justify-center py-2"
+                  onPointerMove={handleSliderPointerMove}
+                >
                   {/* Background track */}
                   <div className="absolute left-0 right-0 h-2 bg-[#E6E6E6] rounded-full"></div>
 
@@ -203,7 +222,7 @@ export function BookingDrawer({
                     }}
                   ></div>
 
-                  {/* Start input - always higher z-index */}
+                  {/* Start input */}
                   <input
                     type="range"
                     min={420}
@@ -219,11 +238,11 @@ export function BookingDrawer({
                     }}
                     className="absolute w-full h-full cursor-pointer appearance-none bg-transparent"
                     style={{
-                      zIndex: 5,
+                      zIndex: activeInputZIndex === 5 ? 5 : 3,
                     }}
                   />
 
-                  {/* End input - always lower z-index */}
+                  {/* End input */}
                   <input
                     type="range"
                     min={420}
@@ -239,7 +258,7 @@ export function BookingDrawer({
                     }}
                     className="absolute w-full h-full cursor-pointer appearance-none bg-transparent"
                     style={{
-                      zIndex: 4,
+                      zIndex: activeInputZIndex === 4 ? 5 : 4,
                     }}
                   />
                 </div>
