@@ -136,7 +136,7 @@ export function BookingCalendar({ initialDate = new Date() }: BookingCalendarPro
             {bookingElements.map(booking => (
               <div
                 key={booking.id}
-                className="absolute left-0 right-0 mx-[10px] pointer-events-auto"
+                className="absolute left-0 right-0 mx-[40px] pointer-events-auto"
                 style={{
                   top: `${booking.topPercent}%`,
                   height: `${booking.heightPercent}%`,
