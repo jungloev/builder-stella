@@ -219,7 +219,7 @@ export function BookingDrawer({
         onClick={onClose}
         style={{
           transition: `opacity 200ms ${isAnimatingOut ? 'ease-in' : 'ease-out'}`,
-          pointerEvents: (!isAnimatingOut && shouldAnimate && isOpen) ? 'auto' : 'none',
+          pointerEvents: shouldAnimate && !isAnimatingOut ? 'auto' : 'none',
         }}
       />
 
