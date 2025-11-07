@@ -42,9 +42,10 @@ export function BookingCalendar({ initialDate = new Date() }: BookingCalendarPro
 
   const dateString = format(currentDate, "yyyy-MM-dd");
 
-  // Fetch bookings for current date
+  // Fetch bookings for current date and preload adjacent dates
   useEffect(() => {
     fetchBookings();
+    preloadAdjacentDates();
   }, [dateString]);
 
   const fetchBookings = async (isAfterCreation = false, date?: string) => {
