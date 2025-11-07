@@ -1,0 +1,18 @@
+{
+  "name": "Book a thing",
+  "short_name": "Booking",
+  "description": "Simple booking calendar app",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FDFDFB",
+  "theme_color": "#0C0B0C",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
