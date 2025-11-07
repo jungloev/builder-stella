@@ -201,7 +201,7 @@ export function BookingDrawer({
     }
   };
 
-  if (!isOpen) return null;
+  if (!isOpen && !isAnimatingOut) return null;
 
   return (
     <>
