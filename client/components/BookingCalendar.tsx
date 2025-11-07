@@ -94,7 +94,7 @@ export function BookingCalendar({ initialDate = new Date() }: BookingCalendarPro
 
   const handleBookingCreated = () => {
     setIsDrawerOpen(false);
-    fetchBookings();
+    fetchBookings(true); // Pass true to flag this as a post-creation fetch
   };
 
   const handleBookingClick = (booking: Booking) => {
