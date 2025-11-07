@@ -117,7 +117,7 @@ export function BookingDrawer({
         setName("");
         setOverlapError("");
         setShouldAnimate(false);
-      }, 300);
+      }, 200);
     }
   }, [isOpen]);
 
