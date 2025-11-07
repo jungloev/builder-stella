@@ -50,6 +50,13 @@ export function BookingCalendar({ initialDate = new Date() }: BookingCalendarPro
     setCurrentDate(prev => addDays(prev, 1));
   };
 
+  const handleDateClick = () => {
+    const today = new Date();
+    if (format(currentDate, "yyyy-MM-dd") !== format(today, "yyyy-MM-dd")) {
+      setCurrentDate(today);
+    }
+  };
+
   const handleBookingCreated = () => {
     setIsDrawerOpen(false);
     fetchBookings();
