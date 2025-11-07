@@ -190,7 +190,11 @@ export function BookingDrawer({
       });
 
       if (response.ok) {
-        onBookingCreated();
+        setIsAnimatingOut(true);
+        setTimeout(() => {
+          onBookingCreated();
+          setIsAnimatingOut(false);
+        }, 300);
       }
     } catch (error) {
       console.error('Error creating booking:', error);
