@@ -55,6 +55,16 @@ export function BookingCalendar({ initialDate = new Date() }: BookingCalendarPro
     fetchBookings();
   };
 
+  const handleBookingClick = (booking: Booking) => {
+    setSelectedBooking(booking);
+    setIsDetailsDialogOpen(true);
+  };
+
+  const handleBookingDeleted = () => {
+    setSelectedBooking(null);
+    fetchBookings();
+  };
+
   // Calculate booking positions
   const bookingElements = useMemo(() => {
     return bookings.map(booking => {
