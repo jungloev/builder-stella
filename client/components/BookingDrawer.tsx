@@ -230,8 +230,15 @@ export function BookingDrawer({
 
               {/* Error Message */}
               {overlapError && (
-                <div className="bg-red-100 border border-red-400 text-red-700 px-3 py-2 rounded text-sm font-inter">
-                  {overlapError}
+                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded text-sm font-inter flex items-start justify-between gap-2">
+                  <span className="flex-1">{overlapError}</span>
+                  <button
+                    onClick={() => setOverlapError("")}
+                    className="text-red-700 hover:text-red-900 flex-shrink-0 font-bold"
+                    aria-label="Dismiss error"
+                  >
+                    ✕
+                  </button>
                 </div>
               )}
 
