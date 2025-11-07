@@ -46,13 +46,30 @@ export function BookingCalendar({ initialDate = new Date() }: BookingCalendarPro
     fetchBookings();
   }, [dateString]);
 
-  const fetchBookings = async () => {
+  const fetchBookings = async (isAfterCreation = false) => {
     try {
       setIsLoading(true);
       const response = await fetch(`/api/bookings?date=${dateString}`);
       const data = await response.json();
       setBookings(data.bookings || []);
-      setNewlyCreatedBookingIds(new Set()); // Clear newly created IDs when navigating
+
+      // If this fetch is after booking creation, identify newly created bookings
+      if (isAfterCreation) {
+        const now = Date.now();
+        const newly = new Set(
+          data.bookings
+            .filter((b: Booking) => {
+              // Extract timestamp from ID (format: "timestamp-randomstring")
+              const idTimestamp = parseInt(b.id.split('-')[0], 10);
+              // Consider bookings created in the last 5 seconds as "newly created"
+              return now - idTimestamp < 5000;
+            })
+            .map((b: Booking) => b.id)
+        );
+        setNewlyCreatedBookingIds(newly);
+      } else {
+        setNewlyCreatedBookingIds(new Set()); // Clear when navigating
+      }
     } catch (error) {
       console.error("Error fetching bookings:", error);
     } finally {
