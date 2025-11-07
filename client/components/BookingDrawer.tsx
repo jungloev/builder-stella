@@ -91,6 +91,7 @@ export function BookingDrawer({
   const [name, setName] = useState("");
   const [overlapError, setOverlapError] = useState("");
   const [activeInputZIndex, setActiveInputZIndex] = useState(5); // which input is on top
+  const [isAnimatingOut, setIsAnimatingOut] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
