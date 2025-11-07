@@ -213,7 +213,12 @@ export function BookingDrawer({
       />
 
       {/* Drawer */}
-      <div className={`fixed bottom-0 left-0 right-0 z-40 transition-transform duration-300 ${isOpen ? 'translate-y-0' : 'translate-y-full'}`}>
+      <div
+        className={`fixed bottom-0 left-0 right-0 z-40 ${isOpen || isAnimatingOut ? 'translate-y-0' : 'translate-y-full'}`}
+        style={{
+          transition: `transform 300ms ${isAnimatingOut ? 'ease-in' : 'ease-out'}`,
+        }}
+      >
         <div className="max-w-[390px] mx-auto bg-[#2C2C2C] rounded-t-2xl p-6 flex flex-col gap-4 shadow-lg">
           {step === 1 ? (
             <>
