@@ -79,9 +79,9 @@ export function BookingCalendar({ initialDate = new Date() }: BookingCalendarPro
   }, [bookings]);
 
   return (
-    <div className="min-h-screen bg-white flex flex-col max-w-[390px] mx-auto relative">
+    <div className="min-h-screen bg-[#FDFDFB] flex flex-col max-w-[390px] mx-auto relative">
       {/* Header with date navigation */}
-      <div className="flex items-center justify-between px-0 py-4 sticky top-0 bg-white z-10">
+      <div className="flex items-center justify-between px-0 py-4 sticky top-0 bg-[#FDFDFB] z-10">
         <button
           onClick={handlePreviousDay}
           className="w-12 h-12 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
@@ -89,11 +89,11 @@ export function BookingCalendar({ initialDate = new Date() }: BookingCalendarPro
         >
           <ChevronLeft className="w-6 h-6 text-gray-600" />
         </button>
-        
-        <h1 className="font-alegreya text-[36px] leading-[44px] text-[#6750A4] text-center flex-1">
+
+        <h1 className="font-sans text-[36px] leading-[44px] font-bold text-[#0C0B0C] text-center flex-1">
           {format(currentDate, "EEE, d MMM")}
         </h1>
-        
+
         <button
           onClick={handleNextDay}
           className="w-12 h-12 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
@@ -129,8 +129,11 @@ export function BookingCalendar({ initialDate = new Date() }: BookingCalendarPro
                   height: `${booking.heightPercent}%`,
                 }}
               >
-                <div className="w-full h-full bg-[#6750A4] rounded-md shadow-md p-1.5 flex items-start">
-                  <span className="text-white text-sm font-medium font-roboto leading-5 tracking-[0.1px]">
+                <div className="w-full h-full bg-white border border-[#868686] rounded-lg p-1.5 flex items-start justify-between">
+                  <span className="text-black text-sm font-medium font-roboto leading-5 tracking-[0.1px]">
+                    {booking.startTime}–{booking.endTime}
+                  </span>
+                  <span className="text-black text-sm font-medium font-roboto leading-5 tracking-[0.1px]">
                     {booking.name}
                   </span>
                 </div>
