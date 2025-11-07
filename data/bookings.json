@@ -21,27 +21,6 @@
     "date": "2025-11-08"
   },
   {
-    "id": "1762552855171-30vrzldnd",
-    "name": "asdf",
-    "startTime": "07:00",
-    "endTime": "08:00",
-    "date": "2025-11-09"
-  },
-  {
-    "id": "1762552866546-on3sdnfxt",
-    "name": "asdfasdf",
-    "startTime": "10:00",
-    "endTime": "11:00",
-    "date": "2025-11-09"
-  },
-  {
-    "id": "1762552880115-3wm39jkc9",
-    "name": "fasdfasdf",
-    "startTime": "14:00",
-    "endTime": "16:00",
-    "date": "2025-11-09"
-  },
-  {
     "id": "1762554832240-v40uejkpn",
     "name": "Jonathan Jungløv",
     "startTime": "10:45",
@@ -54,5 +33,19 @@
     "startTime": "07:00",
     "endTime": "18:00",
     "date": "2025-11-07"
+  },
+  {
+    "id": "1762556178565-y7hp7kttx",
+    "name": "vhjl",
+    "startTime": "07:00",
+    "endTime": "09:45",
+    "date": "2025-11-20"
+  },
+  {
+    "id": "1762556209740-6x8p1tnci",
+    "name": "v glj",
+    "startTime": "07:00",
+    "endTime": "18:00",
+    "date": "2025-11-09"
   }
 ]
