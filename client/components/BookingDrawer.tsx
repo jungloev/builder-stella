@@ -92,6 +92,7 @@ export function BookingDrawer({
   const [overlapError, setOverlapError] = useState("");
   const [activeInputZIndex, setActiveInputZIndex] = useState(5); // which input is on top
   const [isAnimatingOut, setIsAnimatingOut] = useState(false);
+  const [shouldAnimate, setShouldAnimate] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
@@ -102,6 +103,11 @@ export function BookingDrawer({
       setName("");
       setOverlapError("");
       setActiveInputZIndex(5);
+      setShouldAnimate(false);
+      // Trigger animation on next frame
+      requestAnimationFrame(() => {
+        setShouldAnimate(true);
+      });
     } else {
       // Reset state after the close animation completes
       setTimeout(() => {
@@ -110,6 +116,7 @@ export function BookingDrawer({
         setEndTime(1080);
         setName("");
         setOverlapError("");
+        setShouldAnimate(false);
       }, 300);
     }
   }, [isOpen]);
