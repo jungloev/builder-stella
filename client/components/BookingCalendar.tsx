@@ -176,6 +176,14 @@ export function BookingCalendar({ initialDate = new Date() }: BookingCalendarPro
         onBookingCreated={handleBookingCreated}
         existingBookings={bookings}
       />
+
+      {/* Booking Details Dialog */}
+      <BookingDetailsDialog
+        booking={selectedBooking}
+        isOpen={isDetailsDialogOpen}
+        onClose={() => setIsDetailsDialogOpen(false)}
+        onDeleted={handleBookingDeleted}
+      />
     </div>
   );
 }
