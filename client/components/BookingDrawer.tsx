@@ -335,10 +335,10 @@ export function BookingDrawer({
               <div className="flex justify-between items-center gap-3">
                 <button
                   onClick={handleBack}
-                  className="flex items-center gap-2 px-3 py-3 bg-[#E3E3E3] border border-[#767676] rounded-lg hover:bg-[#D5D5D5] transition-colors"
+                  className="flex items-center gap-2 px-3 py-3 bg-[#303030] border border-[#303030] rounded-lg hover:bg-[#242424] transition-colors"
                 >
-                  <ArrowLeft className="w-4 h-4 text-[#1E1E1E]" strokeWidth={1.6} />
-                  <span className="text-[#1E1E1E] text-base font-inter">Back</span>
+                  <ArrowLeft className="w-4 h-4 text-[#ffffff]" strokeWidth={1.6} />
+                  <span className="text-[#ffffff] text-base font-inter">Back</span>
                 </button>
 
                 <button
