@@ -344,7 +344,7 @@ export function BookingDrawer({
                 <button
                   onClick={handleBookIt}
                   disabled={!name.trim()}
-                  className="flex items-center gap-2 px-3 py-3 bg-[#14AE5C] border border-[#14AE5C] rounded-lg hover:bg-[#3C3C3C] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex items-center gap-2 px-3 py-3 bg-[#14AE5C] border border-[#14AE5C] rounded-lg hover:bg-[#14AE5C] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <span className="text-white text-base font-inter">Book it</span>
                   <Zap className="w-4 h-4 text-white" strokeWidth={1.6} />
