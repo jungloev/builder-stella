@@ -80,7 +80,7 @@ export function BookingCalendar({ initialDate = new Date() }: BookingCalendarPro
       const totalDayMinutes = 11 * 60; // 07:00 to 18:00
       
       // Calculate position percentage
-      const topPercent = (offsetMinutes / totalDayMinutes) * 100;
+      const topPercent = (offsetMinutes / totalDayMinutes) * 100 + 100;
       const heightPercent = (duration / totalDayMinutes) * 100;
       
       return {
@@ -138,7 +138,7 @@ export function BookingCalendar({ initialDate = new Date() }: BookingCalendarPro
                 key={booking.id}
                 className="absolute left-0 right-0 mx-[40px] pointer-events-auto"
                 style={{
-                  top: `${booking.topPercent}%`+100px,
+                  top: `${booking.topPercent}%`,
                   height: `${booking.heightPercent}%`,
                 }}
               >
