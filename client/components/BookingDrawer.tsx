@@ -159,7 +159,7 @@ export function BookingDrawer({
     setTimeout(() => {
       onClose();
       setIsAnimatingOut(false);
-    }, 300);
+    }, 200);
   };
 
   const handleSliderPointerMove = (e: React.PointerEvent) => {
