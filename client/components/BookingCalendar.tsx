@@ -138,10 +138,12 @@ export function BookingCalendar({ initialDate = new Date() }: BookingCalendarPro
             {bookingElements.map(booking => (
               <div
                 key={booking.id}
-                className="absolute left-0 right-0 mx-[10px] pointer-events-auto"
+                className="absolute left-0 right-0 pointer-events-auto"
                 style={{
                   top: `${booking.topPixels}px`,
                   height: `${booking.heightPixels}px`,
+                  marginLeft: '24px',
+                  marginRight: '10px',
                 }}
               >
                 <button
