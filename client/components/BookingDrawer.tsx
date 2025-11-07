@@ -26,6 +26,7 @@ const rangeSliderStyles = `
     cursor: grab;
     pointer-events: auto;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    margin-top: -10px;
   }
 
   input[type="range"]::-webkit-slider-thumb:active {
@@ -42,6 +43,7 @@ const rangeSliderStyles = `
     cursor: grab;
     pointer-events: auto;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    margin-top: -10px;
   }
 
   input[type="range"]::-moz-range-thumb:active {
