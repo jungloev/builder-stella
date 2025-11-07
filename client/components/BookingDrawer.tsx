@@ -6,46 +6,62 @@ import { CreateBookingRequest } from "@shared/api";
 const rangeSliderStyles = `
   input[type="range"] {
     pointer-events: auto;
+    width: 100%;
+    height: 24px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
   }
 
   input[type="range"]::-webkit-slider-thumb {
     appearance: none;
-    width: 16px;
-    height: 16px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     background: #2C2C2C;
     border: none;
     cursor: grab;
     pointer-events: auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   }
 
   input[type="range"]::-webkit-slider-thumb:active {
     cursor: grabbing;
+    transform: scale(1.1);
   }
 
   input[type="range"]::-moz-range-thumb {
-    width: 16px;
-    height: 16px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     background: #2C2C2C;
     border: none;
     cursor: grab;
     pointer-events: auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   }
 
   input[type="range"]::-moz-range-thumb:active {
     cursor: grabbing;
+    transform: scale(1.1);
   }
 
   input[type="range"]::-webkit-slider-runnable-track {
     appearance: none;
     background: transparent;
     height: 8px;
+    border-radius: 4px;
   }
 
   input[type="range"]::-moz-range-track {
     background: transparent;
     border: none;
+    height: 8px;
+  }
+
+  input[type="range"]:focus {
+    outline: none;
   }
 `;
 
