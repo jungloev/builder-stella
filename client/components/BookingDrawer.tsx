@@ -148,7 +148,11 @@ export function BookingDrawer({
   };
 
   const handleCancel = () => {
-    onClose();
+    setIsAnimatingOut(true);
+    setTimeout(() => {
+      onClose();
+      setIsAnimatingOut(false);
+    }, 300);
   };
 
   const handleSliderPointerMove = (e: React.PointerEvent) => {
