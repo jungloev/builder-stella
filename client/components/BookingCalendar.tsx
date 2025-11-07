@@ -138,7 +138,7 @@ export function BookingCalendar({ initialDate = new Date() }: BookingCalendarPro
                 key={booking.id}
                 className="absolute left-0 right-0 mx-[40px] pointer-events-auto"
                 style={{
-                  top: `${booking.topPercent}%`,
+                  top: `${booking.topPercent}%`+100px,
                   height: `${booking.heightPercent}%`,
                 }}
               >
