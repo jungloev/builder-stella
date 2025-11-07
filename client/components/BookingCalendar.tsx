@@ -197,7 +197,7 @@ export function BookingCalendar({ initialDate = new Date() }: BookingCalendarPro
             {bookingElements.map(booking => (
               <div
                 key={booking.id}
-                className="absolute left-0 right-0 pointer-events-auto booking-item"
+                className={`absolute left-0 right-0 pointer-events-auto ${newlyCreatedBookingIds.has(booking.id) ? 'booking-item' : ''}`}
                 style={{
                   top: `${booking.topPixels}px`,
                   height: `${booking.heightPixels}px`,
