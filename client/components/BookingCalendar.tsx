@@ -142,7 +142,7 @@ export function BookingCalendar({ initialDate = new Date() }: BookingCalendarPro
                 style={{
                   top: `${booking.topPixels}px`,
                   height: `${booking.heightPixels}px`,
-                  marginLeft: '24px',
+                  marginLeft: '48px',
                   marginRight: '10px',
                 }}
               >
