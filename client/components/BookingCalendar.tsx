@@ -160,7 +160,7 @@ export function BookingCalendar({ initialDate = new Date() }: BookingCalendarPro
       // Remove after fade animation completes
       setTimeout(() => {
         setSelectedBooking(null);
-        fetchBookings();
+        fetchBookings(false);
         setFadingOutBookingIds(prev => {
           const newSet = new Set(prev);
           newSet.delete(selectedBooking.id);
