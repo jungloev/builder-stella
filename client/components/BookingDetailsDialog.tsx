@@ -109,8 +109,8 @@ export function BookingDetailsDialog({
             onClick={handleCancelDelete}
           />
 
-          <div className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
-            <div className="bg-white rounded-2xl shadow-xl p-6 w-[85vw] max-w-sm pointer-events-auto">
+          <div className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none px-6">
+            <div className="bg-white rounded-2xl shadow-xl p-6 w-full max-w-sm pointer-events-auto">
               <h3 className="text-lg font-bold text-gray-900 mb-2">
                 Delete booking?
               </h3>
