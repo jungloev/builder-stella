@@ -14,13 +14,6 @@
     "date": "2025-11-06"
   },
   {
-    "id": "1762535025060-kwouihkiy",
-    "name": "Jonathan Jungløv",
-    "startTime": "07:00",
-    "endTime": "08:30",
-    "date": "2025-11-07"
-  },
-  {
     "id": "1762550309570-43zy4n6ed",
     "name": "v jh",
     "startTime": "07:00",
@@ -54,5 +47,12 @@
     "startTime": "10:45",
     "endTime": "13:00",
     "date": "2025-11-01"
+  },
+  {
+    "id": "1762556057435-yg2t6vm5v",
+    "name": "bjk",
+    "startTime": "07:00",
+    "endTime": "18:00",
+    "date": "2025-11-07"
   }
 ]

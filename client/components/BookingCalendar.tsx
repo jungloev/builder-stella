@@ -38,6 +38,7 @@ export function BookingCalendar({ initialDate = new Date() }: BookingCalendarPro
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
   const [fadingOutBookingIds, setFadingOutBookingIds] = useState<Set<string>>(new Set());
   const [newlyCreatedBookingIds, setNewlyCreatedBookingIds] = useState<Set<string>>(new Set());
+  const [bookingCache] = useState(new Map<string, Booking[]>()); // Cache for bookings by date
 
   const dateString = format(currentDate, "yyyy-MM-dd");
 
