@@ -3,6 +3,7 @@ import { format, addDays, subDays, parseISO } from "date-fns";
 import { Booking } from "@shared/api";
 import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import { BookingDrawer } from "./BookingDrawer";
+import { BookingDetailsDialog } from "./BookingDetailsDialog";
 
 interface BookingCalendarProps {
   initialDate?: Date;
