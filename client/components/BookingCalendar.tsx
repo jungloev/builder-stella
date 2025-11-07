@@ -47,18 +47,44 @@ export function BookingCalendar({ initialDate = new Date() }: BookingCalendarPro
     fetchBookings();
   }, [dateString]);
 
-  const fetchBookings = async (isAfterCreation = false) => {
+  const fetchBookings = async (isAfterCreation = false, date?: string) => {
+    const targetDate = date || dateString;
+
+    // Check cache first
+    if (bookingCache.has(targetDate) && !isAfterCreation) {
+      const cached = bookingCache.get(targetDate) || [];
+      setBookings(cached);
+      setIsLoading(false);
+      // Refresh in background
+      fetch(`/api/bookings?date=${targetDate}`)
+        .then(res => res.json())
+        .then(data => {
+          bookingCache.set(targetDate, data.bookings || []);
+          if (targetDate === dateString) {
+            setBookings(data.bookings || []);
+          }
+        })
+        .catch(err => console.error("Error refreshing bookings:", err));
+      return;
+    }
+
     try {
       setIsLoading(true);
-      const response = await fetch(`/api/bookings?date=${dateString}`);
+      const response = await fetch(`/api/bookings?date=${targetDate}`);
       const data = await response.json();
-      setBookings(data.bookings || []);
+      const bookingList = data.bookings || [];
+
+      bookingCache.set(targetDate, bookingList);
+
+      if (targetDate === dateString) {
+        setBookings(bookingList);
+      }
 
       // If this fetch is after booking creation, identify newly created bookings
       if (isAfterCreation) {
         const now = Date.now();
         const newly = new Set(
-          data.bookings
+          bookingList
             .filter((b: Booking) => {
               // Extract timestamp from ID (format: "timestamp-randomstring")
               const idTimestamp = parseInt(b.id.split('-')[0], 10);
@@ -74,7 +100,29 @@ export function BookingCalendar({ initialDate = new Date() }: BookingCalendarPro
     } catch (error) {
       console.error("Error fetching bookings:", error);
     } finally {
-      setIsLoading(false);
+      if (targetDate === dateString) {
+        setIsLoading(false);
+      }
+    }
+  };
+
+  const preloadAdjacentDates = () => {
+    const nextDate = format(addDays(currentDate, 1), "yyyy-MM-dd");
+    const prevDate = format(subDays(currentDate, 1), "yyyy-MM-dd");
+
+    // Preload next and previous dates if not cached
+    if (!bookingCache.has(nextDate)) {
+      fetch(`/api/bookings?date=${nextDate}`)
+        .then(res => res.json())
+        .then(data => bookingCache.set(nextDate, data.bookings || []))
+        .catch(err => console.error("Error preloading next date:", err));
+    }
+
+    if (!bookingCache.has(prevDate)) {
+      fetch(`/api/bookings?date=${prevDate}`)
+        .then(res => res.json())
+        .then(data => bookingCache.set(prevDate, data.bookings || []))
+        .catch(err => console.error("Error preloading prev date:", err));
     }
   };
 
