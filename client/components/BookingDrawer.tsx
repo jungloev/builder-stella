@@ -299,7 +299,7 @@ export function BookingDrawer({
               <div className="flex justify-between items-center gap-3">
                 <button
                   onClick={handleCancel}
-                  className="flex items-center gap-2 px-3 py-3 bg-[#303030] border border-[#767676] rounded-lg hover:bg-[#D5D5D5] transition-colors"
+                  className="flex items-center gap-2 px-3 py-3 bg-[#303030] text-[#1E1E1E] border border-[#767676] rounded-lg hover:bg-[#D5D5D5] transition-colors"
                 >
                   <X className="w-4 h-4 text-[#1E1E1E]" strokeWidth={1.6} />
                   <span className="text-[#1E1E1E] text-base font-inter">Cancel</span>
