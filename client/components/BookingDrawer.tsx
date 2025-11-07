@@ -93,12 +93,20 @@ export function BookingDrawer({
   const [activeInputZIndex, setActiveInputZIndex] = useState(5); // which input is on top
 
   useEffect(() => {
-    if (!isOpen) {
-      // Reset on close
+    if (isOpen) {
+      // Initialize to extremes when opening
+      setStep(1);
+      setStartTime(420); // 07:00
+      setEndTime(1080); // 18:00
+      setName("");
+      setOverlapError("");
+      setActiveInputZIndex(5);
+    } else {
+      // Reset state after the close animation completes
       setTimeout(() => {
         setStep(1);
         setStartTime(420);
-        setEndTime(600);
+        setEndTime(1080);
         setName("");
         setOverlapError("");
       }, 300);
