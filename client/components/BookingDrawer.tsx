@@ -218,7 +218,7 @@ export function BookingDrawer({
         className={`fixed inset-0 bg-black/40 z-30 ${shouldAnimate || isAnimatingOut ? 'opacity-100' : 'opacity-0'}`}
         onClick={onClose}
         style={{
-          transition: `opacity 300ms ${isAnimatingOut ? 'ease-in' : 'ease-out'}`,
+          transition: `opacity 200ms ${isAnimatingOut ? 'ease-in' : 'ease-out'}`,
           pointerEvents: (shouldAnimate || isAnimatingOut) ? 'auto' : 'none',
         }}
       />
@@ -227,7 +227,7 @@ export function BookingDrawer({
       <div
         className={`fixed bottom-0 left-0 right-0 z-40 ${shouldAnimate || isAnimatingOut ? 'translate-y-0' : 'translate-y-full'}`}
         style={{
-          transition: `transform 300ms ${isAnimatingOut ? 'ease-in' : 'ease-out'}`,
+          transition: `transform 200ms ${isAnimatingOut ? 'ease-in' : 'ease-out'}`,
         }}
       >
         <div className="max-w-[390px] mx-auto bg-[#2C2C2C] rounded-t-2xl p-6 flex flex-col gap-4 shadow-lg">
