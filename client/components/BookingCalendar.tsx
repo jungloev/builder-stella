@@ -52,6 +52,7 @@ export function BookingCalendar({ initialDate = new Date() }: BookingCalendarPro
       const response = await fetch(`/api/bookings?date=${dateString}`);
       const data = await response.json();
       setBookings(data.bookings || []);
+      setNewlyCreatedBookingIds(new Set()); // Clear newly created IDs when navigating
     } catch (error) {
       console.error("Error fetching bookings:", error);
     } finally {
