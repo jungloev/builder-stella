@@ -19,6 +19,8 @@ export function BookingCalendar({ initialDate = new Date() }: BookingCalendarPro
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
+  const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
 
   const dateString = format(currentDate, "yyyy-MM-dd");
 
