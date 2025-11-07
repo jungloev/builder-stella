@@ -61,7 +61,7 @@ export const createBooking: RequestHandler = async (req, res) => {
     }
 
     const bookings = await loadBookings();
-    
+
     const newBooking: Booking = {
       id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
       name,
@@ -78,5 +78,31 @@ export const createBooking: RequestHandler = async (req, res) => {
   } catch (error) {
     console.error("Error creating booking:", error);
     res.status(500).json({ error: "Failed to create booking" });
+  }
+};
+
+// DELETE /api/bookings/:id
+export const deleteBooking: RequestHandler = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!id) {
+      res.status(400).json({ error: "Missing booking id" });
+      return;
+    }
+
+    const bookings = await loadBookings();
+    const filteredBookings = bookings.filter(b => b.id !== id);
+
+    if (filteredBookings.length === bookings.length) {
+      res.status(404).json({ error: "Booking not found" });
+      return;
+    }
+
+    await saveBookings(filteredBookings);
+    res.json({ success: true });
+  } catch (error) {
+    console.error("Error deleting booking:", error);
+    res.status(500).json({ error: "Failed to delete booking" });
   }
 };
