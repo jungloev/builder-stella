@@ -66,27 +66,27 @@ export function BookingCalendar({ initialDate = new Date() }: BookingCalendarPro
   };
 
   // Calculate booking positions
+  const SLOT_HEIGHT = 42; // pixels per hour (matches gap-[42px])
   const bookingElements = useMemo(() => {
     return bookings.map(booking => {
       const [startHour, startMin] = booking.startTime.split(':').map(Number);
       const [endHour, endMin] = booking.endTime.split(':').map(Number);
-      
+
       const startMinutes = startHour * 60 + startMin;
       const endMinutes = endHour * 60 + endMin;
       const duration = endMinutes - startMinutes;
-      
-      // Position from 07:00
+
+      // Position from 07:00 in minutes
       const offsetMinutes = startMinutes - (7 * 60);
-      const totalDayMinutes = 11 * 60; // 07:00 to 18:00
-      
-      // Calculate position percentage
-      const topPercent = (offsetMinutes / totalDayMinutes) * 100;
-      const heightPercent = (duration / totalDayMinutes) * 100;
-      
+
+      // Convert minutes to pixels (42px per 60 minutes = 0.7px per minute)
+      const topPixels = (offsetMinutes / 60) * SLOT_HEIGHT;
+      const heightPixels = (duration / 60) * SLOT_HEIGHT;
+
       return {
         ...booking,
-        topPercent,
-        heightPercent
+        topPixels,
+        heightPixels
       };
     });
   }, [bookings]);
