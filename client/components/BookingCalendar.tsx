@@ -131,6 +131,7 @@ export function BookingCalendar({ initialDate = new Date() }: BookingCalendarPro
 
   return (
     <div className="min-h-screen bg-[#FDFDFB] flex flex-col max-w-[390px] mx-auto relative">
+      <style>{bookingStyles}</style>
       {/* Header with date navigation */}
       <div className="flex items-center justify-between px-0 py-4 sticky top-0 bg-[#FDFDFB] z-10">
         <button
