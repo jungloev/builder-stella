@@ -66,8 +66,9 @@ export function BookingCalendar({ initialDate = new Date() }: BookingCalendarPro
   };
 
   // Calculate booking positions
-  // Each hour slot is spaced by gap (42px) plus the height of the time label div (~14px)
-  const PIXELS_PER_HOUR = 56; // 42px gap + ~14px for time slot div
+  // 42px gap + ~14px for time slot div height = 56px per hour
+  // However, accounting for padding and exact measurements: 56px per hour
+  const PIXELS_PER_MINUTE = 56 / 60; // pixels per minute
   const bookingElements = useMemo(() => {
     return bookings.map(booking => {
       const [startHour, startMin] = booking.startTime.split(':').map(Number);
@@ -81,8 +82,8 @@ export function BookingCalendar({ initialDate = new Date() }: BookingCalendarPro
       const offsetMinutes = startMinutes - (7 * 60);
 
       // Convert minutes to pixels
-      const topPixels = (offsetMinutes / 60) * PIXELS_PER_HOUR;
-      const heightPixels = (duration / 60) * PIXELS_PER_HOUR;
+      const topPixels = offsetMinutes * PIXELS_PER_MINUTE;
+      const heightPixels = duration * PIXELS_PER_MINUTE;
 
       return {
         ...booking,
