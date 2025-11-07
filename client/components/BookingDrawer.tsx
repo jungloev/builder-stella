@@ -203,7 +203,7 @@ export function BookingDrawer({
                     }}
                   ></div>
 
-                  {/* Start input */}
+                  {/* Start input - always higher z-index */}
                   <input
                     type="range"
                     min={420}
@@ -217,13 +217,13 @@ export function BookingDrawer({
                         setOverlapError("");
                       }
                     }}
-                    className="absolute w-full cursor-pointer z-20 appearance-none bg-transparent"
+                    className="absolute w-full h-full cursor-pointer appearance-none bg-transparent"
                     style={{
-                      zIndex: startTime > 1080 - (1080 - 420) / 2 ? 5 : 3,
+                      zIndex: 5,
                     }}
                   />
 
-                  {/* End input */}
+                  {/* End input - always lower z-index */}
                   <input
                     type="range"
                     min={420}
@@ -237,9 +237,9 @@ export function BookingDrawer({
                         setOverlapError("");
                       }
                     }}
-                    className="absolute w-full cursor-pointer z-10 appearance-none bg-transparent"
+                    className="absolute w-full h-full cursor-pointer appearance-none bg-transparent"
                     style={{
-                      zIndex: endTime < 1080 - (1080 - 420) / 2 ? 5 : 4,
+                      zIndex: 4,
                     }}
                   />
                 </div>
