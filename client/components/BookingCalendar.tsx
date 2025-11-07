@@ -5,6 +5,21 @@ import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import { BookingDrawer } from "./BookingDrawer";
 import { BookingDetailsDialog } from "./BookingDetailsDialog";
 
+const bookingStyles = `
+  @keyframes fadeInBooking {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .booking-item {
+    animation: fadeInBooking 200ms linear;
+  }
+`;
+
 interface BookingCalendarProps {
   initialDate?: Date;
 }
