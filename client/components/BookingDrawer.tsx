@@ -215,11 +215,11 @@ export function BookingDrawer({
       <style>{rangeSliderStyles}</style>
       {/* Backdrop */}
       <div
-        className={`fixed inset-0 bg-black/40 z-30 ${shouldAnimate || isAnimatingOut ? 'opacity-100' : 'opacity-0'}`}
+        className={`fixed inset-0 bg-black/40 z-30 ${isAnimatingOut || (isOpen && !shouldAnimate) ? 'opacity-0' : 'opacity-100'}`}
         onClick={onClose}
         style={{
           transition: `opacity 200ms ${isAnimatingOut ? 'ease-in' : 'ease-out'}`,
-          pointerEvents: (shouldAnimate || isAnimatingOut) ? 'auto' : 'none',
+          pointerEvents: (!isAnimatingOut && shouldAnimate && isOpen) ? 'auto' : 'none',
         }}
       />
 
