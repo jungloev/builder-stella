@@ -161,7 +161,7 @@ export function BookingCalendar({ initialDate = new Date() }: BookingCalendarPro
                   className="w-full h-full bg-white border border-[#868686] rounded-lg p-1.5 flex items-start justify-between hover:shadow-md transition-shadow cursor-pointer"
                 >
                   <span className="text-black text-sm font-medium font-roboto leading-5 tracking-[0.1px]">
-                    {booking.startTime}–{booking.endTime}
+                    {booking.startTime} – {booking.endTime}
                   </span>
                   <span className="text-black text-sm font-medium font-roboto leading-5 tracking-[0.1px]">
                     {booking.name}
