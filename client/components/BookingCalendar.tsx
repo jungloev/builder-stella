@@ -76,7 +76,7 @@ export function BookingCalendar({ initialDate = new Date() }: BookingCalendarPro
       const duration = endMinutes - startMinutes;
       
       // Position from 07:00
-      const offsetMinutes = startMinutes - (7 * 60) + 20;
+      const offsetMinutes = startMinutes - (7 * 60);
       const totalDayMinutes = 11 * 60; // 07:00 to 18:00
       
       // Calculate position percentage
