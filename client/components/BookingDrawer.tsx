@@ -254,8 +254,7 @@ export function BookingDrawer({
 
                 <button
                   onClick={handleNext}
-                  disabled={overlapError !== ""}
-                  className="flex items-center gap-2 px-3 py-3 bg-white border border-white rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex items-center gap-2 px-3 py-3 bg-white border border-white rounded-lg hover:bg-gray-50 transition-colors"
                 >
                   <span className="text-[#1E1E1E] text-base font-inter">Next</span>
                   <ArrowRight className="w-4 h-4 text-[#1E1E1E]" strokeWidth={1.6} />
