@@ -225,7 +225,7 @@ export function BookingDrawer({
 
       {/* Drawer */}
       <div
-        className={`fixed bottom-0 left-0 right-0 z-40 ${shouldAnimate || isAnimatingOut ? 'translate-y-0' : 'translate-y-full'}`}
+        className={`fixed bottom-0 left-0 right-0 z-40 ${isAnimatingOut || (isOpen && !shouldAnimate) ? 'translate-y-full' : 'translate-y-0'}`}
         style={{
           transition: `transform 200ms ${isAnimatingOut ? 'ease-in' : 'ease-out'}`,
         }}
