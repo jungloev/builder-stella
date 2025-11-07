@@ -176,14 +176,14 @@ export function BookingDrawer({
 
       {/* Drawer */}
       <div className={`fixed bottom-0 left-0 right-0 z-40 transition-transform duration-300 ${isOpen ? 'translate-y-0' : 'translate-y-full'}`}>
-        <div className="max-w-[390px] mx-auto bg-white rounded-t-2xl p-6 flex flex-col gap-4 shadow-lg">
+        <div className="max-w-[390px] mx-auto bg-[#2C2C2C] rounded-t-2xl p-6 flex flex-col gap-4 shadow-lg">
           {step === 1 ? (
             <>
               {/* Duration Step */}
               <div className="flex flex-col gap-3">
                 {/* Label */}
                 <div className="flex justify-between items-start">
-                  <span className="text-[#1E1E1E] text-base font-inter">Set start and stop</span>
+                  <span className="text-white text-base font-inter">Set start and stop</span>
                 </div>
 
                 {/* Dual Range Slider */}
@@ -243,7 +243,7 @@ export function BookingDrawer({
 
                 {/* Description */}
                 <div className="flex justify-between items-center text-sm">
-                  <span className="text-[#757575] font-inter">
+                  <span className="text-white/70 font-inter">
                     {minutesToTime(startTime)} — {minutesToTime(endTime)}
                   </span>
                 </div>
@@ -286,7 +286,7 @@ export function BookingDrawer({
             <>
               {/* Name Step */}
               <div className="flex flex-col gap-2">
-                <label className="text-[#1E1E1E] text-base font-inter">
+                <label className="text-white text-base font-inter">
                   Your name
                 </label>
                 <input
@@ -294,7 +294,7 @@ export function BookingDrawer({
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Enter your name"
-                  className="px-4 py-3 bg-white border border-[#D9D9D9] rounded-lg text-[#1E1E1E] text-base font-inter placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#14AE5C]"
+                  className="px-4 py-3 bg-[#3C3C3C] border border-[#505050] rounded-lg text-white text-base font-inter placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#14AE5C]"
                   autoFocus
                 />
               </div>
