@@ -22,7 +22,7 @@ const rangeSliderStyles = `
     height: 28px;
     border-radius: 50%;
     background: white;
-    border: 2px solid #2C2C2C;
+    border: none;
     cursor: grab;
     pointer-events: auto;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
@@ -38,7 +38,7 @@ const rangeSliderStyles = `
     height: 28px;
     border-radius: 50%;
     background: white;
-    border: 2px solid #2C2C2C;
+    border: none;
     cursor: grab;
     pointer-events: auto;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
