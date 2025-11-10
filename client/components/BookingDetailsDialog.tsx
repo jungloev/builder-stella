@@ -132,6 +132,12 @@ export function BookingDetailsDialog({
                 undone.
               </p>
 
+              {deleteError && (
+                <div className="bg-red-100 border border-red-400 text-red-700 px-3 py-2 rounded text-sm mb-4">
+                  {deleteError}
+                </div>
+              )}
+
               <div className="flex gap-3 justify-end">
                 <button
                   onClick={handleCancelDelete}
