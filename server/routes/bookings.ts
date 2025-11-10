@@ -61,22 +61,11 @@ export const getBookings: RequestHandler = async (req, res) => {
   try {
     const date = req.query.date as string;
 
-    let supabase;
-    try {
-      supabase = getSupabaseClient();
-    } catch (initError) {
-      const errorMsg = initError instanceof Error ? initError.message : String(initError);
-      console.error("[GET /api/bookings] Supabase initialization error:", errorMsg);
-      if (!res.headersSent) {
-        res.status(503).json({
-          error: "Database service unavailable",
-          details: errorMsg
-        });
-      }
-      return;
-    }
+    let bookings: Booking[];
 
+    // Try Supabase first
     try {
+      const supabase = getSupabaseClient();
       let query = supabase.from("bookings").select("*");
 
       if (date) {
@@ -87,29 +76,27 @@ export const getBookings: RequestHandler = async (req, res) => {
 
       if (error) {
         console.error("[GET /api/bookings] Supabase error:", error);
-        if (!res.headersSent) {
-          res.status(500).json({ error: "Failed to get bookings", details: error.message });
-        }
-        return;
+        throw error;
       }
 
-      const bookings = (data || []).map(mapRowToBooking);
-      const response: GetBookingsResponse = { bookings };
-      if (!res.headersSent) {
-        res.json(response);
-      }
-    } catch (queryError) {
-      const errorMsg = queryError instanceof Error ? queryError.message : String(queryError);
-      console.error("[GET /api/bookings] Query execution error:", errorMsg);
-      if (!res.headersSent) {
-        res.status(500).json({ error: "Query failed", details: errorMsg });
-      }
+      bookings = (data || []).map(mapRowToBooking);
+    } catch (supabaseError) {
+      // Fallback to in-memory storage
+      console.log("[GET /api/bookings] Using in-memory fallback storage");
+      bookings = date
+        ? inMemoryBookings.filter(b => b.date === date)
+        : inMemoryBookings;
+    }
+
+    const response: GetBookingsResponse = { bookings };
+    if (!res.headersSent) {
+      res.json(response);
     }
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : String(error);
-    console.error("[GET /api/bookings] Unexpected error:", errorMsg);
+    console.error("[GET /api/bookings] Error:", errorMsg);
     if (!res.headersSent) {
-      res.status(500).json({ error: "Internal server error", details: errorMsg });
+      res.status(500).json({ error: "Failed to get bookings", details: errorMsg });
     }
   }
 };
