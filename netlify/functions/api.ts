@@ -1,14 +1,5 @@
-import express from "express";
-import serverless from "serverless-http";
+// Raw Netlify function handler - avoid serverless-http complexity
 
-// Create Express app
-const app = express();
-
-// Middleware
-app.use(express.json({ limit: "10mb" }));
-app.use(express.urlencoded({ extended: true, limit: "10mb" }));
-
-// In-memory storage for bookings
 interface Booking {
   id: string;
   name: string;
@@ -19,78 +10,130 @@ interface Booking {
 
 const bookings: Booking[] = [];
 
-console.log("[API] Initializing Netlify API function");
+export const handler = async (event: any) => {
+  try {
+    const method = event.httpMethod;
+    const path = event.path;
+    
+    // Parse body
+    let body: any = {};
+    if (event.body) {
+      try {
+        body = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
+      } catch (e) {
+        console.error("Failed to parse body:", event.body);
+      }
+    }
 
-// GET /api/bookings or /bookings
-app.get(["/bookings", "/api/bookings"], (req, res) => {
-  const date = req.query.date as string | undefined;
-  const filtered = date
-    ? bookings.filter(b => b.date === date)
-    : bookings;
-  
-  console.log(`[GET /bookings] date=${date}, found ${filtered.length} bookings`);
-  res.json({ bookings: filtered });
-});
+    console.log(`[${method}] ${path}`, { bodyKeys: Object.keys(body), bodyLength: JSON.stringify(body).length });
 
-// POST /api/bookings or /bookings
-app.post(["/bookings", "/api/bookings"], (req, res) => {
-  const { name, startTime, endTime, date } = req.body;
+    // GET /api/bookings
+    if (method === "GET" && (path === "/api/bookings" || path === "/bookings")) {
+      const date = event.queryStringParameters?.date;
+      const filtered = date
+        ? bookings.filter(b => b.date === date)
+        : bookings;
+      
+      console.log(`[GET] Found ${filtered.length} bookings`);
+      
+      return {
+        statusCode: 200,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ bookings: filtered }),
+      };
+    }
 
-  console.log("[POST /bookings] Received:", { name, startTime, endTime, date });
+    // POST /api/bookings
+    if (method === "POST" && (path === "/api/bookings" || path === "/bookings")) {
+      const { name, startTime, endTime, date } = body;
 
-  if (!name || !startTime || !endTime || !date) {
-    return res.status(400).json({
-      error: "Missing required fields",
-      received: { name, startTime, endTime, date }
-    });
+      console.log("[POST] Received:", { name, startTime, endTime, date });
+
+      if (!name || !startTime || !endTime || !date) {
+        console.error("[POST] Missing fields!");
+        return {
+          statusCode: 400,
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            error: "Missing required fields",
+            received: { name, startTime, endTime, date }
+          }),
+        };
+      }
+
+      const booking: Booking = {
+        id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        name,
+        startTime,
+        endTime,
+        date,
+      };
+
+      bookings.push(booking);
+      console.log("[POST] Created booking:", booking.id);
+      console.log("[POST] Total bookings:", bookings.length);
+
+      return {
+        statusCode: 200,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ booking }),
+      };
+    }
+
+    // DELETE /api/bookings/:id
+    if (method === "DELETE" && (path?.match(/\/api\/bookings\//) || path?.match(/\/bookings\//))) {
+      const id = path.split("/").pop();
+      const index = bookings.findIndex(b => b.id === id);
+
+      console.log(`[DELETE] Looking for ${id}...`);
+
+      if (index === -1) {
+        return {
+          statusCode: 404,
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ error: "Booking not found" }),
+        };
+      }
+
+      bookings.splice(index, 1);
+      console.log(`[DELETE] Deleted. Remaining: ${bookings.length}`);
+
+      return {
+        statusCode: 200,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ success: true }),
+      };
+    }
+
+    // GET /api/health
+    if (method === "GET" && (path === "/api/health" || path === "/health")) {
+      return {
+        statusCode: 200,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          status: "ok",
+          supabaseUrl: process.env.SUPABASE_URL ? "set" : "not set",
+          supabaseKey: process.env.SUPABASE_ANON_KEY ? "set" : "not set",
+          bookingsInMemory: bookings.length,
+        }),
+      };
+    }
+
+    // 404
+    return {
+      statusCode: 404,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ error: "Not found" }),
+    };
+  } catch (error) {
+    console.error("[Handler] Error:", error);
+    return {
+      statusCode: 500,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        error: "Internal server error",
+        details: error instanceof Error ? error.message : String(error)
+      }),
+    };
   }
-
-  const booking: Booking = {
-    id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-    name,
-    startTime,
-    endTime,
-    date,
-  };
-
-  bookings.push(booking);
-  console.log("[POST /bookings] Created booking:", booking.id);
-  console.log("[POST /bookings] Total bookings in memory:", bookings.length);
-
-  res.json({ booking });
-});
-
-// DELETE /api/bookings/:id or /bookings/:id
-app.delete(["/bookings/:id", "/api/bookings/:id"], (req, res) => {
-  const { id } = req.params;
-  const index = bookings.findIndex(b => b.id === id);
-
-  console.log(`[DELETE /bookings/${id}] Looking for booking...`);
-
-  if (index === -1) {
-    console.log(`[DELETE /bookings/${id}] Not found`);
-    return res.status(404).json({ error: "Booking not found" });
-  }
-
-  bookings.splice(index, 1);
-  console.log(`[DELETE /bookings/${id}] Deleted. Remaining: ${bookings.length}`);
-  res.json({ success: true });
-});
-
-// Health check
-app.get(["/health", "/api/health"], (_req, res) => {
-  res.json({
-    status: "ok",
-    supabaseUrl: process.env.SUPABASE_URL ? "set" : "not set",
-    supabaseKey: process.env.SUPABASE_ANON_KEY ? "set" : "not set",
-    bookingsInMemory: bookings.length,
-  });
-});
-
-// Catch-all 404
-app.use((req, res) => {
-  res.status(404).json({ error: "Not found" });
-});
-
-// Export handler
-export const handler = serverless(app);
+};
