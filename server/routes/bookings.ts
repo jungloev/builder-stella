@@ -101,7 +101,6 @@ export const createBooking: RequestHandler = async (req, res) => {
     const { name, startTime, endTime, date } = req.body as CreateBookingRequest;
 
     if (!name || !startTime || !endTime || !date) {
-      console.error("Missing required fields:", { name, startTime, endTime, date });
       res.status(400).json({ error: "Missing required fields" });
       return;
     }
@@ -117,23 +116,12 @@ export const createBooking: RequestHandler = async (req, res) => {
     };
 
     bookings.push(newBooking);
-
-    try {
-      await saveBookings(bookings);
-    } catch (saveError) {
-      console.error("Error saving booking to file:", saveError);
-      console.error("Data directory:", DATA_DIR);
-      console.error("Bookings file:", BOOKINGS_FILE);
-      // Still return success since the booking was created in memory
-      // For production, consider using a database instead
-    }
+    await saveBookings(bookings);
 
     const response: CreateBookingResponse = { booking: newBooking };
     res.json(response);
   } catch (error) {
     console.error("Error creating booking:", error);
-    console.error("Data directory:", DATA_DIR);
-    console.error("Bookings file:", BOOKINGS_FILE);
     res.status(500).json({ error: "Failed to create booking" });
   }
 };
