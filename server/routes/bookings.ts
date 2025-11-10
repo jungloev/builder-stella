@@ -1,26 +1,16 @@
 import { RequestHandler } from "express";
 import { Booking, GetBookingsResponse, CreateBookingRequest, CreateBookingResponse } from "@shared/api";
-import fs from "fs/promises";
-import path from "path";
-import os from "os";
+import { createClient } from "@supabase/supabase-js";
 
-// In-memory storage as fallback for Netlify where file system is unreliable
-const inMemoryBookings: Map<string, Booking[]> = new Map();
+// Initialize Supabase client
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_ANON_KEY;
 
-// Get the data directory - handle both dev and Netlify deployment
-function getDataPath() {
-  // On Netlify, use /tmp for persistent storage within a deployment
-  // In development, use the local data directory
-  if (process.env.NETLIFY || process.env.NETLIFY_FUNCTIONS_RUNTIME) {
-    return path.join(os.tmpdir(), "bookathing-data");
-  }
-  // In development, use the local data directory
-  return path.join(process.cwd(), "data");
+if (!supabaseUrl || !supabaseKey) {
+  console.error("Missing Supabase environment variables");
 }
 
-const DATA_DIR = getDataPath();
-const BOOKINGS_FILE = path.join(DATA_DIR, "bookings.json");
-const USE_FILE_STORAGE = !process.env.NETLIFY && !process.env.NETLIFY_FUNCTIONS_RUNTIME;
+const supabase = createClient(supabaseUrl || "", supabaseKey || "");
 
 // Ensure data directory exists
 async function ensureDataDir() {
