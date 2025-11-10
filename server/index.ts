@@ -20,6 +20,16 @@ export function createServer() {
     next();
   });
 
+  // Debug endpoint to check body parsing
+  app.post("/api/debug-body", (_req, res) => {
+    res.json({
+      receivedBody: _req.body,
+      bodyType: typeof _req.body,
+      bodyKeys: Object.keys(_req.body || {}),
+      contentType: _req.get("content-type"),
+    });
+  });
+
   // Health check endpoint - both with and without /api prefix
   app.get("/health", (_req, res) => {
     res.json({
