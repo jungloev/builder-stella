@@ -27,12 +27,22 @@ function mapRowToBooking(row: any): Booking {
 export const getBookings: RequestHandler = async (req, res) => {
   try {
     const date = req.query.date as string;
-    const allBookings = await loadBookings();
 
-    const bookings = date
-      ? allBookings.filter(b => b.date === date)
-      : allBookings;
+    let query = supabase.from("bookings").select("*");
 
+    if (date) {
+      query = query.eq("date", date);
+    }
+
+    const { data, error } = await query;
+
+    if (error) {
+      console.error("Error fetching bookings:", error);
+      res.status(500).json({ error: "Failed to get bookings" });
+      return;
+    }
+
+    const bookings = (data || []).map(mapRowToBooking);
     const response: GetBookingsResponse = { bookings };
     res.json(response);
   } catch (error) {
