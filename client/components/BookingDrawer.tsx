@@ -93,6 +93,8 @@ export function BookingDrawer({
   const [activeInputZIndex, setActiveInputZIndex] = useState(5); // which input is on top
   const [isAnimatingOut, setIsAnimatingOut] = useState(false);
   const [shouldAnimate, setShouldAnimate] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   useEffect(() => {
     if (isOpen) {
