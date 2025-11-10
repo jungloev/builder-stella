@@ -36,25 +36,31 @@ function mapRowToBooking(row: any): Booking {
 export const getBookings: RequestHandler = async (req, res) => {
   try {
     const date = req.query.date as string;
-    const supabase = getSupabaseClient();
 
-    let query = supabase.from("bookings").select("*");
+    try {
+      const supabase = getSupabaseClient();
 
-    if (date) {
-      query = query.eq("date", date);
+      let query = supabase.from("bookings").select("*");
+
+      if (date) {
+        query = query.eq("date", date);
+      }
+
+      const { data, error } = await query;
+
+      if (error) {
+        console.error("Error fetching bookings:", error);
+        res.status(500).json({ error: "Failed to get bookings" });
+        return;
+      }
+
+      const bookings = (data || []).map(mapRowToBooking);
+      const response: GetBookingsResponse = { bookings };
+      res.json(response);
+    } catch (supabaseError) {
+      console.error("Supabase initialization error:", supabaseError);
+      res.status(503).json({ error: "Database service unavailable. Please configure Supabase environment variables." });
     }
-
-    const { data, error } = await query;
-
-    if (error) {
-      console.error("Error fetching bookings:", error);
-      res.status(500).json({ error: "Failed to get bookings" });
-      return;
-    }
-
-    const bookings = (data || []).map(mapRowToBooking);
-    const response: GetBookingsResponse = { bookings };
-    res.json(response);
   } catch (error) {
     console.error("Error getting bookings:", error);
     res.status(500).json({ error: "Failed to get bookings" });
