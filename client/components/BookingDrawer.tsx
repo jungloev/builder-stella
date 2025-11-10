@@ -104,6 +104,8 @@ export function BookingDrawer({
       setEndTime(1080); // 18:00
       setName("");
       setOverlapError("");
+      setSubmitError("");
+      setIsSubmitting(false);
       setActiveInputZIndex(5);
       setShouldAnimate(false);
       // Trigger animation on next frame
@@ -118,6 +120,8 @@ export function BookingDrawer({
         setEndTime(1080);
         setName("");
         setOverlapError("");
+        setSubmitError("");
+        setIsSubmitting(false);
         setShouldAnimate(false);
       }, 200);
     }
