@@ -4,6 +4,9 @@ import fs from "fs/promises";
 import path from "path";
 import os from "os";
 
+// In-memory storage as fallback for Netlify where file system is unreliable
+const inMemoryBookings: Map<string, Booking[]> = new Map();
+
 // Get the data directory - handle both dev and Netlify deployment
 function getDataPath() {
   // On Netlify, use /tmp for persistent storage within a deployment
@@ -17,6 +20,7 @@ function getDataPath() {
 
 const DATA_DIR = getDataPath();
 const BOOKINGS_FILE = path.join(DATA_DIR, "bookings.json");
+const USE_FILE_STORAGE = !process.env.NETLIFY && !process.env.NETLIFY_FUNCTIONS_RUNTIME;
 
 // Ensure data directory exists
 async function ensureDataDir() {
