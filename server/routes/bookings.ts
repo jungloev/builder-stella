@@ -24,6 +24,8 @@ const USE_FILE_STORAGE = !process.env.NETLIFY && !process.env.NETLIFY_FUNCTIONS_
 
 // Ensure data directory exists
 async function ensureDataDir() {
+  if (!USE_FILE_STORAGE) return;
+
   try {
     await fs.mkdir(DATA_DIR, { recursive: true });
   } catch (error) {
@@ -31,8 +33,13 @@ async function ensureDataDir() {
   }
 }
 
-// Load bookings from file
+// Load bookings from file or in-memory storage
 async function loadBookings(): Promise<Booking[]> {
+  // Use in-memory storage on Netlify
+  if (!USE_FILE_STORAGE) {
+    return inMemoryBookings.get("all") || [];
+  }
+
   try {
     await ensureDataDir();
     try {
@@ -52,8 +59,14 @@ async function loadBookings(): Promise<Booking[]> {
   }
 }
 
-// Save bookings to file
+// Save bookings to file or in-memory storage
 async function saveBookings(bookings: Booking[]): Promise<void> {
+  // Use in-memory storage on Netlify
+  if (!USE_FILE_STORAGE) {
+    inMemoryBookings.set("all", bookings);
+    return;
+  }
+
   try {
     await ensureDataDir();
     await fs.writeFile(BOOKINGS_FILE, JSON.stringify(bookings, null, 2));
