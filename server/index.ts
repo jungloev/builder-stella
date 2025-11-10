@@ -12,8 +12,16 @@ export function createServer() {
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
 
-  // Health check endpoint
+  // Health check endpoint - both with and without /api prefix
   app.get("/health", (_req, res) => {
+    res.json({
+      status: "ok",
+      supabaseUrl: process.env.SUPABASE_URL ? "set" : "not set",
+      supabaseKey: process.env.SUPABASE_ANON_KEY ? "set" : "not set",
+      env: process.env.NODE_ENV || "development",
+    });
+  });
+  app.get("/api/health", (_req, res) => {
     res.json({
       status: "ok",
       supabaseUrl: process.env.SUPABASE_URL ? "set" : "not set",
