@@ -1,12 +1,7 @@
 [build]
-  command = "npm run build"
+  command = "npm run build && cp -r data dist/spa/data || true"
   functions = "netlify/functions"
   publish = "dist/spa"
-
-# Copy data directory for bookings persistence
-[[files]]
-  from = "data"
-  to = "data"
 
 
 [functions]
