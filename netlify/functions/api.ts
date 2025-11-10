@@ -1,59 +1,96 @@
+import express from "express";
 import serverless from "serverless-http";
-import { createServer } from "../../server";
 
-console.log("Initializing Netlify API function...");
-console.log("SUPABASE_URL:", process.env.SUPABASE_URL ? "set" : "not set");
-console.log("SUPABASE_ANON_KEY:", process.env.SUPABASE_ANON_KEY ? "set" : "not set");
+// Create Express app
+const app = express();
 
-let app: any;
-let slsHandler: any;
+// Middleware
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
-try {
-  app = createServer();
-  console.log("Express app created successfully");
-
-  slsHandler = serverless(app, {
-    // Ensure body is properly handled
-    parseQueryStringParameters: true,
-  });
-  console.log("Serverless-http handler created successfully");
-} catch (error) {
-  console.error("Error initializing Netlify function:", error);
-  slsHandler = null;
+// In-memory storage for bookings
+interface Booking {
+  id: string;
+  name: string;
+  startTime: string;
+  endTime: string;
+  date: string;
 }
 
-export const handler = async (event: any, context: any) => {
-  console.log("[API Handler] Received event:");
-  console.log("  Method:", event.httpMethod);
-  console.log("  Path:", event.path);
-  console.log("  Body type:", typeof event.body);
-  console.log("  Body length:", event.body ? event.body.length : 0);
-  console.log("  Headers:", event.headers);
+const bookings: Booking[] = [];
 
-  if (!slsHandler) {
-    console.error("[API Handler] Handler not initialized");
-    return {
-      statusCode: 503,
-      body: JSON.stringify({
-        error: "Server initialization failed",
-      }),
-      headers: { "Content-Type": "application/json" },
-    };
+console.log("[API] Initializing Netlify API function");
+
+// GET /api/bookings or /bookings
+app.get(["/bookings", "/api/bookings"], (req, res) => {
+  const date = req.query.date as string | undefined;
+  const filtered = date
+    ? bookings.filter(b => b.date === date)
+    : bookings;
+  
+  console.log(`[GET /bookings] date=${date}, found ${filtered.length} bookings`);
+  res.json({ bookings: filtered });
+});
+
+// POST /api/bookings or /bookings
+app.post(["/bookings", "/api/bookings"], (req, res) => {
+  const { name, startTime, endTime, date } = req.body;
+
+  console.log("[POST /bookings] Received:", { name, startTime, endTime, date });
+
+  if (!name || !startTime || !endTime || !date) {
+    return res.status(400).json({
+      error: "Missing required fields",
+      received: { name, startTime, endTime, date }
+    });
   }
 
-  try {
-    const response = await slsHandler(event, context);
-    console.log("[API Handler] Response status:", response.statusCode);
-    return response;
-  } catch (error) {
-    console.error("[API Handler] Error:", error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({
-        error: "Internal server error",
-        details: error instanceof Error ? error.message : String(error)
-      }),
-      headers: { "Content-Type": "application/json" },
-    };
+  const booking: Booking = {
+    id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+    name,
+    startTime,
+    endTime,
+    date,
+  };
+
+  bookings.push(booking);
+  console.log("[POST /bookings] Created booking:", booking.id);
+  console.log("[POST /bookings] Total bookings in memory:", bookings.length);
+
+  res.json({ booking });
+});
+
+// DELETE /api/bookings/:id or /bookings/:id
+app.delete(["/bookings/:id", "/api/bookings/:id"], (req, res) => {
+  const { id } = req.params;
+  const index = bookings.findIndex(b => b.id === id);
+
+  console.log(`[DELETE /bookings/${id}] Looking for booking...`);
+
+  if (index === -1) {
+    console.log(`[DELETE /bookings/${id}] Not found`);
+    return res.status(404).json({ error: "Booking not found" });
   }
-};
+
+  bookings.splice(index, 1);
+  console.log(`[DELETE /bookings/${id}] Deleted. Remaining: ${bookings.length}`);
+  res.json({ success: true });
+});
+
+// Health check
+app.get(["/health", "/api/health"], (_req, res) => {
+  res.json({
+    status: "ok",
+    supabaseUrl: process.env.SUPABASE_URL ? "set" : "not set",
+    supabaseKey: process.env.SUPABASE_ANON_KEY ? "set" : "not set",
+    bookingsInMemory: bookings.length,
+  });
+});
+
+// Catch-all 404
+app.use((req, res) => {
+  res.status(404).json({ error: "Not found" });
+});
+
+// Export handler
+export const handler = serverless(app);
