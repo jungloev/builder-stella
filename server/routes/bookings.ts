@@ -77,30 +77,35 @@ export const createBooking: RequestHandler = async (req, res) => {
       return;
     }
 
-    const supabase = getSupabaseClient();
-    const bookingId = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    try {
+      const supabase = getSupabaseClient();
+      const bookingId = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
-    const { data, error } = await supabase
-      .from("bookings")
-      .insert({
-        id: bookingId,
-        name,
-        start_time: startTime,
-        end_time: endTime,
-        date,
-      })
-      .select()
-      .single();
+      const { data, error } = await supabase
+        .from("bookings")
+        .insert({
+          id: bookingId,
+          name,
+          start_time: startTime,
+          end_time: endTime,
+          date,
+        })
+        .select()
+        .single();
 
-    if (error) {
-      console.error("Error creating booking:", error);
-      res.status(500).json({ error: "Failed to create booking" });
-      return;
+      if (error) {
+        console.error("Error creating booking:", error);
+        res.status(500).json({ error: "Failed to create booking" });
+        return;
+      }
+
+      const booking = mapRowToBooking(data);
+      const response: CreateBookingResponse = { booking };
+      res.json(response);
+    } catch (supabaseError) {
+      console.error("Supabase initialization error:", supabaseError);
+      res.status(503).json({ error: "Database service unavailable. Please configure Supabase environment variables." });
     }
-
-    const booking = mapRowToBooking(data);
-    const response: CreateBookingResponse = { booking };
-    res.json(response);
   } catch (error) {
     console.error("Error creating booking:", error);
     res.status(500).json({ error: "Failed to create booking" });
