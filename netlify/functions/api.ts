@@ -1,8 +1,21 @@
 import serverless from "serverless-http";
 import { createServer } from "../../server";
 
-// Create the Express app
-const app = createServer();
+let app: any;
+let handler: any;
 
-// Wrap the Express app with serverless-http
-export const handler = serverless(app);
+try {
+  app = createServer();
+  handler = serverless(app);
+} catch (error) {
+  console.error("Error initializing Netlify function:", error);
+  // Return a function that will handle all requests with an error
+  handler = async (event: any) => {
+    return {
+      statusCode: 503,
+      body: JSON.stringify({ error: "Server initialization failed. Please check environment variables." }),
+    };
+  };
+}
+
+export { handler };
