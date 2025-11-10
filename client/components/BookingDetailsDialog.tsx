@@ -58,6 +58,7 @@ export function BookingDetailsDialog({
 
   const handleCancelDelete = () => {
     setShowDeleteConfirm(false);
+    setDeleteError("");
   };
 
   return (
