@@ -127,6 +127,31 @@ export function BookingDrawer({
     }
   }, [isOpen]);
 
+  // Handle keyboard shortcuts
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Escape to close drawer
+      if (e.key === "Escape") {
+        e.preventDefault();
+        handleCancel();
+      }
+      // Enter to submit
+      if (e.key === "Enter") {
+        e.preventDefault();
+        if (step === 1) {
+          handleNext();
+        } else {
+          handleBookIt();
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, step, name, startTime, endTime]);
+
   const minutesToTime = (minutes: number) => {
     const hours = Math.floor(minutes / 60);
     const mins = minutes % 60;
