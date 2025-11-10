@@ -17,6 +17,7 @@ export function BookingDetailsDialog({
 }: BookingDetailsDialogProps) {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState<string>("");
 
   if (!isOpen || !booking) return null;
 
