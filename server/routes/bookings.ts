@@ -2,17 +2,17 @@ import { RequestHandler } from "express";
 import { Booking, GetBookingsResponse, CreateBookingRequest, CreateBookingResponse } from "@shared/api";
 import fs from "fs/promises";
 import path from "path";
+import os from "os";
 
 // Get the data directory - handle both dev and Netlify deployment
 function getDataPath() {
-  // Try multiple possible locations for the data directory
-  const possiblePaths = [
-    path.join(process.cwd(), "data"),
-    path.join(process.cwd(), "dist", "spa", "data"),
-    "/tmp/bookathing-data", // Fallback to temp for Netlify
-  ];
-
-  return possiblePaths[0]; // Use the first path (current working directory)
+  // On Netlify, use /tmp for persistent storage within a deployment
+  // In development, use the local data directory
+  if (process.env.NETLIFY || process.env.NETLIFY_FUNCTIONS_RUNTIME) {
+    return path.join(os.tmpdir(), "bookathing-data");
+  }
+  // In development, use the local data directory
+  return path.join(process.cwd(), "data");
 }
 
 const DATA_DIR = getDataPath();
