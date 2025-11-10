@@ -368,14 +368,30 @@ export function BookingDrawer({
                   placeholder="Enter your name"
                   className="px-4 py-3 bg-[#3C3C3C] border border-[#505050] rounded-lg text-white text-base font-inter placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#14AE5C]"
                   autoFocus
+                  disabled={isSubmitting}
                 />
               </div>
+
+              {/* Error Message */}
+              {submitError && (
+                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded text-sm font-inter flex items-start justify-between gap-2">
+                  <span className="flex-1">{submitError}</span>
+                  <button
+                    onClick={() => setSubmitError("")}
+                    className="text-red-700 hover:text-red-900 flex-shrink-0 font-bold"
+                    aria-label="Dismiss error"
+                  >
+                    ✕
+                  </button>
+                </div>
+              )}
 
               {/* Buttons */}
               <div className="flex justify-between items-center gap-3">
                 <button
                   onClick={handleBack}
-                  className="flex items-center gap-2 px-3 py-3 bg-[#303030] border border-[#303030] rounded-lg hover:bg-[#242424] transition-colors"
+                  disabled={isSubmitting}
+                  className="flex items-center gap-2 px-3 py-3 bg-[#303030] border border-[#303030] rounded-lg hover:bg-[#242424] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <ArrowLeft className="w-4 h-4 text-[#ffffff]" strokeWidth={1.6} />
                   <span className="text-[#ffffff] text-base font-inter">Back</span>
@@ -383,10 +399,10 @@ export function BookingDrawer({
 
                 <button
                   onClick={handleBookIt}
-                  disabled={!name.trim()}
+                  disabled={!name.trim() || isSubmitting}
                   className="flex items-center gap-2 px-3 py-3 bg-[#14AE5C] border border-[#14AE5C] rounded-lg hover:bg-[#14AE5C] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <span className="text-white text-base font-inter">Book it</span>
+                  <span className="text-white text-base font-inter">{isSubmitting ? "Creating..." : "Book it"}</span>
                   <Zap className="w-4 h-4 text-white" strokeWidth={1.6} />
                 </button>
               </div>
