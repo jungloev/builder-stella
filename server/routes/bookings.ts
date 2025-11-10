@@ -31,17 +31,31 @@ async function ensureDataDir() {
 async function loadBookings(): Promise<Booking[]> {
   try {
     await ensureDataDir();
-    const data = await fs.readFile(BOOKINGS_FILE, "utf-8");
-    return JSON.parse(data);
+    try {
+      const data = await fs.readFile(BOOKINGS_FILE, "utf-8");
+      return JSON.parse(data);
+    } catch (readError) {
+      // If file doesn't exist, return empty array and initialize it
+      if ((readError as any).code === "ENOENT") {
+        await saveBookings([]);
+        return [];
+      }
+      throw readError;
+    }
   } catch (error) {
+    console.error("Error loading bookings:", error);
     return [];
   }
 }
 
 // Save bookings to file
 async function saveBookings(bookings: Booking[]): Promise<void> {
-  await ensureDataDir();
-  await fs.writeFile(BOOKINGS_FILE, JSON.stringify(bookings, null, 2));
+  try {
+    await ensureDataDir();
+    await fs.writeFile(BOOKINGS_FILE, JSON.stringify(bookings, null, 2));
+  } catch (error) {
+    console.error("Error saving bookings:", error);
+  }
 }
 
 // GET /api/bookings?date=YYYY-MM-DD
