@@ -186,6 +186,9 @@ export function BookingDrawer({
   const handleBookIt = async () => {
     if (!name.trim()) return;
 
+    setIsSubmitting(true);
+    setSubmitError("");
+
     try {
       const booking: CreateBookingRequest = {
         name: name.trim(),
@@ -208,9 +211,15 @@ export function BookingDrawer({
           onBookingCreated();
           setIsAnimatingOut(false);
         }, 200);
+      } else {
+        const errorData = await response.json();
+        setSubmitError(errorData.error || `Failed to create booking (${response.status})`);
+        setIsSubmitting(false);
       }
     } catch (error) {
       console.error('Error creating booking:', error);
+      setSubmitError(error instanceof Error ? error.message : 'An unexpected error occurred. Please try again.');
+      setIsSubmitting(false);
     }
   };
 
