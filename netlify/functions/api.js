@@ -1,57 +1,73 @@
-import serverless from "serverless-http";
-import { createServer } from "../../dist/server/node-build.mjs";
-
-console.log("Initializing Netlify API function...");
-console.log("SUPABASE_URL:", process.env.SUPABASE_URL ? "set" : "not set");
-console.log("SUPABASE_ANON_KEY:", process.env.SUPABASE_ANON_KEY ? "set" : "not set");
-
-let app;
-let slsHandler;
-
-try {
-  app = createServer();
-  console.log("Express app created successfully");
-
-  slsHandler = serverless(app, {
-    parseQueryStringParameters: true,
-  });
-  console.log("Serverless-http handler created successfully");
-} catch (error) {
-  console.error("Error initializing Netlify function:", error);
-  slsHandler = null;
-}
+// Simple Netlify function that handles API requests
+// This creates a minimal Express server for API routes
 
 export const handler = async (event, context) => {
-  console.log("[API Handler] Received event:");
-  console.log("  Method:", event.httpMethod);
-  console.log("  Path:", event.path);
-  console.log("  Body type:", typeof event.body);
-  console.log("  Body length:", event.body ? event.body.length : 0);
+  // Parse the incoming request
+  const method = event.httpMethod;
+  const path = event.path || "/";
+  const body = event.body ? JSON.parse(event.body) : {};
+  
+  console.log(`[API] ${method} ${path}`, body);
 
-  if (!slsHandler) {
-    console.error("[API Handler] Handler not initialized");
+  // Route: GET /api/bookings
+  if (method === "GET" && path === "/api/bookings") {
+    const bookings = []; // In-memory storage
     return {
-      statusCode: 503,
-      body: JSON.stringify({
-        error: "Server initialization failed",
-      }),
+      statusCode: 200,
       headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ bookings }),
     };
   }
 
-  try {
-    const response = await slsHandler(event, context);
-    console.log("[API Handler] Response status:", response.statusCode);
-    return response;
-  } catch (error) {
-    console.error("[API Handler] Error:", error);
+  // Route: POST /api/bookings  
+  if (method === "POST" && path === "/api/bookings") {
+    console.log("Received booking data:", body);
+    
+    const { name, startTime, endTime, date } = body;
+    
+    if (!name || !startTime || !endTime || !date) {
+      return {
+        statusCode: 400,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          error: "Missing required fields",
+          received: { name, startTime, endTime, date }
+        }),
+      };
+    }
+    
+    const booking = {
+      id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      name,
+      startTime,
+      endTime,
+      date,
+    };
+    
     return {
-      statusCode: 500,
-      body: JSON.stringify({
-        error: "Internal server error",
-        details: error instanceof Error ? error.message : String(error)
-      }),
+      statusCode: 200,
       headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ booking }),
     };
   }
+
+  // Route: GET /api/health
+  if (method === "GET" && path === "/api/health") {
+    return {
+      statusCode: 200,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        status: "ok",
+        supabaseUrl: process.env.SUPABASE_URL ? "set" : "not set",
+        supabaseKey: process.env.SUPABASE_ANON_KEY ? "set" : "not set",
+      }),
+    };
+  }
+
+  // Default 404
+  return {
+    statusCode: 404,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ error: "Not found" }),
+  };
 };
