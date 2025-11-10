@@ -174,7 +174,10 @@ export const deleteBooking: RequestHandler = async (req, res) => {
   try {
     const { id } = req.params;
 
+    console.log(`[DELETE /api/bookings/:id] Deleting booking with id: ${id}`);
+
     if (!id) {
+      console.error("[DELETE /api/bookings/:id] Missing booking id");
       if (!res.headersSent) {
         res.status(400).json({ error: "Missing booking id" });
       }
@@ -185,7 +188,7 @@ export const deleteBooking: RequestHandler = async (req, res) => {
     try {
       supabase = getSupabaseClient();
     } catch (initError) {
-      console.error("Supabase initialization error:", initError);
+      console.error("[DELETE /api/bookings/:id] Supabase initialization error:", initError);
       if (!res.headersSent) {
         res.status(503).json({
           error: "Database service unavailable. Please configure Supabase environment variables.",
@@ -196,32 +199,34 @@ export const deleteBooking: RequestHandler = async (req, res) => {
     }
 
     try {
+      console.log(`[DELETE /api/bookings/:id] Executing delete query for id: ${id}`);
       const { error } = await supabase
         .from("bookings")
         .delete()
         .eq("id", id);
 
       if (error) {
-        console.error("Error deleting booking:", error);
+        console.error("[DELETE /api/bookings/:id] Supabase error:", error);
         if (!res.headersSent) {
           res.status(500).json({ error: "Failed to delete booking", details: error.message });
         }
         return;
       }
 
+      console.log(`[DELETE /api/bookings/:id] Successfully deleted booking with id: ${id}`);
       if (!res.headersSent) {
         res.json({ success: true });
       }
     } catch (queryError) {
-      console.error("Query execution error:", queryError);
+      console.error("[DELETE /api/bookings/:id] Query execution error:", queryError);
       if (!res.headersSent) {
-        res.status(500).json({ error: "Failed to delete booking" });
+        res.status(500).json({ error: "Failed to delete booking", details: queryError instanceof Error ? queryError.message : String(queryError) });
       }
     }
   } catch (error) {
-    console.error("Unexpected error in deleteBooking:", error);
+    console.error("[DELETE /api/bookings/:id] Unexpected error:", error);
     if (!res.headersSent) {
-      res.status(500).json({ error: "Internal server error" });
+      res.status(500).json({ error: "Internal server error", details: error instanceof Error ? error.message : String(error) });
     }
   }
 };
