@@ -51,9 +51,21 @@ export const getBookings: RequestHandler = async (req, res) => {
   try {
     const date = req.query.date as string;
 
+    let supabase;
     try {
-      const supabase = getSupabaseClient();
+      supabase = getSupabaseClient();
+    } catch (initError) {
+      console.error("Supabase initialization error:", initError);
+      if (!res.headersSent) {
+        res.status(503).json({
+          error: "Database service unavailable. Please configure Supabase environment variables.",
+          details: initError instanceof Error ? initError.message : String(initError)
+        });
+      }
+      return;
+    }
 
+    try {
       let query = supabase.from("bookings").select("*");
 
       if (date) {
@@ -64,20 +76,28 @@ export const getBookings: RequestHandler = async (req, res) => {
 
       if (error) {
         console.error("Error fetching bookings:", error);
-        res.status(500).json({ error: "Failed to get bookings" });
+        if (!res.headersSent) {
+          res.status(500).json({ error: "Failed to get bookings" });
+        }
         return;
       }
 
       const bookings = (data || []).map(mapRowToBooking);
       const response: GetBookingsResponse = { bookings };
-      res.json(response);
-    } catch (supabaseError) {
-      console.error("Supabase initialization error:", supabaseError);
-      res.status(503).json({ error: "Database service unavailable. Please configure Supabase environment variables." });
+      if (!res.headersSent) {
+        res.json(response);
+      }
+    } catch (queryError) {
+      console.error("Query execution error:", queryError);
+      if (!res.headersSent) {
+        res.status(500).json({ error: "Failed to query bookings" });
+      }
     }
   } catch (error) {
-    console.error("Error getting bookings:", error);
-    res.status(500).json({ error: "Failed to get bookings" });
+    console.error("Unexpected error in getBookings:", error);
+    if (!res.headersSent) {
+      res.status(500).json({ error: "Internal server error" });
+    }
   }
 };
 
