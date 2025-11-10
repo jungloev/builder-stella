@@ -12,57 +12,15 @@ if (!supabaseUrl || !supabaseKey) {
 
 const supabase = createClient(supabaseUrl || "", supabaseKey || "");
 
-// Ensure data directory exists
-async function ensureDataDir() {
-  if (!USE_FILE_STORAGE) return;
-
-  try {
-    await fs.mkdir(DATA_DIR, { recursive: true });
-  } catch (error) {
-    console.error("Error creating data directory:", error);
-  }
-}
-
-// Load bookings from file or in-memory storage
-async function loadBookings(): Promise<Booking[]> {
-  // Use in-memory storage on Netlify
-  if (!USE_FILE_STORAGE) {
-    return inMemoryBookings.get("all") || [];
-  }
-
-  try {
-    await ensureDataDir();
-    try {
-      const data = await fs.readFile(BOOKINGS_FILE, "utf-8");
-      return JSON.parse(data);
-    } catch (readError) {
-      // If file doesn't exist, return empty array and initialize it
-      if ((readError as any).code === "ENOENT") {
-        await saveBookings([]);
-        return [];
-      }
-      throw readError;
-    }
-  } catch (error) {
-    console.error("Error loading bookings:", error);
-    return [];
-  }
-}
-
-// Save bookings to file or in-memory storage
-async function saveBookings(bookings: Booking[]): Promise<void> {
-  // Use in-memory storage on Netlify
-  if (!USE_FILE_STORAGE) {
-    inMemoryBookings.set("all", bookings);
-    return;
-  }
-
-  try {
-    await ensureDataDir();
-    await fs.writeFile(BOOKINGS_FILE, JSON.stringify(bookings, null, 2));
-  } catch (error) {
-    console.error("Error saving bookings:", error);
-  }
+// Convert Supabase row to Booking
+function mapRowToBooking(row: any): Booking {
+  return {
+    id: row.id,
+    name: row.name,
+    startTime: row.start_time,
+    endTime: row.end_time,
+    date: row.date,
+  };
 }
 
 // GET /api/bookings?date=YYYY-MM-DD
