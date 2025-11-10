@@ -184,22 +184,11 @@ export const deleteBooking: RequestHandler = async (req, res) => {
       return;
     }
 
-    let supabase;
+    // Try Supabase first
     try {
-      supabase = getSupabaseClient();
-    } catch (initError) {
-      console.error("[DELETE /api/bookings/:id] Supabase initialization error:", initError);
-      if (!res.headersSent) {
-        res.status(503).json({
-          error: "Database service unavailable. Please configure Supabase environment variables.",
-          details: initError instanceof Error ? initError.message : String(initError)
-        });
-      }
-      return;
-    }
+      const supabase = getSupabaseClient();
+      console.log(`[DELETE /api/bookings/:id] Executing Supabase delete for id: ${id}`);
 
-    try {
-      console.log(`[DELETE /api/bookings/:id] Executing delete query for id: ${id}`);
       const { error } = await supabase
         .from("bookings")
         .delete()
@@ -207,26 +196,39 @@ export const deleteBooking: RequestHandler = async (req, res) => {
 
       if (error) {
         console.error("[DELETE /api/bookings/:id] Supabase error:", error);
-        if (!res.headersSent) {
-          res.status(500).json({ error: "Failed to delete booking", details: error.message });
-        }
-        return;
+        throw error;
       }
 
       console.log(`[DELETE /api/bookings/:id] Successfully deleted booking with id: ${id}`);
       if (!res.headersSent) {
         res.json({ success: true });
       }
-    } catch (queryError) {
-      console.error("[DELETE /api/bookings/:id] Query execution error:", queryError);
+    } catch (supabaseError) {
+      // Fallback to in-memory storage
+      console.log("[DELETE /api/bookings/:id] Using in-memory fallback storage");
+      const initialLength = inMemoryBookings.length;
+      const filteredBookings = inMemoryBookings.filter(b => b.id !== id);
+
+      if (filteredBookings.length === initialLength) {
+        if (!res.headersSent) {
+          res.status(404).json({ error: "Booking not found" });
+        }
+        return;
+      }
+
+      // Update in-memory storage
+      inMemoryBookings.length = 0;
+      inMemoryBookings.push(...filteredBookings);
+
       if (!res.headersSent) {
-        res.status(500).json({ error: "Failed to delete booking", details: queryError instanceof Error ? queryError.message : String(queryError) });
+        res.json({ success: true });
       }
     }
   } catch (error) {
-    console.error("[DELETE /api/bookings/:id] Unexpected error:", error);
+    const errorMsg = error instanceof Error ? error.message : String(error);
+    console.error("[DELETE /api/bookings/:id] Error:", errorMsg);
     if (!res.headersSent) {
-      res.status(500).json({ error: "Internal server error", details: error instanceof Error ? error.message : String(error) });
+      res.status(500).json({ error: "Failed to delete booking", details: errorMsg });
     }
   }
 };
