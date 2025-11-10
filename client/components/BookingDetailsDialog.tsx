@@ -23,6 +23,7 @@ export function BookingDetailsDialog({
 
   const handleDeleteClick = () => {
     setShowDeleteConfirm(true);
+    setDeleteError("");
   };
 
   const handleConfirmDelete = async () => {
