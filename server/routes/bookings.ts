@@ -71,6 +71,7 @@ export const createBooking: RequestHandler = async (req, res) => {
       return;
     }
 
+    const supabase = getSupabaseClient();
     const bookingId = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
     const { data, error } = await supabase
