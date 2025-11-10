@@ -122,19 +122,24 @@ export const deleteBooking: RequestHandler = async (req, res) => {
       return;
     }
 
-    const supabase = getSupabaseClient();
-    const { error } = await supabase
-      .from("bookings")
-      .delete()
-      .eq("id", id);
+    try {
+      const supabase = getSupabaseClient();
+      const { error } = await supabase
+        .from("bookings")
+        .delete()
+        .eq("id", id);
 
-    if (error) {
-      console.error("Error deleting booking:", error);
-      res.status(500).json({ error: "Failed to delete booking" });
-      return;
+      if (error) {
+        console.error("Error deleting booking:", error);
+        res.status(500).json({ error: "Failed to delete booking" });
+        return;
+      }
+
+      res.json({ success: true });
+    } catch (supabaseError) {
+      console.error("Supabase initialization error:", supabaseError);
+      res.status(503).json({ error: "Database service unavailable. Please configure Supabase environment variables." });
     }
-
-    res.json({ success: true });
   } catch (error) {
     console.error("Error deleting booking:", error);
     res.status(500).json({ error: "Failed to delete booking" });
