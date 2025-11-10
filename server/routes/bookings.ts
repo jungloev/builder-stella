@@ -61,20 +61,28 @@ export const createBooking: RequestHandler = async (req, res) => {
       return;
     }
 
-    const bookings = await loadBookings();
+    const bookingId = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
-    const newBooking: Booking = {
-      id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-      name,
-      startTime,
-      endTime,
-      date,
-    };
+    const { data, error } = await supabase
+      .from("bookings")
+      .insert({
+        id: bookingId,
+        name,
+        start_time: startTime,
+        end_time: endTime,
+        date,
+      })
+      .select()
+      .single();
 
-    bookings.push(newBooking);
-    await saveBookings(bookings);
+    if (error) {
+      console.error("Error creating booking:", error);
+      res.status(500).json({ error: "Failed to create booking" });
+      return;
+    }
 
-    const response: CreateBookingResponse = { booking: newBooking };
+    const booking = mapRowToBooking(data);
+    const response: CreateBookingResponse = { booking };
     res.json(response);
   } catch (error) {
     console.error("Error creating booking:", error);
