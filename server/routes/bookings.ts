@@ -55,11 +55,12 @@ export const getBookings: RequestHandler = async (req, res) => {
     try {
       supabase = getSupabaseClient();
     } catch (initError) {
-      console.error("Supabase initialization error:", initError);
+      const errorMsg = initError instanceof Error ? initError.message : String(initError);
+      console.error("[GET /api/bookings] Supabase initialization error:", errorMsg);
       if (!res.headersSent) {
         res.status(503).json({
-          error: "Database service unavailable. Please configure Supabase environment variables.",
-          details: initError instanceof Error ? initError.message : String(initError)
+          error: "Database service unavailable",
+          details: errorMsg
         });
       }
       return;
@@ -75,9 +76,9 @@ export const getBookings: RequestHandler = async (req, res) => {
       const { data, error } = await query;
 
       if (error) {
-        console.error("Error fetching bookings:", error);
+        console.error("[GET /api/bookings] Supabase error:", error);
         if (!res.headersSent) {
-          res.status(500).json({ error: "Failed to get bookings" });
+          res.status(500).json({ error: "Failed to get bookings", details: error.message });
         }
         return;
       }
@@ -88,15 +89,17 @@ export const getBookings: RequestHandler = async (req, res) => {
         res.json(response);
       }
     } catch (queryError) {
-      console.error("Query execution error:", queryError);
+      const errorMsg = queryError instanceof Error ? queryError.message : String(queryError);
+      console.error("[GET /api/bookings] Query execution error:", errorMsg);
       if (!res.headersSent) {
-        res.status(500).json({ error: "Failed to query bookings" });
+        res.status(500).json({ error: "Query failed", details: errorMsg });
       }
     }
   } catch (error) {
-    console.error("Unexpected error in getBookings:", error);
+    const errorMsg = error instanceof Error ? error.message : String(error);
+    console.error("[GET /api/bookings] Unexpected error:", errorMsg);
     if (!res.headersSent) {
-      res.status(500).json({ error: "Internal server error" });
+      res.status(500).json({ error: "Internal server error", details: errorMsg });
     }
   }
 };
