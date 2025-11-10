@@ -175,12 +175,27 @@ export const deleteBooking: RequestHandler = async (req, res) => {
     const { id } = req.params;
 
     if (!id) {
-      res.status(400).json({ error: "Missing booking id" });
+      if (!res.headersSent) {
+        res.status(400).json({ error: "Missing booking id" });
+      }
+      return;
+    }
+
+    let supabase;
+    try {
+      supabase = getSupabaseClient();
+    } catch (initError) {
+      console.error("Supabase initialization error:", initError);
+      if (!res.headersSent) {
+        res.status(503).json({
+          error: "Database service unavailable. Please configure Supabase environment variables.",
+          details: initError instanceof Error ? initError.message : String(initError)
+        });
+      }
       return;
     }
 
     try {
-      const supabase = getSupabaseClient();
       const { error } = await supabase
         .from("bookings")
         .delete()
@@ -188,17 +203,25 @@ export const deleteBooking: RequestHandler = async (req, res) => {
 
       if (error) {
         console.error("Error deleting booking:", error);
-        res.status(500).json({ error: "Failed to delete booking" });
+        if (!res.headersSent) {
+          res.status(500).json({ error: "Failed to delete booking", details: error.message });
+        }
         return;
       }
 
-      res.json({ success: true });
-    } catch (supabaseError) {
-      console.error("Supabase initialization error:", supabaseError);
-      res.status(503).json({ error: "Database service unavailable. Please configure Supabase environment variables." });
+      if (!res.headersSent) {
+        res.json({ success: true });
+      }
+    } catch (queryError) {
+      console.error("Query execution error:", queryError);
+      if (!res.headersSent) {
+        res.status(500).json({ error: "Failed to delete booking" });
+      }
     }
   } catch (error) {
-    console.error("Error deleting booking:", error);
-    res.status(500).json({ error: "Failed to delete booking" });
+    console.error("Unexpected error in deleteBooking:", error);
+    if (!res.headersSent) {
+      res.status(500).json({ error: "Internal server error" });
+    }
   }
 };
