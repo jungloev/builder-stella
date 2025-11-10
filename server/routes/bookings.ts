@@ -111,6 +111,7 @@ export const deleteBooking: RequestHandler = async (req, res) => {
       return;
     }
 
+    const supabase = getSupabaseClient();
     const { error } = await supabase
       .from("bookings")
       .delete()
