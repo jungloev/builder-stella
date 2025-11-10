@@ -29,15 +29,22 @@ export function BookingDetailsDialog({
       setIsDeleting(true);
       const response = await fetch(`/api/bookings/${booking.id}`, {
         method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
 
       if (response.ok) {
         setShowDeleteConfirm(false);
         onClose();
         onDeleted();
+      } else {
+        const errorData = await response.json().catch(() => ({}));
+        console.error("Error deleting booking:", response.status, errorData);
       }
     } catch (error) {
       console.error("Error deleting booking:", error);
+      console.error("Full error details:", error instanceof Error ? error.message : String(error));
     } finally {
       setIsDeleting(false);
     }
