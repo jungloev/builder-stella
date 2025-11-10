@@ -5,8 +5,16 @@ import { createClient } from "@supabase/supabase-js";
 // Lazy initialize Supabase client - only when needed
 let supabaseClient: ReturnType<typeof createClient> | null = null;
 let initializationError: Error | null = null;
+let supabaseAvailable = true;
+
+// In-memory fallback storage
+const inMemoryBookings: Booking[] = [];
 
 function getSupabaseClient() {
+  if (!supabaseAvailable) {
+    throw new Error("Supabase is not available, using in-memory storage");
+  }
+
   if (initializationError) {
     throw initializationError;
   }
@@ -23,6 +31,7 @@ function getSupabaseClient() {
       `Missing Supabase environment variables. SUPABASE_URL: ${supabaseUrl ? "set" : "missing"}, SUPABASE_ANON_KEY: ${supabaseKey ? "set" : "missing"}`
     );
     initializationError = error;
+    supabaseAvailable = false;
     throw error;
   }
 
@@ -31,6 +40,7 @@ function getSupabaseClient() {
     return supabaseClient;
   } catch (error) {
     initializationError = error instanceof Error ? error : new Error(String(error));
+    supabaseAvailable = false;
     throw initializationError;
   }
 }
