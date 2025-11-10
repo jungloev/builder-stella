@@ -100,15 +100,17 @@ export const deleteBooking: RequestHandler = async (req, res) => {
       return;
     }
 
-    const bookings = await loadBookings();
-    const filteredBookings = bookings.filter(b => b.id !== id);
+    const { error } = await supabase
+      .from("bookings")
+      .delete()
+      .eq("id", id);
 
-    if (filteredBookings.length === bookings.length) {
-      res.status(404).json({ error: "Booking not found" });
+    if (error) {
+      console.error("Error deleting booking:", error);
+      res.status(500).json({ error: "Failed to delete booking" });
       return;
     }
 
-    await saveBookings(filteredBookings);
     res.json({ success: true });
   } catch (error) {
     console.error("Error deleting booking:", error);
