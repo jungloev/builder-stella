@@ -36,6 +36,7 @@ function mapRowToBooking(row: any): Booking {
 export const getBookings: RequestHandler = async (req, res) => {
   try {
     const date = req.query.date as string;
+    const supabase = getSupabaseClient();
 
     let query = supabase.from("bookings").select("*");
 
