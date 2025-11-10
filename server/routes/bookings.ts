@@ -5,14 +5,14 @@ import path from "path";
 
 // Get the data directory - handle both dev and Netlify deployment
 function getDataPath() {
-  // In Netlify Functions, __dirname points to the function's directory
-  // We need to look for data in a location that's been deployed
-  if (process.env.NETLIFY_FUNCTIONS_RUNTIME) {
-    // In Netlify Functions, use /tmp for temporary storage or look in the deployed site root
-    return path.join(process.cwd(), "data");
-  }
-  // In development, use the local data directory
-  return path.join(process.cwd(), "data");
+  // Try multiple possible locations for the data directory
+  const possiblePaths = [
+    path.join(process.cwd(), "data"),
+    path.join(process.cwd(), "dist", "spa", "data"),
+    "/tmp/bookathing-data", // Fallback to temp for Netlify
+  ];
+
+  return possiblePaths[0]; // Use the first path (current working directory)
 }
 
 const DATA_DIR = getDataPath();
