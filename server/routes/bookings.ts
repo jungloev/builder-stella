@@ -104,11 +104,20 @@ export const getBookings: RequestHandler = async (req, res) => {
 // POST /api/bookings
 export const createBooking: RequestHandler = async (req, res) => {
   try {
+    console.log("[POST /api/bookings] Received request body:", req.body);
     const { name, startTime, endTime, date } = req.body as CreateBookingRequest;
 
+    console.log("[POST /api/bookings] Parsed fields:", { name, startTime, endTime, date });
+
     if (!name || !startTime || !endTime || !date) {
+      console.error("[POST /api/bookings] Missing required fields:", {
+        name: name ? "present" : "missing",
+        startTime: startTime ? "present" : "missing",
+        endTime: endTime ? "present" : "missing",
+        date: date ? "present" : "missing"
+      });
       if (!res.headersSent) {
-        res.status(400).json({ error: "Missing required fields" });
+        res.status(400).json({ error: "Missing required fields", received: { name, startTime, endTime, date } });
       }
       return;
     }
