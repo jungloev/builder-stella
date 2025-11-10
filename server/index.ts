@@ -12,6 +12,16 @@ export function createServer() {
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
 
+  // Health check endpoint
+  app.get("/health", (_req, res) => {
+    res.json({
+      status: "ok",
+      supabaseUrl: process.env.SUPABASE_URL ? "set" : "not set",
+      supabaseKey: process.env.SUPABASE_ANON_KEY ? "set" : "not set",
+      env: process.env.NODE_ENV || "development",
+    });
+  });
+
   // Example API routes - both with and without /api prefix for Netlify compatibility
   app.get("/api/ping", (_req, res) => {
     const ping = process.env.PING_MESSAGE ?? "ping";
