@@ -122,22 +122,12 @@ export const createBooking: RequestHandler = async (req, res) => {
       return;
     }
 
-    let supabase;
-    try {
-      supabase = getSupabaseClient();
-    } catch (initError) {
-      console.error("Supabase initialization error:", initError);
-      if (!res.headersSent) {
-        res.status(503).json({
-          error: "Database service unavailable. Please configure Supabase environment variables.",
-          details: initError instanceof Error ? initError.message : String(initError)
-        });
-      }
-      return;
-    }
+    const bookingId = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    const booking: Booking = { id: bookingId, name, startTime, endTime, date };
 
+    // Try Supabase first
     try {
-      const bookingId = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+      const supabase = getSupabaseClient();
 
       const { data, error } = await supabase
         .from("bookings")
@@ -152,28 +142,29 @@ export const createBooking: RequestHandler = async (req, res) => {
         .single();
 
       if (error) {
-        console.error("Error creating booking:", error);
-        if (!res.headersSent) {
-          res.status(500).json({ error: "Failed to create booking", details: error.message });
-        }
-        return;
+        console.error("[POST /api/bookings] Supabase error:", error);
+        throw error;
       }
 
-      const booking = mapRowToBooking(data);
+      const response: CreateBookingResponse = { booking: mapRowToBooking(data) };
+      if (!res.headersSent) {
+        res.json(response);
+      }
+    } catch (supabaseError) {
+      // Fallback to in-memory storage
+      console.log("[POST /api/bookings] Using in-memory fallback storage");
+      inMemoryBookings.push(booking);
+
       const response: CreateBookingResponse = { booking };
       if (!res.headersSent) {
         res.json(response);
       }
-    } catch (queryError) {
-      console.error("Query execution error:", queryError);
-      if (!res.headersSent) {
-        res.status(500).json({ error: "Failed to create booking" });
-      }
     }
   } catch (error) {
-    console.error("Unexpected error in createBooking:", error);
+    const errorMsg = error instanceof Error ? error.message : String(error);
+    console.error("[POST /api/bookings] Error:", errorMsg);
     if (!res.headersSent) {
-      res.status(500).json({ error: "Internal server error" });
+      res.status(500).json({ error: "Failed to create booking", details: errorMsg });
     }
   }
 };
