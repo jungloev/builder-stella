@@ -4,8 +4,13 @@ import { createClient } from "@supabase/supabase-js";
 
 // Lazy initialize Supabase client - only when needed
 let supabaseClient: ReturnType<typeof createClient> | null = null;
+let initializationError: Error | null = null;
 
 function getSupabaseClient() {
+  if (initializationError) {
+    throw initializationError;
+  }
+
   if (supabaseClient) {
     return supabaseClient;
   }
@@ -14,11 +19,20 @@ function getSupabaseClient() {
   const supabaseKey = process.env.SUPABASE_ANON_KEY;
 
   if (!supabaseUrl || !supabaseKey) {
-    throw new Error("Missing Supabase environment variables: SUPABASE_URL and SUPABASE_ANON_KEY are required");
+    const error = new Error(
+      `Missing Supabase environment variables. SUPABASE_URL: ${supabaseUrl ? "set" : "missing"}, SUPABASE_ANON_KEY: ${supabaseKey ? "set" : "missing"}`
+    );
+    initializationError = error;
+    throw error;
   }
 
-  supabaseClient = createClient(supabaseUrl, supabaseKey);
-  return supabaseClient;
+  try {
+    supabaseClient = createClient(supabaseUrl, supabaseKey);
+    return supabaseClient;
+  } catch (error) {
+    initializationError = error instanceof Error ? error : new Error(String(error));
+    throw initializationError;
+  }
 }
 
 // Convert Supabase row to Booking
