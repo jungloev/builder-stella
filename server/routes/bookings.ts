@@ -3,7 +3,19 @@ import { Booking, GetBookingsResponse, CreateBookingRequest, CreateBookingRespon
 import fs from "fs/promises";
 import path from "path";
 
-const DATA_DIR = path.join(process.cwd(), "data");
+// Get the data directory - handle both dev and Netlify deployment
+function getDataPath() {
+  // In Netlify Functions, __dirname points to the function's directory
+  // We need to look for data in a location that's been deployed
+  if (process.env.NETLIFY_FUNCTIONS_RUNTIME) {
+    // In Netlify Functions, use /tmp for temporary storage or look in the deployed site root
+    return path.join(process.cwd(), "data");
+  }
+  // In development, use the local data directory
+  return path.join(process.cwd(), "data");
+}
+
+const DATA_DIR = getDataPath();
 const BOOKINGS_FILE = path.join(DATA_DIR, "bookings.json");
 
 // Ensure data directory exists
