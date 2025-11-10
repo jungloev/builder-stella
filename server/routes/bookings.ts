@@ -63,7 +63,7 @@ export const getBookings: RequestHandler = async (req, res) => {
   try {
     const date = req.query.date as string;
     const allBookings = await loadBookings();
-    
+
     const bookings = date
       ? allBookings.filter(b => b.date === date)
       : allBookings;
@@ -72,6 +72,8 @@ export const getBookings: RequestHandler = async (req, res) => {
     res.json(response);
   } catch (error) {
     console.error("Error getting bookings:", error);
+    console.error("Data directory:", DATA_DIR);
+    console.error("Bookings file:", BOOKINGS_FILE);
     res.status(500).json({ error: "Failed to get bookings" });
   }
 };
