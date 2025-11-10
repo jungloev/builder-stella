@@ -2,15 +2,24 @@ import { RequestHandler } from "express";
 import { Booking, GetBookingsResponse, CreateBookingRequest, CreateBookingResponse } from "@shared/api";
 import { createClient } from "@supabase/supabase-js";
 
-// Initialize Supabase client
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_ANON_KEY;
+// Lazy initialize Supabase client - only when needed
+let supabaseClient: ReturnType<typeof createClient> | null = null;
 
-if (!supabaseUrl || !supabaseKey) {
-  console.error("Missing Supabase environment variables");
+function getSupabaseClient() {
+  if (supabaseClient) {
+    return supabaseClient;
+  }
+
+  const supabaseUrl = process.env.SUPABASE_URL;
+  const supabaseKey = process.env.SUPABASE_ANON_KEY;
+
+  if (!supabaseUrl || !supabaseKey) {
+    throw new Error("Missing Supabase environment variables: SUPABASE_URL and SUPABASE_ANON_KEY are required");
+  }
+
+  supabaseClient = createClient(supabaseUrl, supabaseKey);
+  return supabaseClient;
 }
-
-const supabase = createClient(supabaseUrl || "", supabaseKey || "");
 
 // Convert Supabase row to Booking
 function mapRowToBooking(row: any): Booking {
