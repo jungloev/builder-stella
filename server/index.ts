@@ -7,16 +7,25 @@ import { getBookings, createBooking, deleteBooking } from "./routes/bookings";
 export function createServer() {
   const app = express();
 
-  // Middleware
+  // Middleware - order matters!
+  // CORS first
   app.use(cors());
+
+  // Body parsing with explicit handling
   app.use(express.json({ limit: "10mb" }));
+  app.use(express.text({ limit: "10mb" }));
   app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
-  // Request logging middleware
+  // Request logging middleware - AFTER body parsing
   app.use((req, res, next) => {
     console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
-    console.log("Content-Type:", req.get("content-type"));
-    console.log("Body:", typeof req.body, Object.keys(req.body || {}).length);
+    console.log("  Content-Type:", req.get("content-type"));
+    console.log("  Raw body type:", typeof (req as any).rawBody);
+    console.log("  Parsed body type:", typeof req.body);
+    if (req.body && typeof req.body === "object") {
+      console.log("  Body keys:", Object.keys(req.body));
+      console.log("  Body:", JSON.stringify(req.body));
+    }
     next();
   });
 
