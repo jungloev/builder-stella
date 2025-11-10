@@ -89,8 +89,6 @@ export const getBookings: RequestHandler = async (req, res) => {
     res.json(response);
   } catch (error) {
     console.error("Error getting bookings:", error);
-    console.error("Data directory:", DATA_DIR);
-    console.error("Bookings file:", BOOKINGS_FILE);
     res.status(500).json({ error: "Failed to get bookings" });
   }
 };
