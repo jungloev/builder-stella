@@ -28,6 +28,8 @@ export function BookingDetailsDialog({
   const handleConfirmDelete = async () => {
     try {
       setIsDeleting(true);
+      setDeleteError("");
+
       const response = await fetch(`/api/bookings/${booking.id}`, {
         method: "DELETE",
         headers: {
@@ -40,12 +42,15 @@ export function BookingDetailsDialog({
         onClose();
         onDeleted();
       } else {
-        const errorData = await response.json().catch(() => ({}));
+        const errorData = await response.json().catch(() => ({ error: "Unknown error" }));
+        setDeleteError(errorData.error || `Failed to delete (${response.status})`);
         console.error("Error deleting booking:", response.status, errorData);
       }
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      setDeleteError(errorMessage || "Failed to delete booking. Please try again.");
       console.error("Error deleting booking:", error);
-      console.error("Full error details:", error instanceof Error ? error.message : String(error));
+      console.error("Full error details:", errorMessage);
     } finally {
       setIsDeleting(false);
     }
