@@ -1,5 +1,3 @@
-import { createClient } from "@supabase/supabase-js";
-
 interface Booking {
   id: string;
   name: string;
@@ -8,38 +6,19 @@ interface Booking {
   date: string;
 }
 
-let supabaseClient: ReturnType<typeof createClient> | null = null;
-let supabaseInitError: Error | null = null;
 const inMemoryBookings: Booking[] = [];
 
-function getSupabaseClient() {
-  if (supabaseClient) {
-    return supabaseClient;
-  }
-
-  if (supabaseInitError) {
-    throw supabaseInitError;
-  }
-
+function getSupabaseConfig() {
   const supabaseUrl = process.env.SUPABASE_URL;
   const supabaseKey = process.env.SUPABASE_ANON_KEY;
 
   if (!supabaseUrl || !supabaseKey) {
-    const error = new Error(
-      `Missing Supabase environment variables. URL: ${supabaseUrl ? "set" : "missing"}, KEY: ${supabaseKey ? "set" : "missing"}`,
+    throw new Error(
+      `Missing Supabase environment variables. URL: ${supabaseUrl ? "set" : "missing"}, KEY: ${supabaseKey ? "set" : "missing"}`
     );
-    supabaseInitError = error;
-    throw error;
   }
 
-  try {
-    supabaseClient = createClient(supabaseUrl, supabaseKey);
-    return supabaseClient;
-  } catch (error) {
-    supabaseInitError =
-      error instanceof Error ? error : new Error(String(error));
-    throw supabaseInitError;
-  }
+  return { supabaseUrl, supabaseKey };
 }
 
 function mapRowToBooking(row: any): Booking {
@@ -52,12 +31,84 @@ function mapRowToBooking(row: any): Booking {
   };
 }
 
+async function getBookingsFromSupabase(date?: string): Promise<Booking[]> {
+  const { supabaseUrl, supabaseKey } = getSupabaseConfig();
+
+  let url = `${supabaseUrl}/rest/v1/bookings?select=*`;
+  if (date) {
+    url += `&date=eq.${encodeURIComponent(date)}`;
+  }
+
+  const response = await fetch(url, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${supabaseKey}`,
+      apikey: supabaseKey,
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Supabase GET error: ${response.status} ${errorText}`);
+  }
+
+  const data = await response.json();
+  return (data || []).map(mapRowToBooking);
+}
+
+async function createBookingInSupabase(booking: Booking): Promise<Booking> {
+  const { supabaseUrl, supabaseKey } = getSupabaseConfig();
+
+  const response = await fetch(`${supabaseUrl}/rest/v1/bookings`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${supabaseKey}`,
+      apikey: supabaseKey,
+      "Content-Type": "application/json",
+      Prefer: "return=representation",
+    },
+    body: JSON.stringify({
+      id: booking.id,
+      name: booking.name,
+      start_time: booking.startTime,
+      end_time: booking.endTime,
+      date: booking.date,
+    }),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Supabase POST error: ${response.status} ${errorText}`);
+  }
+
+  const data = await response.json();
+  return mapRowToBooking(data[0] || data);
+}
+
+async function deleteBookingFromSupabase(id: string): Promise<void> {
+  const { supabaseUrl, supabaseKey } = getSupabaseConfig();
+
+  const response = await fetch(`${supabaseUrl}/rest/v1/bookings?id=eq.${encodeURIComponent(id)}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${supabaseKey}`,
+      apikey: supabaseKey,
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Supabase DELETE error: ${response.status} ${errorText}`);
+  }
+}
+
 export const handler = async (event: any) => {
   try {
     const method = event.httpMethod;
     const path = event.path;
 
-    // Parse body
     let body: any = {};
     if (event.body) {
       try {
@@ -73,7 +124,6 @@ export const handler = async (event: any) => {
       bodyLength: JSON.stringify(body).length,
     });
 
-    // GET /api/bookings
     if (
       method === "GET" &&
       (path === "/api/bookings" || path === "/bookings")
@@ -82,21 +132,12 @@ export const handler = async (event: any) => {
       let bookings: Booking[] = [];
 
       try {
-        const supabase = getSupabaseClient();
-        let query = supabase.from("bookings").select("*");
-        if (date) {
-          query = query.eq("date", date);
-        }
-        const { data, error } = await query;
-        if (error) {
-          console.error("[GET] Supabase error:", error);
-          throw error;
-        }
-        bookings = (data || []).map(mapRowToBooking);
+        bookings = await getBookingsFromSupabase(date);
         console.log(
-          `[GET] Retrieved ${bookings.length} bookings from Supabase`,
+          `[GET] Retrieved ${bookings.length} bookings from Supabase`
         );
       } catch (supabaseError) {
+        console.error("[GET] Supabase error:", supabaseError);
         console.log("[GET] Falling back to in-memory storage");
         bookings = date
           ? inMemoryBookings.filter((b) => b.date === date)
@@ -110,7 +151,6 @@ export const handler = async (event: any) => {
       };
     }
 
-    // POST /api/bookings
     if (
       method === "POST" &&
       (path === "/api/bookings" || path === "/bookings")
@@ -141,31 +181,15 @@ export const handler = async (event: any) => {
       };
 
       try {
-        const supabase = getSupabaseClient();
-        const { data, error } = await supabase
-          .from("bookings")
-          .insert({
-            id: bookingId,
-            name,
-            start_time: startTime,
-            end_time: endTime,
-            date,
-          })
-          .select()
-          .single();
-
-        if (error) {
-          console.error("[POST] Supabase error:", error);
-          throw error;
-        }
-
+        const result = await createBookingInSupabase(booking);
         console.log("[POST] Created booking in Supabase:", bookingId);
         return {
           statusCode: 200,
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ booking: mapRowToBooking(data) }),
+          body: JSON.stringify({ booking: result }),
         };
       } catch (supabaseError) {
+        console.error("[POST] Supabase error:", supabaseError);
         console.log("[POST] Falling back to in-memory storage");
         inMemoryBookings.push(booking);
         console.log("[POST] Created booking in memory:", bookingId);
@@ -177,7 +201,6 @@ export const handler = async (event: any) => {
       }
     }
 
-    // DELETE /api/bookings/:id
     if (
       method === "DELETE" &&
       (path?.match(/\/api\/bookings\//) || path?.match(/\/bookings\//))
@@ -186,14 +209,7 @@ export const handler = async (event: any) => {
       console.log(`[DELETE] Attempting to delete ${id}...`);
 
       try {
-        const supabase = getSupabaseClient();
-        const { error } = await supabase.from("bookings").delete().eq("id", id);
-
-        if (error) {
-          console.error("[DELETE] Supabase error:", error);
-          throw error;
-        }
-
+        await deleteBookingFromSupabase(id!);
         console.log(`[DELETE] Deleted from Supabase: ${id}`);
         return {
           statusCode: 200,
@@ -201,6 +217,7 @@ export const handler = async (event: any) => {
           body: JSON.stringify({ success: true }),
         };
       } catch (supabaseError) {
+        console.error("[DELETE] Supabase error:", supabaseError);
         console.log("[DELETE] Falling back to in-memory storage");
         const index = inMemoryBookings.findIndex((b) => b.id === id);
 
@@ -222,7 +239,6 @@ export const handler = async (event: any) => {
       }
     }
 
-    // GET /api/health
     if (method === "GET" && (path === "/api/health" || path === "/health")) {
       return {
         statusCode: 200,
@@ -236,7 +252,6 @@ export const handler = async (event: any) => {
       };
     }
 
-    // 404
     return {
       statusCode: 404,
       headers: { "Content-Type": "application/json" },
