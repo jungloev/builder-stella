@@ -26,7 +26,7 @@ function getSupabaseClient() {
 
   if (!supabaseUrl || !supabaseKey) {
     const error = new Error(
-      `Missing Supabase environment variables. URL: ${supabaseUrl ? "set" : "missing"}, KEY: ${supabaseKey ? "set" : "missing"}`
+      `Missing Supabase environment variables. URL: ${supabaseUrl ? "set" : "missing"}, KEY: ${supabaseKey ? "set" : "missing"}`,
     );
     supabaseInitError = error;
     throw error;
@@ -36,7 +36,8 @@ function getSupabaseClient() {
     supabaseClient = createClient(supabaseUrl, supabaseKey);
     return supabaseClient;
   } catch (error) {
-    supabaseInitError = error instanceof Error ? error : new Error(String(error));
+    supabaseInitError =
+      error instanceof Error ? error : new Error(String(error));
     throw supabaseInitError;
   }
 }
@@ -60,16 +61,23 @@ export const handler = async (event: any) => {
     let body: any = {};
     if (event.body) {
       try {
-        body = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
+        body =
+          typeof event.body === "string" ? JSON.parse(event.body) : event.body;
       } catch (e) {
         console.error("Failed to parse body:", event.body);
       }
     }
 
-    console.log(`[${method}] ${path}`, { bodyKeys: Object.keys(body), bodyLength: JSON.stringify(body).length });
+    console.log(`[${method}] ${path}`, {
+      bodyKeys: Object.keys(body),
+      bodyLength: JSON.stringify(body).length,
+    });
 
     // GET /api/bookings
-    if (method === "GET" && (path === "/api/bookings" || path === "/bookings")) {
+    if (
+      method === "GET" &&
+      (path === "/api/bookings" || path === "/bookings")
+    ) {
       const date = event.queryStringParameters?.date;
       let bookings: Booking[] = [];
 
@@ -85,11 +93,13 @@ export const handler = async (event: any) => {
           throw error;
         }
         bookings = (data || []).map(mapRowToBooking);
-        console.log(`[GET] Retrieved ${bookings.length} bookings from Supabase`);
+        console.log(
+          `[GET] Retrieved ${bookings.length} bookings from Supabase`,
+        );
       } catch (supabaseError) {
         console.log("[GET] Falling back to in-memory storage");
         bookings = date
-          ? inMemoryBookings.filter(b => b.date === date)
+          ? inMemoryBookings.filter((b) => b.date === date)
           : inMemoryBookings;
       }
 
@@ -101,7 +111,10 @@ export const handler = async (event: any) => {
     }
 
     // POST /api/bookings
-    if (method === "POST" && (path === "/api/bookings" || path === "/bookings")) {
+    if (
+      method === "POST" &&
+      (path === "/api/bookings" || path === "/bookings")
+    ) {
       const { name, startTime, endTime, date } = body;
 
       console.log("[POST] Received:", { name, startTime, endTime, date });
@@ -113,13 +126,19 @@ export const handler = async (event: any) => {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             error: "Missing required fields",
-            received: { name, startTime, endTime, date }
+            received: { name, startTime, endTime, date },
           }),
         };
       }
 
       const bookingId = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-      const booking: Booking = { id: bookingId, name, startTime, endTime, date };
+      const booking: Booking = {
+        id: bookingId,
+        name,
+        startTime,
+        endTime,
+        date,
+      };
 
       try {
         const supabase = getSupabaseClient();
@@ -159,16 +178,16 @@ export const handler = async (event: any) => {
     }
 
     // DELETE /api/bookings/:id
-    if (method === "DELETE" && (path?.match(/\/api\/bookings\//) || path?.match(/\/bookings\//))) {
+    if (
+      method === "DELETE" &&
+      (path?.match(/\/api\/bookings\//) || path?.match(/\/bookings\//))
+    ) {
       const id = path.split("/").pop();
       console.log(`[DELETE] Attempting to delete ${id}...`);
 
       try {
         const supabase = getSupabaseClient();
-        const { error } = await supabase
-          .from("bookings")
-          .delete()
-          .eq("id", id);
+        const { error } = await supabase.from("bookings").delete().eq("id", id);
 
         if (error) {
           console.error("[DELETE] Supabase error:", error);
@@ -183,7 +202,7 @@ export const handler = async (event: any) => {
         };
       } catch (supabaseError) {
         console.log("[DELETE] Falling back to in-memory storage");
-        const index = inMemoryBookings.findIndex(b => b.id === id);
+        const index = inMemoryBookings.findIndex((b) => b.id === id);
 
         if (index === -1) {
           return {
@@ -230,7 +249,7 @@ export const handler = async (event: any) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         error: "Internal server error",
-        details: error instanceof Error ? error.message : String(error)
+        details: error instanceof Error ? error.message : String(error),
       }),
     };
   }
