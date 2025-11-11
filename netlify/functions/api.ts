@@ -1,4 +1,4 @@
-// Raw Netlify function handler - avoid serverless-http complexity
+import { createClient } from "@supabase/supabase-js";
 
 interface Booking {
   id: string;
@@ -8,13 +8,54 @@ interface Booking {
   date: string;
 }
 
-const bookings: Booking[] = [];
+let supabaseClient: ReturnType<typeof createClient> | null = null;
+let supabaseInitError: Error | null = null;
+const inMemoryBookings: Booking[] = [];
+
+function getSupabaseClient() {
+  if (supabaseClient) {
+    return supabaseClient;
+  }
+
+  if (supabaseInitError) {
+    throw supabaseInitError;
+  }
+
+  const supabaseUrl = process.env.SUPABASE_URL;
+  const supabaseKey = process.env.SUPABASE_ANON_KEY;
+
+  if (!supabaseUrl || !supabaseKey) {
+    const error = new Error(
+      `Missing Supabase environment variables. URL: ${supabaseUrl ? "set" : "missing"}, KEY: ${supabaseKey ? "set" : "missing"}`
+    );
+    supabaseInitError = error;
+    throw error;
+  }
+
+  try {
+    supabaseClient = createClient(supabaseUrl, supabaseKey);
+    return supabaseClient;
+  } catch (error) {
+    supabaseInitError = error instanceof Error ? error : new Error(String(error));
+    throw supabaseInitError;
+  }
+}
+
+function mapRowToBooking(row: any): Booking {
+  return {
+    id: row.id,
+    name: row.name,
+    startTime: row.start_time,
+    endTime: row.end_time,
+    date: row.date,
+  };
+}
 
 export const handler = async (event: any) => {
   try {
     const method = event.httpMethod;
     const path = event.path;
-    
+
     // Parse body
     let body: any = {};
     if (event.body) {
@@ -30,16 +71,32 @@ export const handler = async (event: any) => {
     // GET /api/bookings
     if (method === "GET" && (path === "/api/bookings" || path === "/bookings")) {
       const date = event.queryStringParameters?.date;
-      const filtered = date
-        ? bookings.filter(b => b.date === date)
-        : bookings;
-      
-      console.log(`[GET] Found ${filtered.length} bookings`);
-      
+      let bookings: Booking[] = [];
+
+      try {
+        const supabase = getSupabaseClient();
+        let query = supabase.from("bookings").select("*");
+        if (date) {
+          query = query.eq("date", date);
+        }
+        const { data, error } = await query;
+        if (error) {
+          console.error("[GET] Supabase error:", error);
+          throw error;
+        }
+        bookings = (data || []).map(mapRowToBooking);
+        console.log(`[GET] Retrieved ${bookings.length} bookings from Supabase`);
+      } catch (supabaseError) {
+        console.log("[GET] Falling back to in-memory storage");
+        bookings = date
+          ? inMemoryBookings.filter(b => b.date === date)
+          : inMemoryBookings;
+      }
+
       return {
         statusCode: 200,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ bookings: filtered }),
+        body: JSON.stringify({ bookings }),
       };
     }
 
@@ -61,48 +118,89 @@ export const handler = async (event: any) => {
         };
       }
 
-      const booking: Booking = {
-        id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-        name,
-        startTime,
-        endTime,
-        date,
-      };
+      const bookingId = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+      const booking: Booking = { id: bookingId, name, startTime, endTime, date };
 
-      bookings.push(booking);
-      console.log("[POST] Created booking:", booking.id);
-      console.log("[POST] Total bookings:", bookings.length);
+      try {
+        const supabase = getSupabaseClient();
+        const { data, error } = await supabase
+          .from("bookings")
+          .insert({
+            id: bookingId,
+            name,
+            start_time: startTime,
+            end_time: endTime,
+            date,
+          })
+          .select()
+          .single();
 
-      return {
-        statusCode: 200,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ booking }),
-      };
+        if (error) {
+          console.error("[POST] Supabase error:", error);
+          throw error;
+        }
+
+        console.log("[POST] Created booking in Supabase:", bookingId);
+        return {
+          statusCode: 200,
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ booking: mapRowToBooking(data) }),
+        };
+      } catch (supabaseError) {
+        console.log("[POST] Falling back to in-memory storage");
+        inMemoryBookings.push(booking);
+        console.log("[POST] Created booking in memory:", bookingId);
+        return {
+          statusCode: 200,
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ booking }),
+        };
+      }
     }
 
     // DELETE /api/bookings/:id
     if (method === "DELETE" && (path?.match(/\/api\/bookings\//) || path?.match(/\/bookings\//))) {
       const id = path.split("/").pop();
-      const index = bookings.findIndex(b => b.id === id);
+      console.log(`[DELETE] Attempting to delete ${id}...`);
 
-      console.log(`[DELETE] Looking for ${id}...`);
+      try {
+        const supabase = getSupabaseClient();
+        const { error } = await supabase
+          .from("bookings")
+          .delete()
+          .eq("id", id);
 
-      if (index === -1) {
+        if (error) {
+          console.error("[DELETE] Supabase error:", error);
+          throw error;
+        }
+
+        console.log(`[DELETE] Deleted from Supabase: ${id}`);
         return {
-          statusCode: 404,
+          statusCode: 200,
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ error: "Booking not found" }),
+          body: JSON.stringify({ success: true }),
+        };
+      } catch (supabaseError) {
+        console.log("[DELETE] Falling back to in-memory storage");
+        const index = inMemoryBookings.findIndex(b => b.id === id);
+
+        if (index === -1) {
+          return {
+            statusCode: 404,
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ error: "Booking not found" }),
+          };
+        }
+
+        inMemoryBookings.splice(index, 1);
+        console.log(`[DELETE] Deleted from memory: ${id}`);
+        return {
+          statusCode: 200,
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ success: true }),
         };
       }
-
-      bookings.splice(index, 1);
-      console.log(`[DELETE] Deleted. Remaining: ${bookings.length}`);
-
-      return {
-        statusCode: 200,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ success: true }),
-      };
     }
 
     // GET /api/health
@@ -114,7 +212,7 @@ export const handler = async (event: any) => {
           status: "ok",
           supabaseUrl: process.env.SUPABASE_URL ? "set" : "not set",
           supabaseKey: process.env.SUPABASE_ANON_KEY ? "set" : "not set",
-          bookingsInMemory: bookings.length,
+          env: process.env.NODE_ENV || "development",
         }),
       };
     }
