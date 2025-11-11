@@ -14,7 +14,7 @@ function getSupabaseConfig() {
 
   if (!supabaseUrl || !supabaseKey) {
     throw new Error(
-      `Missing Supabase environment variables. URL: ${supabaseUrl ? "set" : "missing"}, KEY: ${supabaseKey ? "set" : "missing"}`
+      `Missing Supabase environment variables. URL: ${supabaseUrl ? "set" : "missing"}, KEY: ${supabaseKey ? "set" : "missing"}`,
     );
   }
 
@@ -89,14 +89,17 @@ async function createBookingInSupabase(booking: Booking): Promise<Booking> {
 async function deleteBookingFromSupabase(id: string): Promise<void> {
   const { supabaseUrl, supabaseKey } = getSupabaseConfig();
 
-  const response = await fetch(`${supabaseUrl}/rest/v1/bookings?id=eq.${encodeURIComponent(id)}`, {
-    method: "DELETE",
-    headers: {
-      Authorization: `Bearer ${supabaseKey}`,
-      apikey: supabaseKey,
-      "Content-Type": "application/json",
+  const response = await fetch(
+    `${supabaseUrl}/rest/v1/bookings?id=eq.${encodeURIComponent(id)}`,
+    {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${supabaseKey}`,
+        apikey: supabaseKey,
+        "Content-Type": "application/json",
+      },
     },
-  });
+  );
 
   if (!response.ok) {
     const errorText = await response.text();
@@ -134,7 +137,7 @@ export const handler = async (event: any) => {
       try {
         bookings = await getBookingsFromSupabase(date);
         console.log(
-          `[GET] Retrieved ${bookings.length} bookings from Supabase`
+          `[GET] Retrieved ${bookings.length} bookings from Supabase`,
         );
       } catch (supabaseError) {
         console.error("[GET] Supabase error:", supabaseError);
