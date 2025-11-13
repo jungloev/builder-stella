@@ -170,8 +170,9 @@ export const handler = async (event: any) => {
       (path === "/api/bookings" || path === "/bookings")
     ) {
       const { name, startTime, endTime, date } = body;
+      const calendar = event.queryStringParameters?.calendar;
 
-      console.log("[POST] Received:", { name, startTime, endTime, date });
+      console.log("[POST] Received:", { name, startTime, endTime, date, calendar });
 
       if (!name || !startTime || !endTime || !date) {
         console.error("[POST] Missing fields!");
@@ -195,8 +196,8 @@ export const handler = async (event: any) => {
       };
 
       try {
-        const result = await createBookingInSupabase(booking);
-        console.log("[POST] Created booking in Supabase:", bookingId);
+        const result = await createBookingInSupabase(booking, calendar);
+        console.log("[POST] Created booking in Supabase:", bookingId, "(calendar:", calendar || 'default', ")");
         return {
           statusCode: 200,
           headers: { "Content-Type": "application/json" },
