@@ -33,7 +33,8 @@ export function BookingDetailsDialog({
       setIsDeleting(true);
       setDeleteError("");
 
-      const response = await fetch(`/api/bookings/${booking.id}`, {
+      const calendarParam = calendarId ? `?calendar=${encodeURIComponent(calendarId)}` : '';
+      const response = await fetch(`/api/bookings/${booking.id}${calendarParam}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
