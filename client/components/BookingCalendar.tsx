@@ -295,6 +295,7 @@ export function BookingCalendar({ initialDate = new Date(), calendarId }: Bookin
         currentDate={dateString}
         onBookingCreated={handleBookingCreated}
         existingBookings={bookings}
+        calendarId={calendarId}
       />
 
       {/* Booking Details Dialog */}
@@ -303,6 +304,7 @@ export function BookingCalendar({ initialDate = new Date(), calendarId }: Bookin
         isOpen={isDetailsDialogOpen}
         onClose={() => setIsDetailsDialogOpen(false)}
         onDeleted={handleBookingDeleted}
+        calendarId={calendarId}
       />
     </div>
   );
