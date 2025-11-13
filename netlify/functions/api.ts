@@ -65,10 +65,11 @@ async function getBookingsFromSupabase(date?: string, calendar?: string): Promis
   return (data || []).map(mapRowToBooking);
 }
 
-async function createBookingInSupabase(booking: Booking): Promise<Booking> {
+async function createBookingInSupabase(booking: Booking, calendar?: string): Promise<Booking> {
   const { supabaseUrl, supabaseKey } = getSupabaseConfig();
+  const tableName = getTableName(calendar);
 
-  const response = await fetch(`${supabaseUrl}/rest/v1/bookings`, {
+  const response = await fetch(`${supabaseUrl}/rest/v1/${tableName}`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${supabaseKey}`,
