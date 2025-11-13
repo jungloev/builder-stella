@@ -36,7 +36,9 @@ export default function HomePage() {
 
         {/* Title Section */}
         <div className="space-y-2">
-          <h1 className="text-4xl font-bold text-slate-900">BookAThing</h1>
+          <h1 className="text-4xl font-bold text-slate-900">
+            <p>Book a thing</p>
+          </h1>
           <p className="text-slate-600">Select a calendar to view bookings</p>
         </div>
 
