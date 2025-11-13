@@ -7,6 +7,7 @@ interface BookingDetailsDialogProps {
   isOpen: boolean;
   onClose: () => void;
   onDeleted: () => void;
+  calendarId?: string;
 }
 
 export function BookingDetailsDialog({
@@ -14,6 +15,7 @@ export function BookingDetailsDialog({
   isOpen,
   onClose,
   onDeleted,
+  calendarId,
 }: BookingDetailsDialogProps) {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
