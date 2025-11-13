@@ -26,19 +26,36 @@ interface BookingCalendarProps {
 }
 
 const TIME_SLOTS = [
-  "07:00", "08:00", "09:00", "10:00", "11:00", "12:00",
-  "13:00", "14:00", "15:00", "16:00", "17:00", "18:00"
+  "07:00",
+  "08:00",
+  "09:00",
+  "10:00",
+  "11:00",
+  "12:00",
+  "13:00",
+  "14:00",
+  "15:00",
+  "16:00",
+  "17:00",
+  "18:00",
 ];
 
-export function BookingCalendar({ initialDate = new Date(), calendarId }: BookingCalendarProps) {
+export function BookingCalendar({
+  initialDate = new Date(),
+  calendarId,
+}: BookingCalendarProps) {
   const [currentDate, setCurrentDate] = useState(initialDate);
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
-  const [fadingOutBookingIds, setFadingOutBookingIds] = useState<Set<string>>(new Set());
-  const [newlyCreatedBookingIds, setNewlyCreatedBookingIds] = useState<Set<string>>(new Set());
+  const [fadingOutBookingIds, setFadingOutBookingIds] = useState<Set<string>>(
+    new Set(),
+  );
+  const [newlyCreatedBookingIds, setNewlyCreatedBookingIds] = useState<
+    Set<string>
+  >(new Set());
   const [bookingCache] = useState(new Map<string, Booking[]>()); // Cache for bookings by date
 
   const dateString = format(currentDate, "yyyy-MM-dd");
@@ -58,23 +75,29 @@ export function BookingCalendar({ initialDate = new Date(), calendarId }: Bookin
       setBookings(cached);
       setIsLoading(false);
       // Refresh in background
-      const calendarParam = calendarId ? `&calendar=${encodeURIComponent(calendarId)}` : '';
+      const calendarParam = calendarId
+        ? `&calendar=${encodeURIComponent(calendarId)}`
+        : "";
       fetch(`/api/bookings?date=${targetDate}${calendarParam}`)
-        .then(res => res.json())
-        .then(data => {
+        .then((res) => res.json())
+        .then((data) => {
           bookingCache.set(targetDate, data.bookings || []);
           if (targetDate === dateString) {
             setBookings(data.bookings || []);
           }
         })
-        .catch(err => console.error("Error refreshing bookings:", err));
+        .catch((err) => console.error("Error refreshing bookings:", err));
       return;
     }
 
     try {
       setIsLoading(true);
-      const calendarParam = calendarId ? `&calendar=${encodeURIComponent(calendarId)}` : '';
-      const response = await fetch(`/api/bookings?date=${targetDate}${calendarParam}`);
+      const calendarParam = calendarId
+        ? `&calendar=${encodeURIComponent(calendarId)}`
+        : "";
+      const response = await fetch(
+        `/api/bookings?date=${targetDate}${calendarParam}`,
+      );
       const data = await response.json();
       const bookingList = data.bookings || [];
 
@@ -91,11 +114,11 @@ export function BookingCalendar({ initialDate = new Date(), calendarId }: Bookin
           bookingList
             .filter((b: Booking) => {
               // Extract timestamp from ID (format: "timestamp-randomstring")
-              const idTimestamp = parseInt(b.id.split('-')[0], 10);
+              const idTimestamp = parseInt(b.id.split("-")[0], 10);
               // Consider bookings created in the last 5 seconds as "newly created"
               return now - idTimestamp < 5000;
             })
-            .map((b: Booking) => b.id)
+            .map((b: Booking) => b.id),
         );
         setNewlyCreatedBookingIds(newly);
       } else {
@@ -116,28 +139,32 @@ export function BookingCalendar({ initialDate = new Date(), calendarId }: Bookin
 
     // Preload next and previous dates if not cached
     if (!bookingCache.has(nextDate)) {
-      const calendarParam = calendarId ? `&calendar=${encodeURIComponent(calendarId)}` : '';
+      const calendarParam = calendarId
+        ? `&calendar=${encodeURIComponent(calendarId)}`
+        : "";
       fetch(`/api/bookings?date=${nextDate}${calendarParam}`)
-        .then(res => res.json())
-        .then(data => bookingCache.set(nextDate, data.bookings || []))
-        .catch(err => console.error("Error preloading next date:", err));
+        .then((res) => res.json())
+        .then((data) => bookingCache.set(nextDate, data.bookings || []))
+        .catch((err) => console.error("Error preloading next date:", err));
     }
 
     if (!bookingCache.has(prevDate)) {
-      const calendarParam = calendarId ? `&calendar=${encodeURIComponent(calendarId)}` : '';
+      const calendarParam = calendarId
+        ? `&calendar=${encodeURIComponent(calendarId)}`
+        : "";
       fetch(`/api/bookings?date=${prevDate}${calendarParam}`)
-        .then(res => res.json())
-        .then(data => bookingCache.set(prevDate, data.bookings || []))
-        .catch(err => console.error("Error preloading prev date:", err));
+        .then((res) => res.json())
+        .then((data) => bookingCache.set(prevDate, data.bookings || []))
+        .catch((err) => console.error("Error preloading prev date:", err));
     }
   };
 
   const handlePreviousDay = () => {
-    setCurrentDate(prev => subDays(prev, 1));
+    setCurrentDate((prev) => subDays(prev, 1));
   };
 
   const handleNextDay = () => {
-    setCurrentDate(prev => addDays(prev, 1));
+    setCurrentDate((prev) => addDays(prev, 1));
   };
 
   const handleDateClick = () => {
@@ -160,13 +187,13 @@ export function BookingCalendar({ initialDate = new Date(), calendarId }: Bookin
   const handleBookingDeleted = () => {
     if (selectedBooking) {
       // Add to fading set
-      setFadingOutBookingIds(prev => new Set(prev).add(selectedBooking.id));
+      setFadingOutBookingIds((prev) => new Set(prev).add(selectedBooking.id));
 
       // Remove after fade animation completes
       setTimeout(() => {
         setSelectedBooking(null);
         fetchBookings(false);
-        setFadingOutBookingIds(prev => {
+        setFadingOutBookingIds((prev) => {
           const newSet = new Set(prev);
           newSet.delete(selectedBooking.id);
           return newSet;
@@ -180,16 +207,16 @@ export function BookingCalendar({ initialDate = new Date(), calendarId }: Bookin
   const PIXELS_PER_HOUR = 58;
   const TOP_OFFSET = 8; // 8px offset adjustment
   const bookingElements = useMemo(() => {
-    return bookings.map(booking => {
-      const [startHour, startMin] = booking.startTime.split(':').map(Number);
-      const [endHour, endMin] = booking.endTime.split(':').map(Number);
+    return bookings.map((booking) => {
+      const [startHour, startMin] = booking.startTime.split(":").map(Number);
+      const [endHour, endMin] = booking.endTime.split(":").map(Number);
 
       const startMinutes = startHour * 60 + startMin;
       const endMinutes = endHour * 60 + endMin;
       const duration = endMinutes - startMinutes;
 
       // Position from 07:00 in minutes
-      const offsetMinutes = startMinutes - (7 * 60);
+      const offsetMinutes = startMinutes - 7 * 60;
 
       // Convert minutes to pixels
       const topPixels = (offsetMinutes / 60) * PIXELS_PER_HOUR + TOP_OFFSET;
@@ -198,7 +225,7 @@ export function BookingCalendar({ initialDate = new Date(), calendarId }: Bookin
       return {
         ...booking,
         topPixels,
-        heightPixels
+        heightPixels,
       };
     });
   }, [bookings]);
@@ -248,18 +275,21 @@ export function BookingCalendar({ initialDate = new Date(), calendarId }: Bookin
 
         {/* Bookings overlay */}
         {!isLoading && bookingElements.length > 0 && (
-          <div className="absolute top-0 left-[10px] right-[10px] pointer-events-none" style={{ height: `${(TIME_SLOTS.length - 1) * 42}px`, zIndex: 5 }}>
-            {bookingElements.map(booking => (
+          <div
+            className="absolute top-0 left-[10px] right-[10px] pointer-events-none"
+            style={{ height: `${(TIME_SLOTS.length - 1) * 42}px`, zIndex: 5 }}
+          >
+            {bookingElements.map((booking) => (
               <div
                 key={booking.id}
-                className={`absolute left-0 right-0 pointer-events-auto ${newlyCreatedBookingIds.has(booking.id) ? 'booking-item' : ''}`}
+                className={`absolute left-0 right-0 pointer-events-auto ${newlyCreatedBookingIds.has(booking.id) ? "booking-item" : ""}`}
                 style={{
                   top: `${booking.topPixels}px`,
                   height: `${booking.heightPixels}px`,
-                  marginLeft: '36px',
-                  marginRight: '10px',
+                  marginLeft: "36px",
+                  marginRight: "10px",
                   opacity: fadingOutBookingIds.has(booking.id) ? 0 : 1,
-                  transition: 'opacity 200ms linear',
+                  transition: "opacity 200ms linear",
                 }}
               >
                 <button

@@ -32,7 +32,10 @@ function mapRowToBooking(row: any): Booking {
   };
 }
 
-async function getBookingsFromSupabase(date?: string, calendar?: string): Promise<Booking[]> {
+async function getBookingsFromSupabase(
+  date?: string,
+  calendar?: string,
+): Promise<Booking[]> {
   const { supabaseUrl, supabaseKey } = getSupabaseConfig();
 
   let url = `${supabaseUrl}/rest/v1/bookings?select=*`;
@@ -62,7 +65,10 @@ async function getBookingsFromSupabase(date?: string, calendar?: string): Promis
   return (data || []).map(mapRowToBooking);
 }
 
-async function createBookingInSupabase(booking: Booking, calendar?: string): Promise<Booking> {
+async function createBookingInSupabase(
+  booking: Booking,
+  calendar?: string,
+): Promise<Booking> {
   const { supabaseUrl, supabaseKey } = getSupabaseConfig();
 
   const response = await fetch(`${supabaseUrl}/rest/v1/bookings`, {
@@ -79,7 +85,7 @@ async function createBookingInSupabase(booking: Booking, calendar?: string): Pro
       start_time: booking.startTime,
       end_time: booking.endTime,
       date: booking.date,
-      calendar_id: calendar || 'fastlandbox',
+      calendar_id: calendar || "fastlandbox",
     }),
   });
 
@@ -92,7 +98,10 @@ async function createBookingInSupabase(booking: Booking, calendar?: string): Pro
   return mapRowToBooking(data[0] || data);
 }
 
-async function deleteBookingFromSupabase(id: string, calendar?: string): Promise<void> {
+async function deleteBookingFromSupabase(
+  id: string,
+  calendar?: string,
+): Promise<void> {
   const { supabaseUrl, supabaseKey } = getSupabaseConfig();
 
   let url = `${supabaseUrl}/rest/v1/bookings?id=eq.${encodeURIComponent(id)}`;
@@ -146,7 +155,7 @@ export const handler = async (event: any) => {
       try {
         bookings = await getBookingsFromSupabase(date, calendar);
         console.log(
-          `[GET] Retrieved ${bookings.length} bookings from Supabase (calendar: ${calendar || 'default'})`,
+          `[GET] Retrieved ${bookings.length} bookings from Supabase (calendar: ${calendar || "default"})`,
         );
       } catch (supabaseError) {
         console.error("[GET] Supabase error:", supabaseError);
@@ -170,7 +179,13 @@ export const handler = async (event: any) => {
       const { name, startTime, endTime, date } = body;
       const calendar = event.queryStringParameters?.calendar;
 
-      console.log("[POST] Received:", { name, startTime, endTime, date, calendar });
+      console.log("[POST] Received:", {
+        name,
+        startTime,
+        endTime,
+        date,
+        calendar,
+      });
 
       if (!name || !startTime || !endTime || !date) {
         console.error("[POST] Missing fields!");
@@ -195,7 +210,13 @@ export const handler = async (event: any) => {
 
       try {
         const result = await createBookingInSupabase(booking, calendar);
-        console.log("[POST] Created booking in Supabase:", bookingId, "(calendar:", calendar || 'default', ")");
+        console.log(
+          "[POST] Created booking in Supabase:",
+          bookingId,
+          "(calendar:",
+          calendar || "default",
+          ")",
+        );
         return {
           statusCode: 200,
           headers: { "Content-Type": "application/json" },
@@ -220,7 +241,9 @@ export const handler = async (event: any) => {
     ) {
       const id = path.split("/").pop();
       const calendar = event.queryStringParameters?.calendar;
-      console.log(`[DELETE] Attempting to delete ${id}... (calendar: ${calendar || 'default'})`);
+      console.log(
+        `[DELETE] Attempting to delete ${id}... (calendar: ${calendar || "default"})`,
+      );
 
       try {
         await deleteBookingFromSupabase(id!, calendar);

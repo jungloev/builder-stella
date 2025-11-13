@@ -21,8 +21,12 @@ export default function CalendarPage() {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 p-4">
         <div className="text-center space-y-4">
-          <h1 className="text-3xl font-bold text-slate-900">Calendar Not Found</h1>
-          <p className="text-slate-600">The calendar you're looking for doesn't exist.</p>
+          <h1 className="text-3xl font-bold text-slate-900">
+            Calendar Not Found
+          </h1>
+          <p className="text-slate-600">
+            The calendar you're looking for doesn't exist.
+          </p>
           <Button onClick={() => navigate("/")} variant="default">
             Back to Home
           </Button>

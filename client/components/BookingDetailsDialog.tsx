@@ -33,26 +33,38 @@ export function BookingDetailsDialog({
       setIsDeleting(true);
       setDeleteError("");
 
-      const calendarParam = calendarId ? `?calendar=${encodeURIComponent(calendarId)}` : '';
-      const response = await fetch(`/api/bookings/${booking.id}${calendarParam}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
+      const calendarParam = calendarId
+        ? `?calendar=${encodeURIComponent(calendarId)}`
+        : "";
+      const response = await fetch(
+        `/api/bookings/${booking.id}${calendarParam}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
         },
-      });
+      );
 
       if (response.ok) {
         setShowDeleteConfirm(false);
         onClose();
         onDeleted();
       } else {
-        const errorData = await response.json().catch(() => ({ error: "Unknown error" }));
-        setDeleteError(errorData.error || `Failed to delete (${response.status})`);
+        const errorData = await response
+          .json()
+          .catch(() => ({ error: "Unknown error" }));
+        setDeleteError(
+          errorData.error || `Failed to delete (${response.status})`,
+        );
         console.error("Error deleting booking:", response.status, errorData);
       }
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : String(error);
-      setDeleteError(errorMessage || "Failed to delete booking. Please try again.");
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      setDeleteError(
+        errorMessage || "Failed to delete booking. Please try again.",
+      );
       console.error("Error deleting booking:", error);
       console.error("Full error details:", errorMessage);
     } finally {
@@ -87,7 +99,9 @@ export function BookingDetailsDialog({
 
           {/* Content */}
           <div className="pr-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">Booking Details</h2>
+            <h2 className="text-xl font-bold text-gray-900 mb-4">
+              Booking Details
+            </h2>
 
             <div className="space-y-3">
               <div>

@@ -85,7 +85,7 @@ export function BookingDrawer({
   currentDate,
   onBookingCreated,
   existingBookings = [],
-  calendarId
+  calendarId,
 }: BookingDrawerProps) {
   const [step, setStep] = useState<1 | 2>(1);
   const [startTime, setStartTime] = useState(420); // 07:00 in minutes
@@ -157,16 +157,16 @@ export function BookingDrawer({
   const minutesToTime = (minutes: number) => {
     const hours = Math.floor(minutes / 60);
     const mins = minutes % 60;
-    return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
+    return `${hours.toString().padStart(2, "0")}:${mins.toString().padStart(2, "0")}`;
   };
 
   const timeToMinutes = (timeStr: string) => {
-    const [hours, mins] = timeStr.split(':').map(Number);
+    const [hours, mins] = timeStr.split(":").map(Number);
     return hours * 60 + mins;
   };
 
   const checkOverlap = (newStart: number, newEnd: number): boolean => {
-    return existingBookings.some(booking => {
+    return existingBookings.some((booking) => {
       const bookingStart = timeToMinutes(booking.startTime);
       const bookingEnd = timeToMinutes(booking.endTime);
       // Check if ranges overlap
@@ -176,7 +176,9 @@ export function BookingDrawer({
 
   const handleNext = () => {
     if (checkOverlap(startTime, endTime)) {
-      setOverlapError(`Time slot from ${minutesToTime(startTime)} to ${minutesToTime(endTime)} is already booked. Please select a different time.`);
+      setOverlapError(
+        `Time slot from ${minutesToTime(startTime)} to ${minutesToTime(endTime)} is already booked. Please select a different time.`,
+      );
       return;
     }
     setOverlapError("");
@@ -224,11 +226,13 @@ export function BookingDrawer({
         date: currentDate,
       };
 
-      const calendarParam = calendarId ? `?calendar=${encodeURIComponent(calendarId)}` : '';
+      const calendarParam = calendarId
+        ? `?calendar=${encodeURIComponent(calendarId)}`
+        : "";
       const response = await fetch(`/api/bookings${calendarParam}`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(booking),
       });
@@ -241,12 +245,18 @@ export function BookingDrawer({
         }, 200);
       } else {
         const errorData = await response.json();
-        setSubmitError(errorData.error || `Failed to create booking (${response.status})`);
+        setSubmitError(
+          errorData.error || `Failed to create booking (${response.status})`,
+        );
         setIsSubmitting(false);
       }
     } catch (error) {
-      console.error('Error creating booking:', error);
-      setSubmitError(error instanceof Error ? error.message : 'An unexpected error occurred. Please try again.');
+      console.error("Error creating booking:", error);
+      setSubmitError(
+        error instanceof Error
+          ? error.message
+          : "An unexpected error occurred. Please try again.",
+      );
       setIsSubmitting(false);
     }
   };
@@ -258,19 +268,19 @@ export function BookingDrawer({
       <style>{rangeSliderStyles}</style>
       {/* Backdrop */}
       <div
-        className={`fixed inset-0 bg-black/40 z-30 ${isAnimatingOut || (isOpen && !shouldAnimate) ? 'opacity-0' : 'opacity-100'}`}
+        className={`fixed inset-0 bg-black/40 z-30 ${isAnimatingOut || (isOpen && !shouldAnimate) ? "opacity-0" : "opacity-100"}`}
         onClick={onClose}
         style={{
-          transition: `opacity 200ms ${isAnimatingOut ? 'ease-in' : 'ease-out'}`,
-          pointerEvents: shouldAnimate && !isAnimatingOut ? 'auto' : 'none',
+          transition: `opacity 200ms ${isAnimatingOut ? "ease-in" : "ease-out"}`,
+          pointerEvents: shouldAnimate && !isAnimatingOut ? "auto" : "none",
         }}
       />
 
       {/* Drawer */}
       <div
-        className={`fixed bottom-0 left-0 right-0 z-40 ${isAnimatingOut || (isOpen && !shouldAnimate) ? 'translate-y-full' : 'translate-y-0'}`}
+        className={`fixed bottom-0 left-0 right-0 z-40 ${isAnimatingOut || (isOpen && !shouldAnimate) ? "translate-y-full" : "translate-y-0"}`}
         style={{
-          transition: `transform 200ms ${isAnimatingOut ? 'ease-in' : 'ease-out'}`,
+          transition: `transform 200ms ${isAnimatingOut ? "ease-in" : "ease-out"}`,
         }}
       >
         <div className="max-w-[390px] mx-auto bg-[#2C2C2C] rounded-t-2xl p-6 flex flex-col gap-4 shadow-lg">
@@ -280,7 +290,9 @@ export function BookingDrawer({
               <div className="flex flex-col gap-3">
                 {/* Label */}
                 <div className="flex justify-between items-start">
-                  <span className="text-white text-base font-inter">Set start and stop</span>
+                  <span className="text-white text-base font-inter">
+                    Set start and stop
+                  </span>
                 </div>
 
                 {/* Dual Range Slider */}
@@ -370,15 +382,22 @@ export function BookingDrawer({
                   className="flex items-center gap-2 px-3 py-3 bg-[#303030] text-[#ffffff] border border-[#767676] rounded-lg hover:bg-[#242424] hover:text-[#ffffff] transition-colors"
                 >
                   <X className="w-4 h-4 text-[#ffffff]" strokeWidth={1.6} />
-                  <span className="text-[#ffffff] text-base font-inter">Cancel</span>
+                  <span className="text-[#ffffff] text-base font-inter">
+                    Cancel
+                  </span>
                 </button>
 
                 <button
                   onClick={handleNext}
                   className="flex items-center gap-2 px-3 py-3 bg-[#F5F5F5] border border-[#2C2C2C] rounded-lg hover:bg-[#ECECEC] transition-colors"
                 >
-                  <span className="text-[#1E1E1E] text-base font-inter">Next</span>
-                  <ArrowRight className="w-4 h-4 text-[#1E1E1E]" strokeWidth={1.6} />
+                  <span className="text-[#1E1E1E] text-base font-inter">
+                    Next
+                  </span>
+                  <ArrowRight
+                    className="w-4 h-4 text-[#1E1E1E]"
+                    strokeWidth={1.6}
+                  />
                 </button>
               </div>
             </>
@@ -421,8 +440,13 @@ export function BookingDrawer({
                   disabled={isSubmitting}
                   className="flex items-center gap-2 px-3 py-3 bg-[#303030] border border-[#303030] rounded-lg hover:bg-[#242424] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <ArrowLeft className="w-4 h-4 text-[#ffffff]" strokeWidth={1.6} />
-                  <span className="text-[#ffffff] text-base font-inter">Back</span>
+                  <ArrowLeft
+                    className="w-4 h-4 text-[#ffffff]"
+                    strokeWidth={1.6}
+                  />
+                  <span className="text-[#ffffff] text-base font-inter">
+                    Back
+                  </span>
                 </button>
 
                 <button
@@ -430,7 +454,9 @@ export function BookingDrawer({
                   disabled={!name.trim() || isSubmitting}
                   className="flex items-center gap-2 px-3 py-3 bg-[#14AE5C] border border-[#14AE5C] rounded-lg hover:bg-[#14AE5C] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <span className="text-white text-base font-inter">{isSubmitting ? "Creating..." : "Book it"}</span>
+                  <span className="text-white text-base font-inter">
+                    {isSubmitting ? "Creating..." : "Book it"}
+                  </span>
                   <Zap className="w-4 h-4 text-white" strokeWidth={1.6} />
                 </button>
               </div>
