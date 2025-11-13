@@ -20,6 +20,7 @@ export interface Booking {
   startTime: string; // HH:MM format
   endTime: string; // HH:MM format
   date: string; // YYYY-MM-DD format
+  calendarId: string; // Calendar identifier
 }
 
 /**
