@@ -95,11 +95,12 @@ async function createBookingInSupabase(booking: Booking, calendar?: string): Pro
   return mapRowToBooking(data[0] || data);
 }
 
-async function deleteBookingFromSupabase(id: string): Promise<void> {
+async function deleteBookingFromSupabase(id: string, calendar?: string): Promise<void> {
   const { supabaseUrl, supabaseKey } = getSupabaseConfig();
+  const tableName = getTableName(calendar);
 
   const response = await fetch(
-    `${supabaseUrl}/rest/v1/bookings?id=eq.${encodeURIComponent(id)}`,
+    `${supabaseUrl}/rest/v1/${tableName}?id=eq.${encodeURIComponent(id)}`,
     {
       method: "DELETE",
       headers: {
