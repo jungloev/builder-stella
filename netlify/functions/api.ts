@@ -221,10 +221,11 @@ export const handler = async (event: any) => {
       (path?.match(/\/api\/bookings\//) || path?.match(/\/bookings\//))
     ) {
       const id = path.split("/").pop();
-      console.log(`[DELETE] Attempting to delete ${id}...`);
+      const calendar = event.queryStringParameters?.calendar;
+      console.log(`[DELETE] Attempting to delete ${id}... (calendar: ${calendar || 'default'})`);
 
       try {
-        await deleteBookingFromSupabase(id!);
+        await deleteBookingFromSupabase(id!, calendar);
         console.log(`[DELETE] Deleted from Supabase: ${id}`);
         return {
           statusCode: 200,
