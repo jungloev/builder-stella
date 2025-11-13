@@ -28,21 +28,18 @@ function mapRowToBooking(row: any): Booking {
     startTime: row.start_time,
     endTime: row.end_time,
     date: row.date,
+    calendarId: row.calendar_id,
   };
-}
-
-function getTableName(calendar?: string): string {
-  if (!calendar) {
-    return "bookings";
-  }
-  return `bookings_${calendar.toLowerCase().replace(/[^a-z0-9_]/g, '_')}`;
 }
 
 async function getBookingsFromSupabase(date?: string, calendar?: string): Promise<Booking[]> {
   const { supabaseUrl, supabaseKey } = getSupabaseConfig();
-  const tableName = getTableName(calendar);
 
-  let url = `${supabaseUrl}/rest/v1/${tableName}?select=*`;
+  let url = `${supabaseUrl}/rest/v1/bookings?select=*`;
+
+  if (calendar) {
+    url += `&calendar_id=eq.${encodeURIComponent(calendar)}`;
+  }
   if (date) {
     url += `&date=eq.${encodeURIComponent(date)}`;
   }
@@ -67,9 +64,8 @@ async function getBookingsFromSupabase(date?: string, calendar?: string): Promis
 
 async function createBookingInSupabase(booking: Booking, calendar?: string): Promise<Booking> {
   const { supabaseUrl, supabaseKey } = getSupabaseConfig();
-  const tableName = getTableName(calendar);
 
-  const response = await fetch(`${supabaseUrl}/rest/v1/${tableName}`, {
+  const response = await fetch(`${supabaseUrl}/rest/v1/bookings`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${supabaseKey}`,
@@ -83,6 +79,7 @@ async function createBookingInSupabase(booking: Booking, calendar?: string): Pro
       start_time: booking.startTime,
       end_time: booking.endTime,
       date: booking.date,
+      calendar_id: calendar || 'fastlandbox',
     }),
   });
 
@@ -97,19 +94,20 @@ async function createBookingInSupabase(booking: Booking, calendar?: string): Pro
 
 async function deleteBookingFromSupabase(id: string, calendar?: string): Promise<void> {
   const { supabaseUrl, supabaseKey } = getSupabaseConfig();
-  const tableName = getTableName(calendar);
 
-  const response = await fetch(
-    `${supabaseUrl}/rest/v1/${tableName}?id=eq.${encodeURIComponent(id)}`,
-    {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${supabaseKey}`,
-        apikey: supabaseKey,
-        "Content-Type": "application/json",
-      },
+  let url = `${supabaseUrl}/rest/v1/bookings?id=eq.${encodeURIComponent(id)}`;
+  if (calendar) {
+    url += `&calendar_id=eq.${encodeURIComponent(calendar)}`;
+  }
+
+  const response = await fetch(url, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${supabaseKey}`,
+      apikey: supabaseKey,
+      "Content-Type": "application/json",
     },
-  );
+  });
 
   if (!response.ok) {
     const errorText = await response.text();
