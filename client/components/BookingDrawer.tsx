@@ -76,6 +76,7 @@ interface BookingDrawerProps {
   currentDate: string;
   onBookingCreated: () => void;
   existingBookings?: Array<{ id: string; startTime: string; endTime: string }>;
+  calendarId?: string;
 }
 
 export function BookingDrawer({
@@ -83,7 +84,8 @@ export function BookingDrawer({
   onClose,
   currentDate,
   onBookingCreated,
-  existingBookings = []
+  existingBookings = [],
+  calendarId
 }: BookingDrawerProps) {
   const [step, setStep] = useState<1 | 2>(1);
   const [startTime, setStartTime] = useState(420); // 07:00 in minutes
