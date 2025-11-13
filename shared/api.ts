@@ -45,3 +45,35 @@ export interface CreateBookingRequest {
 export interface CreateBookingResponse {
   booking: Booking;
 }
+
+/**
+ * Calendar type
+ */
+export interface Calendar {
+  id: string;
+  name: string;
+  displayName: string;
+  createdAt?: string;
+}
+
+/**
+ * Response type for /api/calendars GET
+ */
+export interface GetCalendarsResponse {
+  calendars: Calendar[];
+}
+
+/**
+ * Request type for /api/calendars POST
+ */
+export interface CreateCalendarRequest {
+  name: string;
+  displayName: string;
+}
+
+/**
+ * Response type for /api/calendars POST
+ */
+export interface CreateCalendarResponse {
+  calendar: Calendar;
+}
