@@ -224,7 +224,8 @@ export function BookingDrawer({
         date: currentDate,
       };
 
-      const response = await fetch('/api/bookings', {
+      const calendarParam = calendarId ? `?calendar=${encodeURIComponent(calendarId)}` : '';
+      const response = await fetch(`/api/bookings${calendarParam}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
