@@ -43,7 +43,7 @@ export default function CalendarPage() {
         </div>
       </div>
       <div className="flex-1 overflow-auto">
-        <BookingCalendar />
+        <BookingCalendar calendarId={calendarName} />
       </div>
     </div>
   );

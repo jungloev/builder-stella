@@ -22,6 +22,7 @@ const bookingStyles = `
 
 interface BookingCalendarProps {
   initialDate?: Date;
+  calendarId?: string;
 }
 
 const TIME_SLOTS = [
@@ -29,7 +30,7 @@ const TIME_SLOTS = [
   "13:00", "14:00", "15:00", "16:00", "17:00", "18:00"
 ];
 
-export function BookingCalendar({ initialDate = new Date() }: BookingCalendarProps) {
+export function BookingCalendar({ initialDate = new Date(), calendarId }: BookingCalendarProps) {
   const [currentDate, setCurrentDate] = useState(initialDate);
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
