@@ -58,7 +58,8 @@ export function BookingCalendar({ initialDate = new Date(), calendarId }: Bookin
       setBookings(cached);
       setIsLoading(false);
       // Refresh in background
-      fetch(`/api/bookings?date=${targetDate}`)
+      const calendarParam = calendarId ? `&calendar=${encodeURIComponent(calendarId)}` : '';
+      fetch(`/api/bookings?date=${targetDate}${calendarParam}`)
         .then(res => res.json())
         .then(data => {
           bookingCache.set(targetDate, data.bookings || []);
@@ -72,7 +73,8 @@ export function BookingCalendar({ initialDate = new Date(), calendarId }: Bookin
 
     try {
       setIsLoading(true);
-      const response = await fetch(`/api/bookings?date=${targetDate}`);
+      const calendarParam = calendarId ? `&calendar=${encodeURIComponent(calendarId)}` : '';
+      const response = await fetch(`/api/bookings?date=${targetDate}${calendarParam}`);
       const data = await response.json();
       const bookingList = data.bookings || [];
 
@@ -114,14 +116,16 @@ export function BookingCalendar({ initialDate = new Date(), calendarId }: Bookin
 
     // Preload next and previous dates if not cached
     if (!bookingCache.has(nextDate)) {
-      fetch(`/api/bookings?date=${nextDate}`)
+      const calendarParam = calendarId ? `&calendar=${encodeURIComponent(calendarId)}` : '';
+      fetch(`/api/bookings?date=${nextDate}${calendarParam}`)
         .then(res => res.json())
         .then(data => bookingCache.set(nextDate, data.bookings || []))
         .catch(err => console.error("Error preloading next date:", err));
     }
 
     if (!bookingCache.has(prevDate)) {
-      fetch(`/api/bookings?date=${prevDate}`)
+      const calendarParam = calendarId ? `&calendar=${encodeURIComponent(calendarId)}` : '';
+      fetch(`/api/bookings?date=${prevDate}${calendarParam}`)
         .then(res => res.json())
         .then(data => bookingCache.set(prevDate, data.bookings || []))
         .catch(err => console.error("Error preloading prev date:", err));
