@@ -8,8 +8,14 @@ const AVAILABLE_CALENDARS: Record<string, string> = {
 };
 
 export default function CalendarPage() {
-  const { calendarName } = useParams<{ calendarName: string }>();
+  const { path } = useParams<{ path: string }>();
   const navigate = useNavigate();
+
+  // Extract calendar name from path like "thing=fastlandbox"
+  let calendarName = "";
+  if (path?.startsWith("thing=")) {
+    calendarName = path.substring(6); // Remove "thing=" prefix
+  }
 
   if (!calendarName || !AVAILABLE_CALENDARS[calendarName]) {
     return (
