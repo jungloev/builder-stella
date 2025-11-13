@@ -142,12 +142,13 @@ export const handler = async (event: any) => {
       (path === "/api/bookings" || path === "/bookings")
     ) {
       const date = event.queryStringParameters?.date;
+      const calendar = event.queryStringParameters?.calendar;
       let bookings: Booking[] = [];
 
       try {
-        bookings = await getBookingsFromSupabase(date);
+        bookings = await getBookingsFromSupabase(date, calendar);
         console.log(
-          `[GET] Retrieved ${bookings.length} bookings from Supabase`,
+          `[GET] Retrieved ${bookings.length} bookings from Supabase (calendar: ${calendar || 'default'})`,
         );
       } catch (supabaseError) {
         console.error("[GET] Supabase error:", supabaseError);
