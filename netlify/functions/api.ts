@@ -31,10 +31,18 @@ function mapRowToBooking(row: any): Booking {
   };
 }
 
-async function getBookingsFromSupabase(date?: string): Promise<Booking[]> {
-  const { supabaseUrl, supabaseKey } = getSupabaseConfig();
+function getTableName(calendar?: string): string {
+  if (!calendar) {
+    return "bookings";
+  }
+  return `bookings_${calendar.toLowerCase().replace(/[^a-z0-9_]/g, '_')}`;
+}
 
-  let url = `${supabaseUrl}/rest/v1/bookings?select=*`;
+async function getBookingsFromSupabase(date?: string, calendar?: string): Promise<Booking[]> {
+  const { supabaseUrl, supabaseKey } = getSupabaseConfig();
+  const tableName = getTableName(calendar);
+
+  let url = `${supabaseUrl}/rest/v1/${tableName}?select=*`;
   if (date) {
     url += `&date=eq.${encodeURIComponent(date)}`;
   }
