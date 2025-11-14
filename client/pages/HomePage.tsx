@@ -19,7 +19,7 @@ export default function HomePage() {
   const navigate = useNavigate();
 
   const handleSelectCalendar = (calendarId: string) => {
-    navigate(`/thing=${calendarId}`);
+    navigate(`/${calendarId}`);
   };
 
   return (
