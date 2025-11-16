@@ -459,11 +459,11 @@ export function BookingCalendar({
       {/* Date Picker Modal */}
       {isDatePickerOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-40 flex items-start justify-center pt-24 z-40"
+          className="fixed inset-0 bg-black bg-opacity-40 flex items-start justify-center pt-24 z-40 date-picker-backdrop"
           onClick={() => setIsDatePickerOpen(false)}
         >
           <div
-            className="w-full max-w-[390px] flex flex-col px-4"
+            className="w-full max-w-[390px] flex flex-col px-4 date-picker-card"
             onClick={(e) => e.stopPropagation()}
           >
             <div
