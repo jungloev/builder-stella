@@ -66,10 +66,14 @@ export function BookingCalendar({
     Set<string>
   >(new Set());
   const [bookingCache] = useState(new Map<string, Booking[]>()); // Cache for bookings by date
+  const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+  const [pickerMonth, setPickerMonth] = useState(new Date());
 
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
+  const longPressTimer = useRef<NodeJS.Timeout | null>(null);
   const SWIPE_THRESHOLD = 120;
+  const LONG_PRESS_DURATION = 500;
 
   const dateString = format(currentDate, "yyyy-MM-dd");
 
