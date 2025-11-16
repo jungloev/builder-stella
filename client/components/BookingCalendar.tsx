@@ -253,13 +253,19 @@ export function BookingCalendar({
     const monthIndex = getMonth(month);
     const daysInMonth = getDaysInMonth(month);
 
+    const datesToFetch: string[] = [];
     for (let day = 1; day <= daysInMonth; day++) {
       const dateStr = format(
         new Date(year, monthIndex, day),
         "yyyy-MM-dd",
       );
-
       if (!bookingCache.has(dateStr)) {
+        datesToFetch.push(dateStr);
+      }
+    }
+
+    if (datesToFetch.length > 0) {
+      const fetchPromises = datesToFetch.map(async (dateStr) => {
         try {
           const calendarParam = calendarId
             ? `&calendar=${encodeURIComponent(calendarId)}`
@@ -270,7 +276,9 @@ export function BookingCalendar({
         } catch (err) {
           console.error(`Error fetching bookings for ${dateStr}:`, err);
         }
-      }
+      });
+
+      await Promise.all(fetchPromises);
     }
 
     setMonthBookingsLoaded((prev) => !prev);
