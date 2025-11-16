@@ -58,6 +58,10 @@ export function BookingCalendar({
   >(new Set());
   const [bookingCache] = useState(new Map<string, Booking[]>()); // Cache for bookings by date
 
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
+  const SWIPE_THRESHOLD = 50;
+
   const dateString = format(currentDate, "yyyy-MM-dd");
 
   // Fetch bookings for current date and preload adjacent dates
