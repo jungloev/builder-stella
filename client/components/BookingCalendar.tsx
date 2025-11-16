@@ -314,11 +314,15 @@ export function BookingCalendar({
   };
 
   const handlePickerPrevMonth = () => {
-    setPickerMonth(subDays(startOfMonth(pickerMonth), 1));
+    const newMonth = subDays(startOfMonth(pickerMonth), 1);
+    setPickerMonth(newMonth);
+    preloadMonthBookings(newMonth);
   };
 
   const handlePickerNextMonth = () => {
-    setPickerMonth(addDays(startOfMonth(pickerMonth), 32));
+    const newMonth = addDays(startOfMonth(pickerMonth), 32);
+    setPickerMonth(newMonth);
+    preloadMonthBookings(newMonth);
   };
 
   const handleCloseDatePicker = () => {
