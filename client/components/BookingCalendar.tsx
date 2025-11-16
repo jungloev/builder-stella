@@ -258,6 +258,15 @@ export function BookingCalendar({
     setPickerMonth(addDays(startOfMonth(pickerMonth), 32));
   };
 
+  const hasBookingsOnDate = (day: number): boolean => {
+    const dateStr = format(
+      new Date(getYear(pickerMonth), getMonth(pickerMonth), day),
+      "yyyy-MM-dd",
+    );
+    const bookings = bookingCache.get(dateStr);
+    return bookings ? bookings.length > 0 : false;
+  };
+
   const handleBookingCreated = () => {
     setIsDrawerOpen(false);
     fetchBookings(true); // Pass true to flag this as a post-creation fetch
