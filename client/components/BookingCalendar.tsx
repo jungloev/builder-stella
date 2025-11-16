@@ -510,7 +510,7 @@ export function BookingCalendar({
                     <button
                       key={dayOfMonth}
                       onClick={() => handleDateSelect(dayOfMonth)}
-                      className={`aspect-square rounded flex flex-col items-center justify-center text-sm font-medium transition-colors ${
+                      className={`aspect-square rounded flex items-center justify-center text-sm font-medium transition-colors relative ${
                         isCurrentDay
                           ? "bg-[#2C2C2C] text-white"
                           : isToday
@@ -518,9 +518,9 @@ export function BookingCalendar({
                             : "text-[#0C0B0C] hover:bg-gray-100"
                       }`}
                     >
-                      <span>{dayOfMonth}</span>
+                      {dayOfMonth}
                       {hasBookings && (
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#B4A8E0] mt-1"></div>
+                        <div className="absolute bottom-1 w-1.5 h-1.5 rounded-full bg-[#B4A8E0]"></div>
                       )}
                     </button>
                   );
