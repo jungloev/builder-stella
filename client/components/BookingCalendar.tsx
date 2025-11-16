@@ -178,6 +178,27 @@ export function BookingCalendar({
     }
   };
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.changedTouches[0].screenX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    touchEndX.current = e.changedTouches[0].screenX;
+    handleSwipe();
+  };
+
+  const handleSwipe = () => {
+    const difference = touchStartX.current - touchEndX.current;
+    const isLeftSwipe = difference > SWIPE_THRESHOLD;
+    const isRightSwipe = difference < -SWIPE_THRESHOLD;
+
+    if (isLeftSwipe) {
+      handleNextDay();
+    } else if (isRightSwipe) {
+      handlePreviousDay();
+    }
+  };
+
   const handleBookingCreated = () => {
     setIsDrawerOpen(false);
     fetchBookings(true); // Pass true to flag this as a post-creation fetch
