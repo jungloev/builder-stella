@@ -272,6 +272,8 @@ export function BookingCalendar({
         }
       }
     }
+
+    setMonthBookingsLoaded((prev) => !prev);
   };
 
   const handleDateMouseDown = () => {
