@@ -567,7 +567,14 @@ export function BookingCalendar({
               </div>
 
               {/* Date Grid */}
-              <div className="grid grid-cols-7 gap-2">
+              <div
+                className="grid grid-cols-7 gap-2"
+                style={{
+                  userSelect: 'none',
+                  WebkitUserSelect: 'none',
+                  WebkitTouchCallout: 'none',
+                }}
+              >
                 {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(
                   (day) => (
                     <div
