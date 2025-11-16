@@ -84,6 +84,7 @@ export function BookingCalendar({
   >(new Set());
   const [bookingCache] = useState(new Map<string, Booking[]>()); // Cache for bookings by date
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+  const [isDatePickerClosing, setIsDatePickerClosing] = useState(false);
   const [pickerMonth, setPickerMonth] = useState(new Date());
 
   const touchStartX = useRef(0);
