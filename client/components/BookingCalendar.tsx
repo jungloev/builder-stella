@@ -293,6 +293,14 @@ export function BookingCalendar({
     setPickerMonth(addDays(startOfMonth(pickerMonth), 32));
   };
 
+  const handleCloseDatePicker = () => {
+    setIsDatePickerClosing(true);
+    setTimeout(() => {
+      setIsDatePickerOpen(false);
+      setIsDatePickerClosing(false);
+    }, 100);
+  };
+
   const hasBookingsOnDate = (day: number): boolean => {
     const dateStr = format(
       new Date(getYear(pickerMonth), getMonth(pickerMonth), day),
