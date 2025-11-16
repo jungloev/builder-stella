@@ -485,16 +485,16 @@ export function BookingCalendar({
       {/* Date Picker Modal */}
       {isDatePickerOpen && (
         <div
-          className={`fixed inset-0 bg-black bg-opacity-40 flex items-start justify-center pt-24 z-40 date-picker-backdrop ${isDatePickerClosing ? 'closing' : ''}`}
+          className={`fixed inset-0 bg-black bg-opacity-40 flex items-start justify-center pt-24 z-40 date-picker-backdrop ${isDatePickerClosing ? "closing" : ""}`}
           onClick={handleCloseDatePicker}
         >
           <div
-            className={`w-full max-w-[390px] flex flex-col px-4 date-picker-card ${isDatePickerClosing ? 'closing' : ''}`}
+            className={`w-full max-w-[390px] flex flex-col px-4 date-picker-card ${isDatePickerClosing ? "closing" : ""}`}
             onClick={(e) => e.stopPropagation()}
           >
             <div
               className="bg-white border border-[#868686] shadow-md p-6"
-              style={{ borderRadius: '19.2px' }}
+              style={{ borderRadius: "19.2px" }}
             >
               {/* Month Navigation */}
               <div className="flex items-center justify-between mb-6">
@@ -540,10 +540,7 @@ export function BookingCalendar({
 
                   if (!isValidDate) {
                     return (
-                      <div
-                        key={`empty-${index}`}
-                        className="aspect-square"
-                      />
+                      <div key={`empty-${index}`} className="aspect-square" />
                     );
                   }
 
@@ -574,14 +571,13 @@ export function BookingCalendar({
                       {hasBookings && (
                         <div
                           className="absolute w-1.5 h-1.5 rounded-full bg-[#B4A8E0]"
-                          style={{ bottom: '-1px' }}
+                          style={{ bottom: "-1px" }}
                         ></div>
                       )}
                     </button>
                   );
                 })}
               </div>
-
             </div>
           </div>
         </div>
