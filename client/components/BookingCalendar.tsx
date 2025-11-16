@@ -390,7 +390,7 @@ export function BookingCalendar({
                   className="w-full h-full bg-white border border-[#868686] rounded-lg p-1.5 flex items-start justify-between hover:shadow-md transition-shadow cursor-pointer"
                 >
                   <span className="text-black text-sm font-medium font-roboto leading-5 tracking-[0.1px]">
-                    {booking.startTime} ��� {booking.endTime}
+                    {booking.startTime} – {booking.endTime}
                   </span>
                   <span className="text-black text-sm font-medium font-roboto leading-5 tracking-[0.1px]">
                     {booking.name}
@@ -507,13 +507,6 @@ export function BookingCalendar({
                 })}
               </div>
 
-              {/* Close Button */}
-              <button
-                onClick={() => setIsDatePickerOpen(false)}
-                className="w-full mt-6 py-3 rounded font-medium text-[#0C0B0C] border border-[#868686] hover:bg-gray-50 transition-colors"
-              >
-                Close
-              </button>
             </div>
           </div>
         </div>
