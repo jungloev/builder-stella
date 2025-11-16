@@ -255,10 +255,7 @@ export function BookingCalendar({
 
     const datesToFetch: string[] = [];
     for (let day = 1; day <= daysInMonth; day++) {
-      const dateStr = format(
-        new Date(year, monthIndex, day),
-        "yyyy-MM-dd",
-      );
+      const dateStr = format(new Date(year, monthIndex, day), "yyyy-MM-dd");
       if (!bookingCache.has(dateStr)) {
         datesToFetch.push(dateStr);
       }
@@ -270,7 +267,9 @@ export function BookingCalendar({
           const calendarParam = calendarId
             ? `&calendar=${encodeURIComponent(calendarId)}`
             : "";
-          const res = await fetch(`/api/bookings?date=${dateStr}${calendarParam}`);
+          const res = await fetch(
+            `/api/bookings?date=${dateStr}${calendarParam}`,
+          );
           const data = await res.json();
           bookingCache.set(dateStr, data.bookings || []);
         } catch (err) {
