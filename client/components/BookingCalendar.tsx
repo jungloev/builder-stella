@@ -432,8 +432,8 @@ export function BookingCalendar({
 
       {/* Date Picker Modal */}
       {isDatePickerOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-end z-40">
-          <div className="w-full flex flex-col pb-6 px-4">
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-end justify-center z-40">
+          <div className="w-full max-w-[390px] flex flex-col pb-6 px-4">
             <div className="bg-white border border-[#868686] rounded-lg shadow-md p-6">
               {/* Month Navigation */}
               <div className="flex items-center justify-between mb-6">
