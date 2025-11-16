@@ -540,7 +540,7 @@ export function BookingCalendar({
                 >
                   <ChevronLeft className="w-5 h-5 text-gray-600" />
                 </button>
-                <span className="text-lg font-semibold text-[#0C0B0C]">
+                <span className="text-lg font-semibold text-[#0C0B0C] user-select-none">
                   {format(pickerMonth, "MMMM yyyy")}
                 </span>
                 <button
