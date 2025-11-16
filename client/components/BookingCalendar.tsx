@@ -47,19 +47,19 @@ const bookingStyles = `
   }
 
   .date-picker-backdrop {
-    animation: fadeInModal 100ms linear;
+    animation: fadeInModal 50ms linear;
   }
 
   .date-picker-backdrop.closing {
-    animation: fadeOutModal 100ms linear;
+    animation: fadeOutModal 50ms linear;
   }
 
   .date-picker-card {
-    animation: fadeInModal 100ms linear;
+    animation: fadeInModal 50ms linear;
   }
 
   .date-picker-card.closing {
-    animation: fadeOutModal 100ms linear;
+    animation: fadeOutModal 50ms linear;
   }
 `;
 
