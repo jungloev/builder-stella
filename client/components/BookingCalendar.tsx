@@ -522,7 +522,7 @@ export function BookingCalendar({
                       {hasBookings && (
                         <div
                           className="absolute w-1.5 h-1.5 rounded-full bg-[#B4A8E0]"
-                          style={{ bottom: '-2px' }}
+                          style={{ bottom: '-1px' }}
                         ></div>
                       )}
                     </button>
