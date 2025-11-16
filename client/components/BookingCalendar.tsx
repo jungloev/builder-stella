@@ -37,12 +37,29 @@ const bookingStyles = `
     }
   }
 
+  @keyframes fadeOutModal {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
   .date-picker-backdrop {
-    animation: fadeInModal 300ms linear;
+    animation: fadeInModal 100ms linear;
+  }
+
+  .date-picker-backdrop.closing {
+    animation: fadeOutModal 100ms linear;
   }
 
   .date-picker-card {
-    animation: fadeInModal 300ms linear;
+    animation: fadeInModal 100ms linear;
+  }
+
+  .date-picker-card.closing {
+    animation: fadeOutModal 100ms linear;
   }
 `;
 
