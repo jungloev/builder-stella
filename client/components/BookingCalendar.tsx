@@ -60,7 +60,7 @@ export function BookingCalendar({
 
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
-  const SWIPE_THRESHOLD = 50;
+  const SWIPE_THRESHOLD = 120;
 
   const dateString = format(currentDate, "yyyy-MM-dd");
 
