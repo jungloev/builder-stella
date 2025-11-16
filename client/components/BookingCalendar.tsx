@@ -504,12 +504,13 @@ export function BookingCalendar({
                     dayOfMonth === today.getDate() &&
                     getMonth(pickerMonth) === getMonth(today) &&
                     getYear(pickerMonth) === getYear(today);
+                  const hasBookings = hasBookingsOnDate(dayOfMonth);
 
                   return (
                     <button
                       key={dayOfMonth}
                       onClick={() => handleDateSelect(dayOfMonth)}
-                      className={`aspect-square rounded flex items-center justify-center text-sm font-medium transition-colors ${
+                      className={`aspect-square rounded flex flex-col items-center justify-center text-sm font-medium transition-colors ${
                         isCurrentDay
                           ? "bg-[#2C2C2C] text-white"
                           : isToday
@@ -517,7 +518,10 @@ export function BookingCalendar({
                             : "text-[#0C0B0C] hover:bg-gray-100"
                       }`}
                     >
-                      {dayOfMonth}
+                      <span>{dayOfMonth}</span>
+                      {hasBookings && (
+                        <div className="w-1.5 h-1.5 rounded-full bg-[#B4A8E0] mt-1"></div>
+                      )}
                     </button>
                   );
                 })}
