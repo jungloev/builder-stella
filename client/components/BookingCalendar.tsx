@@ -486,10 +486,15 @@ export function BookingCalendar({
                     );
                   }
 
+                  const today = new Date();
                   const isCurrentDay =
                     dayOfMonth === currentDate.getDate() &&
                     getMonth(pickerMonth) === getMonth(currentDate) &&
                     getYear(pickerMonth) === getYear(currentDate);
+                  const isToday =
+                    dayOfMonth === today.getDate() &&
+                    getMonth(pickerMonth) === getMonth(today) &&
+                    getYear(pickerMonth) === getYear(today);
 
                   return (
                     <button
@@ -498,7 +503,9 @@ export function BookingCalendar({
                       className={`aspect-square rounded flex items-center justify-center text-sm font-medium transition-colors ${
                         isCurrentDay
                           ? "bg-[#2C2C2C] text-white"
-                          : "text-[#0C0B0C] hover:bg-gray-100"
+                          : isToday
+                            ? "border-2 border-[#2C2C2C] text-[#0C0B0C]"
+                            : "text-[#0C0B0C] hover:bg-gray-100"
                       }`}
                     >
                       {dayOfMonth}
