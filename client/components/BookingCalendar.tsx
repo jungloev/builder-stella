@@ -212,6 +212,52 @@ export function BookingCalendar({
     }
   };
 
+  const handleDateMouseDown = () => {
+    longPressTimer.current = setTimeout(() => {
+      setIsDatePickerOpen(true);
+      setPickerMonth(currentDate);
+    }, LONG_PRESS_DURATION);
+  };
+
+  const handleDateMouseUp = () => {
+    if (longPressTimer.current) {
+      clearTimeout(longPressTimer.current);
+      longPressTimer.current = null;
+    }
+  };
+
+  const handleDateTouchStart = () => {
+    longPressTimer.current = setTimeout(() => {
+      setIsDatePickerOpen(true);
+      setPickerMonth(currentDate);
+    }, LONG_PRESS_DURATION);
+  };
+
+  const handleDateTouchEnd = () => {
+    if (longPressTimer.current) {
+      clearTimeout(longPressTimer.current);
+      longPressTimer.current = null;
+    }
+  };
+
+  const handleDateSelect = (day: number) => {
+    const selectedDate = new Date(
+      getYear(pickerMonth),
+      getMonth(pickerMonth),
+      day,
+    );
+    setCurrentDate(selectedDate);
+    setIsDatePickerOpen(false);
+  };
+
+  const handlePickerPrevMonth = () => {
+    setPickerMonth(subDays(startOfMonth(pickerMonth), 1));
+  };
+
+  const handlePickerNextMonth = () => {
+    setPickerMonth(addDays(startOfMonth(pickerMonth), 32));
+  };
+
   const handleBookingCreated = () => {
     setIsDrawerOpen(false);
     fetchBookings(true); // Pass true to flag this as a post-creation fetch
