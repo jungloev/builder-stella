@@ -298,7 +298,7 @@ export function BookingCalendar({
     setTimeout(() => {
       setIsDatePickerOpen(false);
       setIsDatePickerClosing(false);
-    }, 100);
+    }, 50);
   };
 
   const hasBookingsOnDate = (day: number): boolean => {
