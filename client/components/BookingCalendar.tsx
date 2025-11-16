@@ -443,7 +443,10 @@ export function BookingCalendar({
       {isDatePickerOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-start justify-center pt-24 z-40">
           <div className="w-full max-w-[390px] flex flex-col px-4">
-            <div className="bg-white border border-[#868686] rounded-lg shadow-md p-6">
+            <div
+              className="bg-white border border-[#868686] shadow-md p-6"
+              style={{ borderRadius: '19.2px' }}
+            >
               {/* Month Navigation */}
               <div className="flex items-center justify-between mb-6">
                 <button
