@@ -542,9 +542,9 @@ export function BookingCalendar({
               <div
                 className="flex items-center justify-between mb-6"
                 style={{
-                  userSelect: 'none',
-                  WebkitUserSelect: 'none',
-                  WebkitTouchCallout: 'none',
+                  userSelect: "none",
+                  WebkitUserSelect: "none",
+                  WebkitTouchCallout: "none",
                 }}
               >
                 <button
