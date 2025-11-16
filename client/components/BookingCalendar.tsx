@@ -458,7 +458,7 @@ export function BookingCalendar({
 
               {/* Date Grid */}
               <div className="grid grid-cols-7 gap-2">
-                {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(
+                {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(
                   (day) => (
                     <div
                       key={day}
@@ -470,11 +470,11 @@ export function BookingCalendar({
                 )}
                 {Array.from({
                   length:
-                    startOfMonth(pickerMonth).getDay() +
+                    ((startOfMonth(pickerMonth).getDay() + 6) % 7) +
                     getDaysInMonth(pickerMonth),
                 }).map((_, index) => {
                   const dayOfMonth =
-                    index - startOfMonth(pickerMonth).getDay() + 1;
+                    index - ((startOfMonth(pickerMonth).getDay() + 6) % 7) + 1;
                   const isValidDate = dayOfMonth > 0;
 
                   if (!isValidDate) {
