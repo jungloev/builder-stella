@@ -520,7 +520,10 @@ export function BookingCalendar({
                     >
                       {dayOfMonth}
                       {hasBookings && (
-                        <div className="absolute bottom-1 w-1.5 h-1.5 rounded-full bg-[#B4A8E0]"></div>
+                        <div
+                          className="absolute w-1.5 h-1.5 rounded-full bg-[#B4A8E0]"
+                          style={{ bottom: '-2px' }}
+                        ></div>
                       )}
                     </button>
                   );
