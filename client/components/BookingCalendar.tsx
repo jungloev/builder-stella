@@ -247,10 +247,37 @@ export function BookingCalendar({
     }
   };
 
+  const preloadMonthBookings = async (month: Date) => {
+    const year = getYear(month);
+    const monthIndex = getMonth(month);
+    const daysInMonth = getDaysInMonth(month);
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      const dateStr = format(
+        new Date(year, monthIndex, day),
+        "yyyy-MM-dd",
+      );
+
+      if (!bookingCache.has(dateStr)) {
+        try {
+          const calendarParam = calendarId
+            ? `&calendar=${encodeURIComponent(calendarId)}`
+            : "";
+          const res = await fetch(`/api/bookings?date=${dateStr}${calendarParam}`);
+          const data = await res.json();
+          bookingCache.set(dateStr, data.bookings || []);
+        } catch (err) {
+          console.error(`Error fetching bookings for ${dateStr}:`, err);
+        }
+      }
+    }
+  };
+
   const handleDateMouseDown = () => {
     longPressTimer.current = setTimeout(() => {
       setIsDatePickerOpen(true);
       setPickerMonth(currentDate);
+      preloadMonthBookings(currentDate);
     }, LONG_PRESS_DURATION);
   };
 
@@ -265,6 +292,7 @@ export function BookingCalendar({
     longPressTimer.current = setTimeout(() => {
       setIsDatePickerOpen(true);
       setPickerMonth(currentDate);
+      preloadMonthBookings(currentDate);
     }, LONG_PRESS_DURATION);
   };
 
