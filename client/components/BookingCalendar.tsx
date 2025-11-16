@@ -27,6 +27,23 @@ const bookingStyles = `
   .booking-item {
     animation: fadeInBooking 200ms linear;
   }
+
+  @keyframes fadeInModal {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .date-picker-backdrop {
+    animation: fadeInModal 300ms linear;
+  }
+
+  .date-picker-card {
+    animation: fadeInModal 300ms linear;
+  }
 `;
 
 interface BookingCalendarProps {
