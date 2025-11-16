@@ -390,7 +390,7 @@ export function BookingCalendar({
                   className="w-full h-full bg-white border border-[#868686] rounded-lg p-1.5 flex items-start justify-between hover:shadow-md transition-shadow cursor-pointer"
                 >
                   <span className="text-black text-sm font-medium font-roboto leading-5 tracking-[0.1px]">
-                    {booking.startTime} – {booking.endTime}
+                    {booking.startTime} ��� {booking.endTime}
                   </span>
                   <span className="text-black text-sm font-medium font-roboto leading-5 tracking-[0.1px]">
                     {booking.name}
@@ -429,6 +429,95 @@ export function BookingCalendar({
         onDeleted={handleBookingDeleted}
         calendarId={calendarId}
       />
+
+      {/* Date Picker Modal */}
+      {isDatePickerOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-end z-40">
+          <div className="w-full flex flex-col pb-6 px-4">
+            <div className="bg-white border border-[#868686] rounded-lg shadow-md p-6">
+              {/* Month Navigation */}
+              <div className="flex items-center justify-between mb-6">
+                <button
+                  onClick={handlePickerPrevMonth}
+                  className="w-8 h-8 flex items-center justify-center rounded hover:bg-gray-100 transition-colors"
+                  aria-label="Previous month"
+                >
+                  <ChevronLeft className="w-5 h-5 text-gray-600" />
+                </button>
+                <span className="text-lg font-semibold text-[#0C0B0C]">
+                  {format(pickerMonth, "MMMM yyyy")}
+                </span>
+                <button
+                  onClick={handlePickerNextMonth}
+                  className="w-8 h-8 flex items-center justify-center rounded hover:bg-gray-100 transition-colors"
+                  aria-label="Next month"
+                >
+                  <ChevronRight className="w-5 h-5 text-gray-600" />
+                </button>
+              </div>
+
+              {/* Date Grid */}
+              <div className="grid grid-cols-7 gap-2">
+                {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(
+                  (day) => (
+                    <div
+                      key={day}
+                      className="text-center text-xs font-medium text-gray-600 py-2"
+                    >
+                      {day}
+                    </div>
+                  ),
+                )}
+                {Array.from({
+                  length:
+                    startOfMonth(pickerMonth).getDay() +
+                    getDaysInMonth(pickerMonth),
+                }).map((_, index) => {
+                  const dayOfMonth =
+                    index - startOfMonth(pickerMonth).getDay() + 1;
+                  const isValidDate = dayOfMonth > 0;
+
+                  if (!isValidDate) {
+                    return (
+                      <div
+                        key={`empty-${index}`}
+                        className="aspect-square"
+                      />
+                    );
+                  }
+
+                  const isCurrentDay =
+                    dayOfMonth === currentDate.getDate() &&
+                    getMonth(pickerMonth) === getMonth(currentDate) &&
+                    getYear(pickerMonth) === getYear(currentDate);
+
+                  return (
+                    <button
+                      key={dayOfMonth}
+                      onClick={() => handleDateSelect(dayOfMonth)}
+                      className={`aspect-square rounded flex items-center justify-center text-sm font-medium transition-colors ${
+                        isCurrentDay
+                          ? "bg-[#2C2C2C] text-white"
+                          : "text-[#0C0B0C] hover:bg-gray-100"
+                      }`}
+                    >
+                      {dayOfMonth}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Close Button */}
+              <button
+                onClick={() => setIsDatePickerOpen(false)}
+                className="w-full mt-6 py-3 rounded font-medium text-[#0C0B0C] border border-[#868686] hover:bg-gray-50 transition-colors"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
