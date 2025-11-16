@@ -282,7 +282,7 @@ export function BookingCalendar({
       day,
     );
     setCurrentDate(selectedDate);
-    setIsDatePickerOpen(false);
+    handleCloseDatePicker();
   };
 
   const handlePickerPrevMonth = () => {
