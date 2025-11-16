@@ -103,6 +103,7 @@ export function BookingCalendar({
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   const [isDatePickerClosing, setIsDatePickerClosing] = useState(false);
   const [pickerMonth, setPickerMonth] = useState(new Date());
+  const [monthBookingsLoaded, setMonthBookingsLoaded] = useState(false);
 
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
