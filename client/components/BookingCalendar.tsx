@@ -107,9 +107,9 @@ export function BookingCalendar({
 
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
-  const lastDateTapTime = useRef(0);
+  const longPressTimer = useRef<NodeJS.Timeout | null>(null);
   const SWIPE_THRESHOLD = 120;
-  const DOUBLE_TAP_DELAY = 300;
+  const LONG_PRESS_DURATION = 500;
 
   const dateString = format(currentDate, "yyyy-MM-dd");
 
