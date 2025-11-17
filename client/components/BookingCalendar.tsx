@@ -425,10 +425,7 @@ export function BookingCalendar({
 
         <button
           onClick={handleDateClick}
-          onMouseDown={handleDateMouseDown}
-          onMouseUp={handleDateMouseUp}
-          onMouseLeave={handleDateMouseUp}
-          onTouchStart={handleDateTouchStart}
+          onDoubleClick={handleDateDoubleClick}
           onTouchEnd={handleDateTouchEnd}
           className="font-sans text-[36px] leading-[44px] font-bold text-[#0C0B0C] text-center flex-1 hover:opacity-70 transition-opacity cursor-pointer"
         >
