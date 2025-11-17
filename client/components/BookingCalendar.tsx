@@ -220,13 +220,6 @@ export function BookingCalendar({
     setCurrentDate((prev) => addDays(prev, 1));
   };
 
-  const handleDateClick = () => {
-    const today = new Date();
-    if (format(currentDate, "yyyy-MM-dd") !== format(today, "yyyy-MM-dd")) {
-      setCurrentDate(today);
-    }
-  };
-
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.changedTouches[0].screenX;
   };
