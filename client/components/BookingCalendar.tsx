@@ -108,6 +108,7 @@ export function BookingCalendar({
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
   const longPressTimer = useRef<NodeJS.Timeout | null>(null);
+  const longPressTriggered = useRef(false);
   const SWIPE_THRESHOLD = 120;
   const LONG_PRESS_DURATION = 200;
 
