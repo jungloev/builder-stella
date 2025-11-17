@@ -237,6 +237,10 @@ export function BookingCalendar({
   };
 
   const handleSwipe = () => {
+    if (isDrawerOpen) {
+      return;
+    }
+
     const difference = touchStartX.current - touchEndX.current;
     const isLeftSwipe = difference > SWIPE_THRESHOLD;
     const isRightSwipe = difference < -SWIPE_THRESHOLD;
