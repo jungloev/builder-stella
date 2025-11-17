@@ -282,9 +282,9 @@ export function BookingCalendar({
   };
 
   const handleDateClick = () => {
-    if (longPressTimer.current) {
-      clearTimeout(longPressTimer.current);
-      longPressTimer.current = null;
+    if (longPressTriggered.current) {
+      longPressTriggered.current = false;
+      return;
     }
     setIsDatePickerOpen(true);
     setPickerMonth(currentDate);
@@ -293,6 +293,7 @@ export function BookingCalendar({
 
   const handleDateMouseDown = () => {
     longPressTimer.current = setTimeout(() => {
+      longPressTriggered.current = true;
       const today = new Date();
       setCurrentDate(today);
     }, LONG_PRESS_DURATION);
@@ -307,6 +308,7 @@ export function BookingCalendar({
 
   const handleDateTouchStart = () => {
     longPressTimer.current = setTimeout(() => {
+      longPressTriggered.current = true;
       const today = new Date();
       setCurrentDate(today);
     }, LONG_PRESS_DURATION);
