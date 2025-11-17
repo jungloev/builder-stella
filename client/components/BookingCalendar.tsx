@@ -281,27 +281,41 @@ export function BookingCalendar({
   };
 
   const handleDateClick = () => {
+    if (longPressTimer.current) {
+      clearTimeout(longPressTimer.current);
+      longPressTimer.current = null;
+    }
     setIsDatePickerOpen(true);
     setPickerMonth(currentDate);
     preloadMonthBookings(currentDate);
   };
 
-  const handleDateDoubleClick = () => {
-    const today = new Date();
-    setCurrentDate(today);
+  const handleDateMouseDown = () => {
+    longPressTimer.current = setTimeout(() => {
+      const today = new Date();
+      setCurrentDate(today);
+    }, LONG_PRESS_DURATION);
+  };
+
+  const handleDateMouseUp = () => {
+    if (longPressTimer.current) {
+      clearTimeout(longPressTimer.current);
+      longPressTimer.current = null;
+    }
+  };
+
+  const handleDateTouchStart = () => {
+    longPressTimer.current = setTimeout(() => {
+      const today = new Date();
+      setCurrentDate(today);
+    }, LONG_PRESS_DURATION);
   };
 
   const handleDateTouchEnd = () => {
-    const now = Date.now();
-    const timeSinceLastTap = now - lastDateTapTime.current;
-
-    if (timeSinceLastTap < DOUBLE_TAP_DELAY) {
-      handleDateDoubleClick();
-    } else {
-      handleDateClick();
+    if (longPressTimer.current) {
+      clearTimeout(longPressTimer.current);
+      longPressTimer.current = null;
     }
-
-    lastDateTapTime.current = now;
   };
 
   const handleDateSelect = (day: number) => {
