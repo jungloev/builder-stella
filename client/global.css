@@ -39,9 +39,9 @@
 
     --radius: 0.5rem;
 
-    --drawer-bg: #2C2C2C;
+    --drawer-bg: #2c2c2c;
     --drawer-border: #505050;
-    --drawer-input-bg: #3C3C3C;
+    --drawer-input-bg: #3c3c3c;
     --drawer-text: #ffffff;
     --drawer-text-secondary: rgba(255, 255, 255, 0.7);
   }
@@ -58,9 +58,9 @@
 
   @media (prefers-color-scheme: dark) {
     :root {
-      --drawer-bg: #2C2C2C;
+      --drawer-bg: #2c2c2c;
       --drawer-border: #505050;
-      --drawer-input-bg: #3C3C3C;
+      --drawer-input-bg: #3c3c3c;
       --drawer-text: #ffffff;
       --drawer-text-secondary: rgba(255, 255, 255, 0.7);
     }
@@ -74,7 +74,7 @@
 
   body {
     @apply text-foreground font-inter;
-    background-color: #FDFDFB;
+    background-color: #fdfdfb;
   }
 
   :where(p, span, li, h1, h2, h3, h4, h5, h6, a, button, label, td, th) {

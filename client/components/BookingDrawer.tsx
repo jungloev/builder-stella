@@ -332,7 +332,10 @@ export function BookingDrawer({
               <div className="flex flex-col gap-3">
                 {/* Label */}
                 <div className="flex justify-between items-start">
-                  <span className="text-base font-inter" style={{ color: "var(--drawer-text)" }}>
+                  <span
+                    className="text-base font-inter"
+                    style={{ color: "var(--drawer-text)" }}
+                  >
                     Set start and stop
                   </span>
                 </div>
@@ -397,7 +400,10 @@ export function BookingDrawer({
 
                 {/* Description */}
                 <div className="flex justify-between items-center text-sm">
-                  <span className="font-inter" style={{ color: "var(--drawer-text-secondary)" }}>
+                  <span
+                    className="font-inter"
+                    style={{ color: "var(--drawer-text-secondary)" }}
+                  >
                     {minutesToTime(startTime)} — {minutesToTime(endTime)}
                   </span>
                 </div>
@@ -434,10 +440,12 @@ export function BookingDrawer({
                     e.currentTarget.style.opacity = "1";
                   }}
                 >
-                  <X className="w-4 h-4" strokeWidth={1.6} style={{ color: "var(--drawer-text)" }} />
-                  <span className="text-base font-inter">
-                    Cancel
-                  </span>
+                  <X
+                    className="w-4 h-4"
+                    strokeWidth={1.6}
+                    style={{ color: "var(--drawer-text)" }}
+                  />
+                  <span className="text-base font-inter">Cancel</span>
                 </button>
 
                 <button
@@ -455,13 +463,8 @@ export function BookingDrawer({
                     e.currentTarget.style.opacity = "1";
                   }}
                 >
-                  <span className="text-base font-inter">
-                    Next
-                  </span>
-                  <ArrowRight
-                    className="w-4 h-4"
-                    strokeWidth={1.6}
-                  />
+                  <span className="text-base font-inter">Next</span>
+                  <ArrowRight className="w-4 h-4" strokeWidth={1.6} />
                 </button>
               </div>
             </>
@@ -469,7 +472,10 @@ export function BookingDrawer({
             <>
               {/* Name Step */}
               <div className="flex flex-col gap-2">
-                <label className="text-base font-inter" style={{ color: "var(--drawer-text)" }}>
+                <label
+                  className="text-base font-inter"
+                  style={{ color: "var(--drawer-text)" }}
+                >
                   Your name
                 </label>
                 <input
@@ -515,13 +521,8 @@ export function BookingDrawer({
                     color: "var(--drawer-text)",
                   }}
                 >
-                  <ArrowLeft
-                    className="w-4 h-4"
-                    strokeWidth={1.6}
-                  />
-                  <span className="text-base font-inter">
-                    Back
-                  </span>
+                  <ArrowLeft className="w-4 h-4" strokeWidth={1.6} />
+                  <span className="text-base font-inter">Back</span>
                 </button>
 
                 <button
