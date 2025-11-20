@@ -155,7 +155,10 @@ export function BookingDrawer({
     // Handle mobile keyboard appearance
     const handleFocusIn = (e: FocusEvent) => {
       const target = e.target as HTMLElement;
-      if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA")) {
+      if (
+        target &&
+        (target.tagName === "INPUT" || target.tagName === "TEXTAREA")
+      ) {
         // Scroll the focused input into view with some delay to account for keyboard animation
         setTimeout(() => {
           target.scrollIntoView({ behavior: "smooth", block: "center" });
