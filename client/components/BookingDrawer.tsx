@@ -305,7 +305,10 @@ export function BookingDrawer({
       >
         <div
           ref={drawerPanelRef}
-          className="max-w-[390px] mx-auto bg-[#2C2C2C] rounded-t-2xl p-6 flex flex-col gap-4 shadow-lg max-h-[90dvh] overflow-y-auto"
+          className="max-w-[390px] mx-auto rounded-t-2xl p-6 flex flex-col gap-4 shadow-lg max-h-[90dvh] overflow-y-auto"
+          style={{
+            backgroundColor: "var(--drawer-bg)",
+          }}
         >
           {step === 1 ? (
             <>
