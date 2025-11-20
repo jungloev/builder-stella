@@ -118,7 +118,11 @@ export function BookingCalendar({
   // Fetch bookings for current date and preload adjacent dates
   useEffect(() => {
     fetchBookings();
-    preloadAdjacentDates();
+    // Defer adjacent date preloading until after initial load
+    const timer = setTimeout(() => {
+      preloadAdjacentDates();
+    }, 1000);
+    return () => clearTimeout(timer);
   }, [dateString]);
 
   const fetchBookings = async (isAfterCreation = false, date?: string) => {
