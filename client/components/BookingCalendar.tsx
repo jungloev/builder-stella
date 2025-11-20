@@ -62,15 +62,6 @@ const bookingStyles = `
     animation: fadeOutModal 50ms linear;
   }
 
-  @media (max-width: 640px) {
-    [data-booking-calendar] {
-      background-color: #000000;
-    }
-
-    [data-booking-calendar-header] {
-      background-color: #000000;
-    }
-  }
 `;
 
 interface BookingCalendarProps {
@@ -429,7 +420,7 @@ export function BookingCalendar({
   return (
     <div
       data-booking-calendar
-      className="min-h-screen bg-white flex flex-col max-w-[390px] mx-auto relative"
+      className="min-h-screen bg-[#FDFDFB] flex flex-col max-w-[390px] mx-auto relative"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
