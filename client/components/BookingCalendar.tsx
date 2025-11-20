@@ -507,7 +507,8 @@ export function BookingCalendar({
       {/* Floating Action Button */}
       <button
         onClick={() => setIsDrawerOpen(true)}
-        className="fixed bottom-16 left-1/2 -translate-x-1/2 w-[58px] h-[58px] bg-[#2C2C2C] rounded-full flex items-center justify-center shadow-lg hover:bg-[#3C3C3C] transition-colors z-20"
+        className="fixed left-1/2 -translate-x-1/2 w-[58px] h-[58px] bg-[#2C2C2C] rounded-full flex items-center justify-center shadow-lg hover:bg-[#3C3C3C] transition-colors z-20"
+        style={{ bottom: "calc(4rem - 5px)" }}
         aria-label="Add booking"
       >
         <Plus className="w-7 h-7 text-white" strokeWidth={2} />
