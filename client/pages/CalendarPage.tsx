@@ -30,7 +30,7 @@ export default function CalendarPage() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-white">
+    <div className="flex flex-col min-h-screen bg-[#FDFDFB]">
       <div className="bg-white border-b border-slate-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center gap-4">
           <Button
@@ -46,7 +46,7 @@ export default function CalendarPage() {
           </h1>
         </div>
       </div>
-      <div className="flex-1 overflow-auto bg-white">
+      <div className="flex-1 overflow-auto bg-[#FDFDFB]">
         <BookingCalendar calendarId={calendarName} />
       </div>
     </div>
