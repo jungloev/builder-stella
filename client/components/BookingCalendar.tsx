@@ -61,6 +61,16 @@ const bookingStyles = `
   .date-picker-card.closing {
     animation: fadeOutModal 50ms linear;
   }
+
+  @media (max-width: 640px) {
+    [data-booking-calendar] {
+      background-color: #000000;
+    }
+
+    [data-booking-calendar-header] {
+      background-color: #000000;
+    }
+  }
 `;
 
 interface BookingCalendarProps {
