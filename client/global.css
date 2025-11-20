@@ -38,6 +38,32 @@
     --ring: 257 47% 51%;
 
     --radius: 0.5rem;
+
+    --drawer-bg: #2C2C2C;
+    --drawer-border: #505050;
+    --drawer-input-bg: #3C3C3C;
+    --drawer-text: #ffffff;
+    --drawer-text-secondary: rgba(255, 255, 255, 0.7);
+  }
+
+  @media (prefers-color-scheme: light) {
+    :root {
+      --drawer-bg: #ffffff;
+      --drawer-border: #e5e7eb;
+      --drawer-input-bg: #f3f4f6;
+      --drawer-text: #1f2937;
+      --drawer-text-secondary: rgba(31, 41, 55, 0.7);
+    }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --drawer-bg: #2C2C2C;
+      --drawer-border: #505050;
+      --drawer-input-bg: #3C3C3C;
+      --drawer-text: #ffffff;
+      --drawer-text-secondary: rgba(255, 255, 255, 0.7);
+    }
   }
 }
 
