@@ -316,7 +316,7 @@ export function BookingDrawer({
               <div className="flex flex-col gap-3">
                 {/* Label */}
                 <div className="flex justify-between items-start">
-                  <span className="text-white text-base font-inter">
+                  <span className="text-base font-inter" style={{ color: "var(--drawer-text)" }}>
                     Set start and stop
                   </span>
                 </div>
@@ -381,7 +381,7 @@ export function BookingDrawer({
 
                 {/* Description */}
                 <div className="flex justify-between items-center text-sm">
-                  <span className="text-white/70 font-inter">
+                  <span className="font-inter" style={{ color: "var(--drawer-text-secondary)" }}>
                     {minutesToTime(startTime)} — {minutesToTime(endTime)}
                   </span>
                 </div>
@@ -405,23 +405,45 @@ export function BookingDrawer({
               <div className="flex justify-between items-center gap-3">
                 <button
                   onClick={handleCancel}
-                  className="flex items-center gap-2 px-3 py-3 bg-[#303030] text-[#ffffff] border border-[#767676] rounded-lg hover:bg-[#242424] hover:text-[#ffffff] transition-colors"
+                  className="flex items-center gap-2 px-3 py-3 border rounded-lg transition-colors"
+                  style={{
+                    backgroundColor: "var(--drawer-bg)",
+                    borderColor: "var(--drawer-border)",
+                    color: "var(--drawer-text)",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.opacity = "0.8";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.opacity = "1";
+                  }}
                 >
-                  <X className="w-4 h-4 text-[#ffffff]" strokeWidth={1.6} />
-                  <span className="text-[#ffffff] text-base font-inter">
+                  <X className="w-4 h-4" strokeWidth={1.6} style={{ color: "var(--drawer-text)" }} />
+                  <span className="text-base font-inter">
                     Cancel
                   </span>
                 </button>
 
                 <button
                   onClick={handleNext}
-                  className="flex items-center gap-2 px-3 py-3 bg-[#F5F5F5] border border-[#2C2C2C] rounded-lg hover:bg-[#ECECEC] transition-colors"
+                  className="flex items-center gap-2 px-3 py-3 border rounded-lg transition-colors"
+                  style={{
+                    backgroundColor: "#F5F5F5",
+                    borderColor: "#2C2C2C",
+                    color: "#1E1E1E",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.opacity = "0.9";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.opacity = "1";
+                  }}
                 >
-                  <span className="text-[#1E1E1E] text-base font-inter">
+                  <span className="text-base font-inter">
                     Next
                   </span>
                   <ArrowRight
-                    className="w-4 h-4 text-[#1E1E1E]"
+                    className="w-4 h-4"
                     strokeWidth={1.6}
                   />
                 </button>
@@ -431,7 +453,7 @@ export function BookingDrawer({
             <>
               {/* Name Step */}
               <div className="flex flex-col gap-2">
-                <label className="text-white text-base font-inter">
+                <label className="text-base font-inter" style={{ color: "var(--drawer-text)" }}>
                   Your name
                 </label>
                 <input
@@ -440,7 +462,12 @@ export function BookingDrawer({
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Enter your name"
-                  className="px-4 py-3 bg-[#3C3C3C] border border-[#505050] rounded-lg text-white text-base font-inter placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#14AE5C]"
+                  className="px-4 py-3 border rounded-lg text-base font-inter focus:outline-none focus:ring-2 focus:ring-[#14AE5C]"
+                  style={{
+                    backgroundColor: "var(--drawer-input-bg)",
+                    borderColor: "var(--drawer-border)",
+                    color: "var(--drawer-text)",
+                  }}
                   autoFocus
                   disabled={isSubmitting}
                 />
@@ -465,13 +492,18 @@ export function BookingDrawer({
                 <button
                   onClick={handleBack}
                   disabled={isSubmitting}
-                  className="flex items-center gap-2 px-3 py-3 bg-[#303030] border border-[#303030] rounded-lg hover:bg-[#242424] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex items-center gap-2 px-3 py-3 border rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  style={{
+                    backgroundColor: "var(--drawer-bg)",
+                    borderColor: "var(--drawer-border)",
+                    color: "var(--drawer-text)",
+                  }}
                 >
                   <ArrowLeft
-                    className="w-4 h-4 text-[#ffffff]"
+                    className="w-4 h-4"
                     strokeWidth={1.6}
                   />
-                  <span className="text-[#ffffff] text-base font-inter">
+                  <span className="text-base font-inter">
                     Back
                   </span>
                 </button>
@@ -479,12 +511,16 @@ export function BookingDrawer({
                 <button
                   onClick={handleBookIt}
                   disabled={!name.trim() || isSubmitting}
-                  className="flex items-center gap-2 px-3 py-3 bg-[#14AE5C] border border-[#14AE5C] rounded-lg hover:bg-[#14AE5C] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex items-center gap-2 px-3 py-3 border border-[#14AE5C] rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  style={{
+                    backgroundColor: "#14AE5C",
+                    color: "white",
+                  }}
                 >
-                  <span className="text-white text-base font-inter">
+                  <span className="text-base font-inter">
                     {isSubmitting ? "Creating..." : "Book it"}
                   </span>
-                  <Zap className="w-4 h-4 text-white" strokeWidth={1.6} />
+                  <Zap className="w-4 h-4" strokeWidth={1.6} />
                 </button>
               </div>
             </>
