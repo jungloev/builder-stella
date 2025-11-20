@@ -428,7 +428,7 @@ export function BookingCalendar({
       {/* Header with date navigation */}
       <div
         data-booking-calendar-header
-        className="flex items-center justify-between px-0 py-4 sticky top-0 bg-white z-10"
+        className="flex items-center justify-between px-0 py-4 sticky top-0 bg-[#FDFDFB] z-10"
       >
         <button
           onClick={handlePreviousDay}
