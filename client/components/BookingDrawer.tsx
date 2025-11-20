@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { X, ArrowRight, ArrowLeft, Zap } from "lucide-react";
 import { CreateBookingRequest } from "@shared/api";
 
@@ -87,6 +87,8 @@ export function BookingDrawer({
   existingBookings = [],
   calendarId,
 }: BookingDrawerProps) {
+  const drawerPanelRef = useRef<HTMLDivElement>(null);
+  const nameInputRef = useRef<HTMLInputElement>(null);
   const [step, setStep] = useState<1 | 2>(1);
   const [startTime, setStartTime] = useState(420); // 07:00 in minutes
   const [endTime, setEndTime] = useState(600); // 10:00 in minutes
@@ -129,7 +131,7 @@ export function BookingDrawer({
     }
   }, [isOpen]);
 
-  // Handle keyboard shortcuts
+  // Handle keyboard shortcuts and mobile keyboard avoidance
   useEffect(() => {
     if (!isOpen) return;
 
@@ -150,8 +152,23 @@ export function BookingDrawer({
       }
     };
 
+    // Handle mobile keyboard appearance
+    const handleFocusIn = (e: FocusEvent) => {
+      const target = e.target as HTMLElement;
+      if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA")) {
+        // Scroll the focused input into view with some delay to account for keyboard animation
+        setTimeout(() => {
+          target.scrollIntoView({ behavior: "smooth", block: "center" });
+        }, 300);
+      }
+    };
+
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    document.addEventListener("focusin", handleFocusIn);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("focusin", handleFocusIn);
+    };
   }, [isOpen, step, name, startTime, endTime]);
 
   const minutesToTime = (minutes: number) => {
@@ -283,7 +300,10 @@ export function BookingDrawer({
           transition: `transform 200ms ${isAnimatingOut ? "ease-in" : "ease-out"}`,
         }}
       >
-        <div className="max-w-[390px] mx-auto bg-[#2C2C2C] rounded-t-2xl p-6 flex flex-col gap-4 shadow-lg">
+        <div
+          ref={drawerPanelRef}
+          className="max-w-[390px] mx-auto bg-[#2C2C2C] rounded-t-2xl p-6 flex flex-col gap-4 shadow-lg max-h-[90dvh] overflow-y-auto"
+        >
           {step === 1 ? (
             <>
               {/* Duration Step */}
@@ -409,6 +429,7 @@ export function BookingDrawer({
                   Your name
                 </label>
                 <input
+                  ref={nameInputRef}
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
