@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { X, ArrowRight, ArrowLeft, Zap } from "lucide-react";
 import { CreateBookingRequest } from "@shared/api";
 
-// Add styles for range input
+// Add styles for range input and adaptive theming
 const rangeSliderStyles = `
   input[type="range"] {
     pointer-events: auto;
@@ -67,6 +67,22 @@ const rangeSliderStyles = `
 
   input[type="range"]:focus {
     outline: none;
+  }
+
+  input[type="text"]::placeholder {
+    color: rgba(156, 163, 175, 1);
+  }
+
+  @media (prefers-color-scheme: light) {
+    input[type="text"]::placeholder {
+      color: rgba(107, 114, 128, 0.7);
+    }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    input[type="text"]::placeholder {
+      color: rgba(156, 163, 175, 1);
+    }
   }
 `;
 
