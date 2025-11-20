@@ -424,7 +424,7 @@ export function BookingCalendar({
     >
       <style>{bookingStyles}</style>
       {/* Header with date navigation */}
-      <div className="flex items-center justify-between px-0 py-4 sticky top-0 bg-[#FDFDFB] z-10">
+      <div className="flex items-center justify-between px-0 py-4 sticky top-0 bg-black md:bg-white z-10">
         <button
           onClick={handlePreviousDay}
           className="w-12 h-12 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
