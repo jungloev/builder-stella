@@ -418,7 +418,7 @@ export function BookingCalendar({
 
   return (
     <div
-      className="min-h-screen bg-[#FDFDFB] flex flex-col max-w-[390px] mx-auto relative"
+      className="min-h-screen bg-black md:bg-white flex flex-col max-w-[390px] mx-auto relative"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
