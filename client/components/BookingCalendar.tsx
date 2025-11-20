@@ -118,11 +118,16 @@ export function BookingCalendar({
   // Fetch bookings for current date and preload adjacent dates
   useEffect(() => {
     fetchBookings();
-    // Defer adjacent date preloading until after initial load
-    const timer = setTimeout(() => {
-      preloadAdjacentDates();
-    }, 1000);
-    return () => clearTimeout(timer);
+    // Defer adjacent date preloading until browser is idle
+    if ("requestIdleCallback" in window) {
+      const callbackId = requestIdleCallback(() => preloadAdjacentDates());
+      return () => cancelIdleCallback(callbackId);
+    } else {
+      const timer = setTimeout(() => {
+        preloadAdjacentDates();
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
   }, [dateString]);
 
   const fetchBookings = async (isAfterCreation = false, date?: string) => {
