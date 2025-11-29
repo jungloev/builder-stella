@@ -66,11 +66,21 @@ const bookingStyles = `
     animation: fadeOutModal 50ms linear;
   }
 
-  @media (max-width: 991px) {
+  [data-booking-calendar="true"] {
+    max-width: 730px;
+  }
+
+  @media (max-width: 620px) {
     [data-booking-calendar="true"] {
-      max-width: 730px;
+      max-width: 390px;
     }
 
+    [data-booking-calendar-header="true"] {
+      margin-right: 0;
+    }
+  }
+
+  @media (max-width: 991px) {
     [data-booking-calendar-header="true"] {
       margin-right: 150px;
     }
