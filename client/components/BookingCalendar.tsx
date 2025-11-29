@@ -67,18 +67,21 @@ const bookingStyles = `
   }
 
   [data-booking-calendar="true"] {
-    max-width: 1106px;
+    max-width: 100%;
+    width: 100%;
   }
 
-  @media (max-width: 1024px) {
+  @media (min-width: 621px) {
     [data-booking-calendar="true"] {
-      max-width: 520px;
+      max-width: 450px;
+      width: 450px;
     }
   }
 
   @media (max-width: 620px) {
     [data-booking-calendar="true"] {
       max-width: 390px;
+      width: 100%;
     }
   }
 
