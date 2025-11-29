@@ -133,6 +133,9 @@ export function BookingCalendar({
   const [pickerMonth, setPickerMonth] = useState(new Date());
   const [monthBookingsLoaded, setMonthBookingsLoaded] = useState(false);
 
+  // requestClose is used to signal the BookingDrawer to start its closing animation
+  const [requestClose, setRequestClose] = useState(false);
+
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
   const longPressTimer = useRef<NodeJS.Timeout | null>(null);
