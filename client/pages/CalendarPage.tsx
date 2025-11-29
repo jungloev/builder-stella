@@ -29,19 +29,21 @@ export default function CalendarPage() {
   }
 
   return (
-    <div
-      className="flex flex-col min-h-screen bg-[#FDFDFB]"
-      style={{
-        "@media (max-width: 991px)": {
-          backgroundColor: "rgba(216, 216, 216, 1)",
-        },
-      } as any}
-    >
-      <BookingCalendar
-        calendarId={calendarName}
-        calendarName={AVAILABLE_CALENDARS[calendarName]}
-        onBack={() => navigate("/")}
-      />
+    <div className="flex flex-col min-h-screen bg-[#FDFDFB]">
+      <style>{`
+        @media (max-width: 991px) {
+          [data-calendar-page] {
+            background-color: rgba(216, 216, 216, 1);
+          }
+        }
+      `}</style>
+      <div data-calendar-page className="flex flex-col min-h-screen bg-[#FDFDFB]">
+        <BookingCalendar
+          calendarId={calendarName}
+          calendarName={AVAILABLE_CALENDARS[calendarName]}
+          onBack={() => navigate("/")}
+        />
+      </div>
     </div>
   );
 }
