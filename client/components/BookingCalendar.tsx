@@ -445,7 +445,7 @@ export function BookingCalendar({
       {/* Header with back button, calendar name, and date */}
       <div
         data-booking-calendar-header
-        className="flex items-center justify-between px-4 py-3 sticky top-0 bg-[#FDFDFB] border-b border-[#D7D7D7] gap-2"
+        className="flex items-center justify-between px-3 py-3 sticky top-0 bg-[#FDFDFB] border-b border-[#D7D7D7] gap-2 w-full"
       >
         {/* Back button */}
         <button
