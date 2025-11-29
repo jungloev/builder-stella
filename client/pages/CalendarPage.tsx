@@ -29,10 +29,7 @@ export default function CalendarPage() {
   }
 
   return (
-    <div
-      className="flex flex-col min-h-screen bg-[#FDFDFB]"
-      data-calendar-page="true"
-    >
+    <>
       <style>{`
         @media (max-width: 991px) {
           [data-calendar-page="true"] {
@@ -40,11 +37,16 @@ export default function CalendarPage() {
           }
         }
       `}</style>
-      <BookingCalendar
-        calendarId={calendarName}
-        calendarName={AVAILABLE_CALENDARS[calendarName]}
-        onBack={() => navigate("/")}
-      />
-    </div>
+      <div
+        className="flex flex-col min-h-screen bg-[#FDFDFB]"
+        data-calendar-page="true"
+      >
+        <BookingCalendar
+          calendarId={calendarName}
+          calendarName={AVAILABLE_CALENDARS[calendarName]}
+          onBack={() => navigate("/")}
+        />
+      </div>
+    </>
   );
 }
