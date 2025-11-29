@@ -550,16 +550,33 @@ export function BookingCalendar({
         )}
       </div>
 
-      {/* Floating Action Button */}
-      <button
-        data-add-booking-button="true"
-        onClick={() => setIsDrawerOpen(true)}
-        className="fixed left-1/2 -translate-x-1/2 w-[58px] h-[58px] bg-[#2C2C2C] rounded-full flex items-center justify-center shadow-lg hover:bg-[#3C3C3C] transition-colors z-20"
-        style={{ bottom: "calc(4rem - 5px)" }}
-        aria-label="Add booking"
-      >
-        <Plus className="w-7 h-7 text-white" strokeWidth={2} />
-      </button>
+      {/* Navigation and Add Button Bar */}
+      <div className="fixed bottom-0 left-0 right-0 flex items-center justify-center gap-2 bg-[#FDFDFB] py-4 px-4 z-20" style={{ boxShadow: "0 -2px 8px rgba(0,0,0,0.05)" }}>
+        <button
+          onClick={handlePreviousDay}
+          className="w-11 h-11 flex items-center justify-center rounded-full bg-[#F5F5F5] border border-[#D9D9D9] hover:bg-gray-200 transition-colors"
+          aria-label="Previous day"
+        >
+          <ChevronLeft className="w-5 h-5 text-[#1E1E1E]" />
+        </button>
+
+        <button
+          data-add-booking-button="true"
+          onClick={() => setIsDrawerOpen(true)}
+          className="w-[60px] h-[60px] bg-[#2C2C2C] rounded-full flex items-center justify-center shadow-lg hover:bg-[#3C3C3C] transition-colors"
+          aria-label="Add booking"
+        >
+          <Plus className="w-7 h-7 text-white" strokeWidth={2.7} />
+        </button>
+
+        <button
+          onClick={handleNextDay}
+          className="w-11 h-11 flex items-center justify-center rounded-full bg-[#F5F5F5] border border-[#D9D9D9] hover:bg-gray-200 transition-colors"
+          aria-label="Next day"
+        >
+          <ChevronRight className="w-5 h-5 text-[#1E1E1E]" />
+        </button>
+      </div>
 
       {/* Booking Drawer */}
       <BookingDrawer
