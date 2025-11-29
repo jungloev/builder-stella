@@ -31,7 +31,7 @@ export default function CalendarPage() {
   return (
     <>
       <style>{`
-        @media (max-width: 991px) {
+        @media (min-width: 621px) {
           [data-calendar-page="true"] {
             background-color: rgba(216, 216, 216, 1);
           }
