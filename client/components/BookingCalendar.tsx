@@ -559,9 +559,21 @@ export function BookingCalendar({
 
         <button
           data-add-booking-button="true"
-          onClick={() => setIsDrawerOpen(true)}
+          onClick={() => {
+            if (!isDrawerOpen) {
+              setRequestClose(false);
+              setIsDrawerOpen(true);
+            } else {
+              // signal BookingDrawer to animate out and call onClose
+              setRequestClose(true);
+            }
+          }}
           className="w-[60px] h-[60px] bg-[#2C2C2C] rounded-full flex items-center justify-center shadow-lg hover:bg-[#3C3C3C] transition-colors"
-          aria-label="Add booking"
+          aria-label={isDrawerOpen ? "Cancel" : "Add booking"}
+          style={{
+            transform: isDrawerOpen && !requestClose ? "rotate(45deg) translateY(-8px)" : requestClose ? "rotate(0deg) translateY(0)" : "none",
+            transition: `transform 200ms ${requestClose ? "ease-in" : "ease-out"}`,
+          }}
         >
           <Plus className="w-7 h-7 text-white" strokeWidth={2.7} />
         </button>
