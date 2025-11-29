@@ -598,7 +598,6 @@ export function BookingCalendar({
       <BookingDrawer
         isOpen={isDrawerOpen}
         requestClose={requestClose}
-        onHeightChange={(h) => setDrawerHeight(h)}
         onClose={() => {
           setIsDrawerOpen(false);
           // reset the requestClose signal after drawer has closed
