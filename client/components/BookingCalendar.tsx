@@ -590,7 +590,12 @@ export function BookingCalendar({
       {/* Booking Drawer */}
       <BookingDrawer
         isOpen={isDrawerOpen}
-        onClose={() => setIsDrawerOpen(false)}
+        requestClose={requestClose}
+        onClose={() => {
+          setIsDrawerOpen(false);
+          // reset the requestClose signal after drawer has closed
+          setTimeout(() => setRequestClose(false), 220);
+        }}
         currentDate={dateString}
         onBookingCreated={handleBookingCreated}
         existingBookings={bookings}
