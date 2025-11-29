@@ -573,7 +573,12 @@ export function BookingCalendar({
           aria-label={isDrawerOpen ? "Cancel" : "Add booking"}
           style={{
             // translate first so movement is in page coordinates, then rotate around center
-            transform: isDrawerOpen && !requestClose ? `translateY(-${drawerHeight}px) rotate(45deg)` : requestClose ? `translateY(0px) rotate(0deg)` : "none",
+            transform:
+              isDrawerOpen && !requestClose
+                ? `translateY(-${drawerHeight}px) rotate(45deg)`
+                : requestClose
+                  ? `translateY(0px) rotate(0deg)`
+                  : "none",
             transformOrigin: "50% 50%",
             transition: `transform 200ms ${requestClose ? "ease-in" : "ease-out"}`,
           }}

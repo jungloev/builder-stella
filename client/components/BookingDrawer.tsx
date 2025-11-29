@@ -156,7 +156,9 @@ export function BookingDrawer({
     if (shouldAnimate && isOpen && drawerPanelRef.current) {
       // Wait one frame to ensure layout is updated
       requestAnimationFrame(() => {
-        const h = drawerPanelRef.current ? drawerPanelRef.current.offsetHeight : 0;
+        const h = drawerPanelRef.current
+          ? drawerPanelRef.current.offsetHeight
+          : 0;
         if (onHeightChange) onHeightChange(h + 16); // include small offset
       });
     }
