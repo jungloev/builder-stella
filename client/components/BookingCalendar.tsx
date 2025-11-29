@@ -442,11 +442,26 @@ export function BookingCalendar({
       onTouchEnd={handleTouchEnd}
     >
       <style>{bookingStyles}</style>
-      {/* Header with date navigation */}
+      {/* Header with back button, calendar name, and date */}
       <div
         data-booking-calendar-header
-        className="flex items-center justify-center px-0 py-4 sticky top-0 bg-[#FDFDFB] z-10"
+        className="flex items-center justify-between px-4 py-3 sticky top-0 bg-[#FDFDFB] border-b border-[#D7D7D7] gap-2"
       >
+        {/* Back button */}
+        <button
+          onClick={onBack}
+          className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors flex-shrink-0"
+          aria-label="Back"
+        >
+          <ChevronLeft className="w-5 h-5 text-[#1E1E1E]" />
+        </button>
+
+        {/* Calendar name */}
+        <span className="text-sm font-normal text-[#2C2C2C] flex-shrink-0">
+          {calendarName || (calendarId ? AVAILABLE_CALENDARS[calendarId] : "")}
+        </span>
+
+        {/* Date button */}
         <button
           onClick={handleDateClick}
           onMouseDown={handleDateMouseDown}
@@ -454,7 +469,7 @@ export function BookingCalendar({
           onMouseLeave={handleDateMouseUp}
           onTouchStart={handleDateTouchStart}
           onTouchEnd={handleDateTouchEnd}
-          className="font-sans text-[36px] leading-[44px] font-bold text-[#0C0B0C] text-center hover:opacity-70 transition-opacity cursor-pointer"
+          className="ml-auto px-3 py-2 rounded-lg bg-[#2C2C2C] text-white text-sm font-normal hover:opacity-80 transition-opacity cursor-pointer flex-shrink-0"
         >
           {format(currentDate, "EEE, d MMM")}
         </button>
