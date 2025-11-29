@@ -572,7 +572,7 @@ export function BookingCalendar({
           className="w-[60px] h-[60px] bg-[#2C2C2C] rounded-full flex items-center justify-center shadow-lg hover:bg-[#3C3C3C] transition-colors"
           aria-label={isDrawerOpen ? "Cancel" : "Add booking"}
           style={{
-            transform: isDrawerOpen && !requestClose ? "rotate(45deg) translateY(-8px)" : requestClose ? "rotate(0deg) translateY(0)" : "none",
+            transform: isDrawerOpen && !requestClose ? `rotate(45deg) translateY(-${drawerHeight}px)` : requestClose ? "rotate(0deg) translateY(0)" : "none",
             transition: `transform 200ms ${requestClose ? "ease-in" : "ease-out"}`,
           }}
         >
