@@ -135,6 +135,7 @@ export function BookingCalendar({
 
   // requestClose is used to signal the BookingDrawer to start its closing animation
   const [requestClose, setRequestClose] = useState(false);
+  const [drawerHeight, setDrawerHeight] = useState(0);
 
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
