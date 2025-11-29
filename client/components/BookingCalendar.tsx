@@ -468,6 +468,7 @@ export function BookingCalendar({
       <div
         data-booking-calendar-header="true"
         className="flex items-center justify-between px-3 py-3 sticky top-0 bg-[#FDFDFB] border-b border-[#D7D7D7] gap-2 w-full"
+        style={{ zIndex: 9999 }}
       >
         {/* Back button */}
         <button
