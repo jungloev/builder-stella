@@ -1,7 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { BookingCalendar } from "@/components/BookingCalendar";
-import { ChevronLeft } from "lucide-react";
 
 const AVAILABLE_CALENDARS: Record<string, string> = {
   fastlandbox: "Fastland Box",
@@ -31,24 +30,11 @@ export default function CalendarPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-[#FDFDFB]">
-      <div className="bg-white border-b border-slate-200 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center gap-4">
-          <Button
-            onClick={() => navigate("/")}
-            variant="ghost"
-            size="icon"
-            className="hover:bg-slate-100"
-          >
-            <ChevronLeft className="h-5 w-5" />
-          </Button>
-          <h1 className="text-2xl font-bold text-slate-900">
-            {AVAILABLE_CALENDARS[calendarName]}
-          </h1>
-        </div>
-      </div>
-      <div className="flex-1 overflow-auto bg-[#FDFDFB]">
-        <BookingCalendar calendarId={calendarName} />
-      </div>
+      <BookingCalendar
+        calendarId={calendarName}
+        calendarName={AVAILABLE_CALENDARS[calendarName]}
+        onBack={() => navigate("/")}
+      />
     </div>
   );
 }
