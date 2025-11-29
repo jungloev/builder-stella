@@ -550,8 +550,8 @@ export function BookingCalendar({
         )}
       </div>
 
-      {/* Navigation and Add Button Bar */}
-      <div className="fixed bottom-0 left-0 right-0 flex items-center justify-center gap-2 bg-[#FDFDFB] py-4 px-4 z-20" style={{ boxShadow: "0 -2px 8px rgba(0,0,0,0.05)" }}>
+      {/* Navigation and Add Button Bar - Floating */}
+      <div className="fixed bottom-8 left-1/2 -translate-x-1/2 flex items-center justify-center gap-2 z-20">
         <button
           onClick={handlePreviousDay}
           className="w-11 h-11 flex items-center justify-center rounded-full bg-[#F5F5F5] border border-[#D9D9D9] hover:bg-gray-200 transition-colors"
