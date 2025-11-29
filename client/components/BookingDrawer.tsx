@@ -93,6 +93,7 @@ interface BookingDrawerProps {
   onBookingCreated: () => void;
   existingBookings?: Array<{ id: string; startTime: string; endTime: string }>;
   calendarId?: string;
+  requestClose?: boolean;
 }
 
 export function BookingDrawer({
@@ -102,6 +103,7 @@ export function BookingDrawer({
   onBookingCreated,
   existingBookings = [],
   calendarId,
+  requestClose = false,
 }: BookingDrawerProps) {
   const drawerPanelRef = useRef<HTMLDivElement>(null);
   const nameInputRef = useRef<HTMLInputElement>(null);
