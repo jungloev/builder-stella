@@ -34,6 +34,7 @@ export default function CalendarPage() {
         @media (min-width: 621px) {
           [data-calendar-page="true"] {
             background-color: rgba(216, 216, 216, 1);
+            margin-right: -3px;
           }
         }
       `}</style>
