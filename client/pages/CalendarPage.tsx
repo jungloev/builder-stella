@@ -29,21 +29,22 @@ export default function CalendarPage() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#FDFDFB]">
+    <div
+      className="flex flex-col min-h-screen bg-[#FDFDFB]"
+      data-calendar-page="true"
+    >
       <style>{`
         @media (max-width: 991px) {
-          [data-calendar-page] {
+          [data-calendar-page="true"] {
             background-color: rgba(216, 216, 216, 1);
           }
         }
       `}</style>
-      <div data-calendar-page className="flex flex-col min-h-screen bg-[#FDFDFB]">
-        <BookingCalendar
-          calendarId={calendarName}
-          calendarName={AVAILABLE_CALENDARS[calendarName]}
-          onBack={() => navigate("/")}
-        />
-      </div>
+      <BookingCalendar
+        calendarId={calendarName}
+        calendarName={AVAILABLE_CALENDARS[calendarName]}
+        onBack={() => navigate("/")}
+      />
     </div>
   );
 }
