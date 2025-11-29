@@ -74,21 +74,6 @@ const bookingStyles = `
     [data-booking-calendar="true"] {
       max-width: 390px;
     }
-
-    [data-booking-calendar-header="true"] {
-      margin-right: 0;
-    }
-  }
-
-  @media (max-width: 991px) {
-    [data-booking-calendar-header="true"] {
-      margin-right: 150px;
-    }
-
-    [data-add-booking-button="true"] {
-      position: fixed;
-      transform: matrix(1, 0, 0, 1, -29, 0);
-    }
   }
 
 `;
