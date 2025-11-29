@@ -67,15 +67,15 @@ const bookingStyles = `
   }
 
   @media (max-width: 991px) {
-    [data-booking-calendar] {
+    [data-booking-calendar="true"] {
       max-width: 730px;
     }
 
-    [data-booking-calendar-header] {
+    [data-booking-calendar-header="true"] {
       margin-right: 150px;
     }
 
-    [data-add-booking-button] {
+    [data-add-booking-button="true"] {
       position: fixed;
       transform: matrix(1, 0, 0, 1, -29, 0);
     }
