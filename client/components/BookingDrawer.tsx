@@ -151,6 +151,22 @@ export function BookingDrawer({
     }
   }, [isOpen]);
 
+  // Measure drawer panel height when it becomes visible and notify parent
+  useEffect(() => {
+    if (shouldAnimate && isOpen && drawerPanelRef.current) {
+      // Wait one frame to ensure layout is updated
+      requestAnimationFrame(() => {
+        const h = drawerPanelRef.current ? drawerPanelRef.current.offsetHeight : 0;
+        if (onHeightChange) onHeightChange(h + 16); // include small offset
+      });
+    }
+
+    // When starting to animate out, notify to collapse button
+    if (isAnimatingOut && onHeightChange) {
+      onHeightChange(0);
+    }
+  }, [shouldAnimate, isOpen, isAnimatingOut, onHeightChange]);
+
   // If parent requests the drawer to close (e.g., add button acting as cancel), trigger the close animation
   useEffect(() => {
     if (requestClose && isOpen) {
