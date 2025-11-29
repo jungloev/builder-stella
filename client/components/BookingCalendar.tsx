@@ -501,7 +501,7 @@ export function BookingCalendar({
       </div>
 
       {/* Calendar grid */}
-      <div className="flex-1 px-[10px] pb-24 relative">
+      <div className="flex-1 pl-[10px] pb-24 relative">
         {/* Time slots */}
         <div className="flex flex-col gap-[42px]">
           {TIME_SLOTS.map((time, index) => (
