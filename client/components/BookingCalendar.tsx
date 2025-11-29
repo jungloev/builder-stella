@@ -70,6 +70,12 @@ const bookingStyles = `
     max-width: 1106px;
   }
 
+  @media (max-width: 1024px) {
+    [data-booking-calendar="true"] {
+      max-width: 520px;
+    }
+  }
+
   @media (max-width: 620px) {
     [data-booking-calendar="true"] {
       max-width: 390px;
