@@ -437,16 +437,8 @@ export function BookingCalendar({
       {/* Header with date navigation */}
       <div
         data-booking-calendar-header
-        className="flex items-center justify-between px-0 py-4 sticky top-0 bg-[#FDFDFB] z-10"
+        className="flex items-center justify-center px-0 py-4 sticky top-0 bg-[#FDFDFB] z-10"
       >
-        <button
-          onClick={handlePreviousDay}
-          className="w-12 h-12 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
-          aria-label="Previous day"
-        >
-          <ChevronLeft className="w-6 h-6 text-gray-600" />
-        </button>
-
         <button
           onClick={handleDateClick}
           onMouseDown={handleDateMouseDown}
@@ -454,17 +446,9 @@ export function BookingCalendar({
           onMouseLeave={handleDateMouseUp}
           onTouchStart={handleDateTouchStart}
           onTouchEnd={handleDateTouchEnd}
-          className="font-sans text-[36px] leading-[44px] font-bold text-[#0C0B0C] text-center flex-1 hover:opacity-70 transition-opacity cursor-pointer"
+          className="font-sans text-[36px] leading-[44px] font-bold text-[#0C0B0C] text-center hover:opacity-70 transition-opacity cursor-pointer"
         >
           {format(currentDate, "EEE, d MMM")}
-        </button>
-
-        <button
-          onClick={handleNextDay}
-          className="w-12 h-12 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
-          aria-label="Next day"
-        >
-          <ChevronRight className="w-6 h-6 text-gray-600" />
         </button>
       </div>
 
