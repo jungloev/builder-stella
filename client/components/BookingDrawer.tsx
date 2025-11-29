@@ -149,6 +149,13 @@ export function BookingDrawer({
     }
   }, [isOpen]);
 
+  // If parent requests the drawer to close (e.g., add button acting as cancel), trigger the close animation
+  useEffect(() => {
+    if (requestClose && isOpen) {
+      handleCancel();
+    }
+  }, [requestClose, isOpen]);
+
   // Handle keyboard shortcuts and mobile keyboard avoidance
   useEffect(() => {
     if (!isOpen) return;
