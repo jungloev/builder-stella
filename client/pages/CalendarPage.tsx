@@ -29,7 +29,14 @@ export default function CalendarPage() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#FDFDFB]">
+    <div
+      className="flex flex-col min-h-screen bg-[#FDFDFB]"
+      style={{
+        "@media (max-width: 991px)": {
+          backgroundColor: "rgba(216, 216, 216, 1)",
+        },
+      } as any}
+    >
       <BookingCalendar
         calendarId={calendarName}
         calendarName={AVAILABLE_CALENDARS[calendarName]}
