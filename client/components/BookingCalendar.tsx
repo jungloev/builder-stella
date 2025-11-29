@@ -71,6 +71,8 @@ const bookingStyles = `
 interface BookingCalendarProps {
   initialDate?: Date;
   calendarId?: string;
+  calendarName?: string;
+  onBack?: () => void;
 }
 
 const TIME_SLOTS = [
@@ -91,6 +93,8 @@ const TIME_SLOTS = [
 export function BookingCalendar({
   initialDate = new Date(),
   calendarId,
+  calendarName,
+  onBack,
 }: BookingCalendarProps) {
   const [currentDate, setCurrentDate] = useState(initialDate);
   const [bookings, setBookings] = useState<Booking[]>([]);
