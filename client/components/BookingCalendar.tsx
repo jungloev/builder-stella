@@ -14,6 +14,10 @@ import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import { BookingDrawer } from "./BookingDrawer";
 import { BookingDetailsDialog } from "./BookingDetailsDialog";
 
+const AVAILABLE_CALENDARS: Record<string, string> = {
+  fastlandbox: "Fastland Box",
+};
+
 const bookingStyles = `
   @keyframes fadeInBooking {
     from {
