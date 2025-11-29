@@ -574,7 +574,7 @@ export function BookingCalendar({
             // translate first so movement is in page coordinates, then rotate around center
             transform:
               isDrawerOpen && !requestClose
-                ? `translateY(-${drawerHeight}px) rotate(45deg)`
+                ? `translateY(-200px) rotate(45deg)`
                 : requestClose
                   ? `translateY(0px) rotate(0deg)`
                   : "none",
