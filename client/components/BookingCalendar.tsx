@@ -67,7 +67,7 @@ const bookingStyles = `
   }
 
   [data-booking-calendar="true"] {
-    max-width: 730px;
+    max-width: 1106px;
   }
 
   @media (max-width: 620px) {
