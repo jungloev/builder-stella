@@ -451,7 +451,7 @@ export function BookingCalendar({
 
   return (
     <div
-      data-booking-calendar
+      data-booking-calendar="true"
       className="min-h-screen bg-[#FDFDFB] flex flex-col max-w-[390px] mx-auto relative"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
