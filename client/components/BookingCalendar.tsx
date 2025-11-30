@@ -572,7 +572,7 @@ export function BookingCalendar({
           className="w-[60px] h-[60px] rounded-full flex items-center justify-center shadow-lg hover:opacity-90 transition-transform"
           aria-label={isDrawerOpen ? "Cancel" : "Add booking"}
           style={{
-            backgroundColor: "hsl(var(--primary))",
+            backgroundColor: isDrawerOpen ? "#2C2C2C" : "hsl(var(--primary))",
             // translate first so movement is in page coordinates, then rotate around center
             transform:
               isDrawerOpen && !requestClose
@@ -581,7 +581,7 @@ export function BookingCalendar({
                   ? `translateY(0px) rotate(0deg)`
                   : "none",
             transformOrigin: "50% 50%",
-            transition: `transform 200ms ${requestClose ? "ease-in" : "ease-out"}`,
+            transition: `transform 200ms ${requestClose ? "ease-in" : "ease-out"}, background-color 150ms ease`,
           }}
         >
           <Plus className="w-7 h-7 text-white" strokeWidth={2.7} />
