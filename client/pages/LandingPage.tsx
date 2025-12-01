@@ -19,6 +19,7 @@ const SHOWCASE_ITEMS = [
 ];
 
 export default function LandingPage() {
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [step, setStep] = useState<"form" | "submitted">("form");
   const [carouselIndex, setCarouselIndex] = useState(0);
@@ -28,6 +29,32 @@ export default function LandingPage() {
     purpose: "",
   });
   const [isLoading, setIsLoading] = useState(false);
+
+  // Secret feature: 10 clicks on logo to go to explore page
+  const logoClickCount = useRef(0);
+  const logoClickTimeout = useRef<NodeJS.Timeout | null>(null);
+
+  const handleLogoClick = () => {
+    logoClickCount.current += 1;
+
+    // Reset counter if more than 5 seconds pass between clicks
+    if (logoClickTimeout.current) {
+      clearTimeout(logoClickTimeout.current);
+    }
+
+    logoClickTimeout.current = setTimeout(() => {
+      logoClickCount.current = 0;
+    }, 5000);
+
+    // Navigate to explore page on 10 clicks
+    if (logoClickCount.current === 10) {
+      logoClickCount.current = 0;
+      if (logoClickTimeout.current) {
+        clearTimeout(logoClickTimeout.current);
+      }
+      navigate("/explore");
+    }
+  };
 
   const handlePrevSlide = () => {
     setCarouselIndex(
