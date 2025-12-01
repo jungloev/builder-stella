@@ -200,8 +200,8 @@ export default function LandingPage() {
             can manage availability and bookings effortlessly.
           </p>
           <p className="text-sm text-gray-700 leading-relaxed">
-            Perfect for communities, coworking spaces, residential complexes, and
-            anyone looking to maximize resource utilization while building
+            Perfect for communities, coworking spaces, residential complexes,
+            and anyone looking to maximize resource utilization while building
             stronger connections with those around them.
           </p>
         </div>
