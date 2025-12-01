@@ -167,7 +167,7 @@ export default function LandingPage() {
       <div className="px-4 py-8 max-w-md mx-auto w-full">
         <Button
           onClick={() => setIsModalOpen(true)}
-          className="w-full h-12 bg-[#2C2C2C] text-white font-medium hover:bg-opacity-90 transition-colors"
+          className="w-full h-12 bg-primary text-white font-medium hover:opacity-90 transition-opacity"
         >
           Request early access
         </Button>
