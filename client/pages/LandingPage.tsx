@@ -1,14 +1,34 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
+const SHOWCASE_ITEMS = [
+  { id: 1, label: "Laundry" },
+  { id: 2, label: "Trailers" },
+  { id: 3, label: "BBQs" },
+  { id: 4, label: "Bikes" },
+  { id: 5, label: "Meeting Rooms" },
+];
 
 export default function LandingPage() {
   const [step, setStep] = useState<"form" | "submitted">("form");
+  const [carouselIndex, setCarouselIndex] = useState(0);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     purpose: "",
   });
   const [isLoading, setIsLoading] = useState(false);
+
+  const handlePrevSlide = () => {
+    setCarouselIndex(
+      (prev) => (prev - 1 + SHOWCASE_ITEMS.length) % SHOWCASE_ITEMS.length,
+    );
+  };
+
+  const handleNextSlide = () => {
+    setCarouselIndex((prev) => (prev + 1) % SHOWCASE_ITEMS.length);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
