@@ -117,7 +117,8 @@ export default function LandingPage() {
           <img
             src="/icon.svg"
             alt="Book-a-thing Logo"
-            className="h-16 w-16 object-contain"
+            className="h-16 w-16 object-contain cursor-pointer hover:opacity-80 transition-opacity"
+            onClick={handleLogoClick}
           />
         </div>
 
