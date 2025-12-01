@@ -246,7 +246,7 @@ export default function LandingPage() {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full h-10 bg-[#2C2C2C] text-white font-medium hover:bg-opacity-90 transition-colors"
+                className="w-full h-10 bg-primary text-white font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
               >
                 {isLoading ? "Sending..." : "Request early access"}
               </Button>
