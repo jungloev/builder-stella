@@ -18,6 +18,7 @@ const SHOWCASE_ITEMS = [
 ];
 
 export default function LandingPage() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [step, setStep] = useState<"form" | "submitted">("form");
   const [carouselIndex, setCarouselIndex] = useState(0);
   const [formData, setFormData] = useState({
