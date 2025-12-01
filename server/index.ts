@@ -81,5 +81,9 @@ export function createServer() {
   app.delete("/api/bookings/:id", deleteBooking);
   app.delete("/bookings/:id", deleteBooking);
 
+  // Early access routes
+  app.post("/api/early-access", handleEarlyAccess);
+  app.post("/early-access", handleEarlyAccess);
+
   return app;
 }
