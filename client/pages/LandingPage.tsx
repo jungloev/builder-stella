@@ -82,19 +82,64 @@ export default function LandingPage() {
           hazzle.
         </h1>
 
-        {/* Images Grid - Placeholder for future images */}
+        {/* Images - Desktop Grid / Mobile Carousel */}
         <div className="w-full mb-12">
-          <div className="grid grid-cols-3 gap-3 md:gap-4">
-            <div className="aspect-square bg-gray-200 rounded-lg flex items-center justify-center text-sm text-gray-500">
-              Laundry
+          {/* Desktop Grid */}
+          <div className="hidden md:grid grid-cols-3 gap-3 md:gap-4">
+            {SHOWCASE_ITEMS.slice(0, 3).map((item) => (
+              <div
+                key={item.id}
+                className="aspect-square bg-gray-200 rounded-lg flex items-center justify-center text-sm font-medium text-gray-600 hover:bg-gray-300 transition-colors"
+              >
+                {item.label}
+              </div>
+            ))}
+          </div>
+
+          {/* Mobile Carousel */}
+          <div className="md:hidden">
+            <div className="relative mb-4">
+              <div className="aspect-square bg-gray-200 rounded-lg flex items-center justify-center text-lg font-medium text-gray-600">
+                {SHOWCASE_ITEMS[carouselIndex].label}
+              </div>
             </div>
-            <div className="aspect-square bg-gray-200 rounded-lg flex items-center justify-center text-sm text-gray-500">
-              Trailers
-            </div>
-            <div className="aspect-square bg-gray-200 rounded-lg flex items-center justify-center text-sm text-gray-500">
-              BBQs
+
+            {/* Carousel Controls */}
+            <div className="flex items-center justify-between gap-2">
+              <button
+                onClick={handlePrevSlide}
+                className="p-2 rounded-full hover:bg-gray-200 transition-colors"
+                aria-label="Previous item"
+              >
+                <ChevronLeft className="w-5 h-5 text-gray-700" />
+              </button>
+
+              {/* Dots */}
+              <div className="flex justify-center gap-1 flex-1">
+                {SHOWCASE_ITEMS.map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setCarouselIndex(idx)}
+                    className={`h-2 rounded-full transition-all ${
+                      idx === carouselIndex
+                        ? "bg-gray-700 w-6"
+                        : "bg-gray-300 w-2"
+                    }`}
+                    aria-label={`Go to slide ${idx + 1}`}
+                  />
+                ))}
+              </div>
+
+              <button
+                onClick={handleNextSlide}
+                className="p-2 rounded-full hover:bg-gray-200 transition-colors"
+                aria-label="Next item"
+              >
+                <ChevronRight className="w-5 h-5 text-gray-700" />
+              </button>
             </div>
           </div>
+
           <p className="text-xs text-gray-500 text-center mt-2">
             Images coming soon
           </p>
