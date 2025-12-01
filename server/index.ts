@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
 import { getBookings, createBooking, deleteBooking } from "./routes/bookings";
+import { handleEarlyAccess } from "./routes/early-access";
 
 export function createServer() {
   const app = express();
