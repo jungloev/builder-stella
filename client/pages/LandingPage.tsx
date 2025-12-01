@@ -64,6 +64,15 @@ export default function LandingPage() {
     }
   };
 
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    // Reset form after a short delay to allow smooth modal close animation
+    setTimeout(() => {
+      setStep("form");
+      setFormData({ name: "", email: "", purpose: "" });
+    }, 200);
+  };
+
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
