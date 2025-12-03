@@ -135,9 +135,13 @@ export default function LandingPage() {
             {SHOWCASE_ITEMS.slice(0, 3).map((item) => (
               <div
                 key={item.id}
-                className="aspect-square bg-gray-200 rounded-lg flex items-center justify-center text-sm font-medium text-gray-600 hover:bg-gray-300 transition-colors"
+                className="aspect-square bg-gray-200 rounded-lg flex items-center justify-center text-sm font-medium text-gray-600 overflow-hidden hover:shadow-lg transition-shadow"
               >
-                {item.label}
+                <img
+                  src="https://cdn.builder.io/api/v1/image/assets%2Ff0e95b9de1014cc0953517d0eba702d7%2F071276aa60984589a8a461ede2ec4e8c?format=webp&width=800"
+                  alt={item.label}
+                  className="w-full h-full object-cover"
+                />
               </div>
             ))}
           </div>
@@ -145,8 +149,12 @@ export default function LandingPage() {
           {/* Mobile Carousel */}
           <div className="md:hidden">
             <div className="relative mb-4">
-              <div className="aspect-square bg-gray-200 rounded-lg flex items-center justify-center text-lg font-medium text-gray-600">
-                {SHOWCASE_ITEMS[carouselIndex].label}
+              <div className="aspect-square bg-gray-200 rounded-lg flex items-center justify-center text-lg font-medium text-gray-600 overflow-hidden">
+                <img
+                  src="https://cdn.builder.io/api/v1/image/assets%2Ff0e95b9de1014cc0953517d0eba702d7%2F071276aa60984589a8a461ede2ec4e8c?format=webp&width=800"
+                  alt={SHOWCASE_ITEMS[carouselIndex].label}
+                  className="w-full h-full object-cover"
+                />
               </div>
             </div>
 
@@ -185,10 +193,6 @@ export default function LandingPage() {
               </button>
             </div>
           </div>
-
-          <p className="text-xs text-gray-500 text-center mt-2">
-            Images coming soon
-          </p>
         </div>
 
         {/* Concept Explanation */}
