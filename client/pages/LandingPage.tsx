@@ -167,7 +167,7 @@ export default function LandingPage() {
           {/* Mobile Carousel */}
           <div className="md:hidden">
             <div className="relative mb-4">
-              <div className="aspect-square bg-gray-200 rounded-lg flex items-center justify-center text-lg font-medium text-gray-600 overflow-hidden">
+              <div className="aspect-[4/5] bg-gray-200 rounded-lg flex items-center justify-center text-lg font-medium text-gray-600 overflow-hidden">
                 <img
                   src={SHOWCASE_ITEMS[carouselIndex].image}
                   alt={SHOWCASE_ITEMS[carouselIndex].label}
