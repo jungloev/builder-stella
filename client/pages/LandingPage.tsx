@@ -140,7 +140,7 @@ export default function LandingPage() {
       {/* Left Content Section */}
       <div className="flex-1 flex flex-col justify-center w-full text-left">
         {/* Hero Title */}
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#2C2C2C] mb-6 lg:mb-8 leading-tight tracking-tight">
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#2C2C2C] mb-6 lg:mb-8 leading-tight tracking-tight">
           Book-a-thing is a very simple booking system with pretty much zero
           hazzle.
         </h1>
