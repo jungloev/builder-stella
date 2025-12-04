@@ -184,7 +184,7 @@ export default function LandingPage() {
         {/* Auto-Rotating Slideshow */}
         <div className="w-full max-w-sm lg:max-w-md">
           <div className="relative mb-6 lg:mb-8">
-            <div className="aspect-[4/5] bg-white rounded-2xl flex items-center justify-center overflow-hidden shadow-xl border border-white/60">
+            <div className="aspect-[4/5] flex items-center justify-center overflow-hidden">
               <img
                 src={SHOWCASE_ITEMS[carouselIndex].image}
                 alt={SHOWCASE_ITEMS[carouselIndex].label}
