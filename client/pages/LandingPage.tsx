@@ -140,7 +140,10 @@ export default function LandingPage() {
       {/* Left Content Section */}
       <div className="flex-1 flex flex-col justify-start w-full text-left">
         {/* Hero Title */}
-        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#2C2C2C] mb-6 lg:mb-8 leading-tight tracking-tight" style={{ fontFamily: "Alegreya, serif" }}>
+        <h1
+          className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#2C2C2C] mb-6 lg:mb-8 leading-tight tracking-tight"
+          style={{ fontFamily: "Alegreya, serif" }}
+        >
           Book-a-thing is a very simple booking system with pretty much zero
           hazzle.
         </h1>
@@ -166,7 +169,10 @@ export default function LandingPage() {
         {/* Concept Explanation */}
         <div className="space-y-4 md:space-y-5 mb-8 lg:mb-10">
           <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
-            A community sharing platform that makes it easy for neighbors to borrow and share resources. Whether it's a laundry machine, a barbecue, a meeting room, or any other shared asset, you can manage availability and bookings effortlessly.
+            A community sharing platform that makes it easy for neighbors to
+            borrow and share resources. Whether it's a laundry machine, a
+            barbecue, a meeting room, or any other shared asset, you can manage
+            availability and bookings effortlessly.
           </p>
           <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
             Perfect for communities, coworking spaces, residential complexes,
