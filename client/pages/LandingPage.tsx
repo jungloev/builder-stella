@@ -140,11 +140,11 @@ export default function LandingPage() {
       {/* Left Content Section */}
       <div className="flex-1 flex flex-col justify-center w-full">
         {/* Logo */}
-        <div className="mb-8 flex lg:justify-start justify-center">
+        <div className="mb-4 md:mb-8 flex lg:justify-start justify-center">
           <img
             src="/icon.svg"
             alt="Book-a-thing Logo"
-            className="h-[70px] w-[70px] object-contain cursor-pointer hover:opacity-80 transition-opacity"
+            className="h-16 md:h-[70px] w-16 md:w-[70px] object-contain cursor-pointer hover:opacity-80 transition-opacity"
             onClick={handleLogoClick}
           />
         </div>
