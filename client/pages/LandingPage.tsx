@@ -48,6 +48,15 @@ export default function LandingPage() {
   });
   const [isLoading, setIsLoading] = useState(false);
 
+  // Auto-rotate carousel every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCarouselIndex((prev) => (prev + 1) % SHOWCASE_ITEMS.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   // Secret feature: 10 clicks on logo to go to explore page
   const logoClickCount = useRef(0);
   const logoClickTimeout = useRef<NodeJS.Timeout | null>(null);
