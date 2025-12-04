@@ -180,7 +180,7 @@ export default function LandingPage() {
       </div>
 
       {/* Right Slideshow Section */}
-      <div className="flex-1 flex flex-col items-center justify-center w-full mt-12 sm:mt-14 lg:mt-0 bg-white rounded-3xl p-6 sm:p-8 lg:p-12 shadow-2xl border border-gray-100">
+      <div className="flex-1 flex flex-col items-center justify-center w-full mt-12 sm:mt-14 lg:mt-0">
         {/* Auto-Rotating Slideshow */}
         <div className="w-full max-w-sm lg:max-w-md">
           <div className="relative mb-6 lg:mb-8">
