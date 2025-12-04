@@ -194,8 +194,8 @@ export default function LandingPage() {
           </div>
 
           {/* Caption */}
-          <div className="text-center mb-6">
-            <h3 className="text-lg font-semibold text-[#2C2C2C]">
+          <div className="text-center mb-4 md:mb-6">
+            <h3 className="text-base md:text-lg font-semibold text-[#2C2C2C]">
               {SHOWCASE_ITEMS[carouselIndex].label}
             </h3>
           </div>
