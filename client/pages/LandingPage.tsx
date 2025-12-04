@@ -138,7 +138,7 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-[#FDFDFB] flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12 px-4 pt-0 pb-12 sm:px-6 sm:pb-16 lg:px-8 lg:pb-20 max-w-7xl mx-auto w-full">
       {/* Left Content Section */}
-      <div className="flex-1 flex flex-col justify-center w-full text-left">
+      <div className="flex-1 flex flex-col justify-start w-full text-left">
         {/* Hero Title */}
         <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#2C2C2C] mb-6 lg:mb-8 leading-tight tracking-tight">
           Book-a-thing is a very simple booking system with pretty much zero
