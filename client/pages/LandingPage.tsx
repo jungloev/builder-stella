@@ -157,13 +157,13 @@ export default function LandingPage() {
 
         {/* Concept Explanation */}
         <div className="space-y-4 md:space-y-5 lg:text-left text-center mb-8 lg:mb-10">
-          <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+          <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
             Book-a-thing is a community sharing platform that makes it easy for
             neighbors to borrow and share resources. Whether it's a laundry
             machine, a barbecue, a meeting room, or any other shared asset, you
             can manage availability and bookings effortlessly.
           </p>
-          <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+          <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
             Perfect for communities, coworking spaces, residential complexes,
             and anyone looking to maximize resource utilization while building
             stronger connections with those around them.
