@@ -214,7 +214,7 @@ export default function LandingPage() {
         </div>
 
         {/* Concept Explanation */}
-        <div className="space-y-4 text-center max-w-lg mx-auto">
+        <div className="space-y-4 text-center max-w-2xl mx-auto">
           <p className="text-sm text-gray-700 leading-relaxed">
             Book-a-thing is a community sharing platform that makes it easy for
             neighbors to borrow and share resources. Whether it's a laundry
