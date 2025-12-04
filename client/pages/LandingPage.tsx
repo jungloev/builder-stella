@@ -129,7 +129,7 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-[#FDFDFB] flex flex-col">
       {/* Header Section */}
-      <div className="flex-1 flex flex-col items-center justify-center px-4 py-8 max-w-2xl mx-auto w-full">
+      <div className="flex-1 flex flex-col items-center justify-center px-4 py-8 max-w-3xl mx-auto w-full">
         {/* Logo */}
         <div className="mb-8 flex justify-center">
           <img
