@@ -163,7 +163,7 @@ export default function LandingPage() {
         {/* CTA Button */}
         <Button
           onClick={() => setIsModalOpen(true)}
-          className="px-6 sm:px-8 py-2.5 sm:py-3 bg-primary text-white text-base sm:text-lg font-semibold rounded-xl shadow-md hover:shadow-lg transition-all"
+          className="px-5 sm:px-6 py-2 sm:py-2.5 bg-primary text-white text-sm sm:text-base font-semibold rounded-lg shadow-md hover:shadow-lg transition-all"
         >
           Request early access
         </Button>
