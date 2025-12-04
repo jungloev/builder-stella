@@ -136,7 +136,7 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FDFDFB] flex flex-col lg:flex-row items-center justify-center gap-4 md:gap-6 lg:gap-16 px-4 py-8 md:px-6 md:py-10 lg:px-12 lg:py-16 max-w-7xl mx-auto">
+    <div className="min-h-screen bg-[#FDFDFB] flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12 px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20 max-w-7xl mx-auto w-full">
       {/* Left Content Section */}
       <div className="flex-1 flex flex-col justify-center w-full">
         {/* Logo */}
