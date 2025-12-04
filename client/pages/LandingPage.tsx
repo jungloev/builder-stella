@@ -139,16 +139,6 @@ export default function LandingPage() {
     <div className="min-h-screen bg-[#FDFDFB] flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12 px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20 max-w-7xl mx-auto w-full">
       {/* Left Content Section */}
       <div className="flex-1 flex flex-col justify-center w-full">
-        {/* Logo */}
-        <div className="mb-4 md:mb-8 flex lg:justify-start justify-center">
-          <img
-            src="/icon.svg"
-            alt="Book-a-thing Logo"
-            className="h-16 md:h-[70px] w-16 md:w-[70px] object-contain cursor-pointer hover:opacity-80 transition-opacity"
-            onClick={handleLogoClick}
-          />
-        </div>
-
         {/* Hero Title */}
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold lg:text-left text-center text-[#2C2C2C] mb-6 lg:mb-8 leading-tight tracking-tight">
           Book-a-thing is a very simple booking system with pretty much zero
