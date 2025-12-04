@@ -146,8 +146,8 @@ export default function LandingPage() {
         </h1>
 
         {/* Mobile/Tablet Filmstrip Carousel - appears below headline */}
-        <div className="lg:hidden w-full mb-8 sm:mb-10 overflow-hidden">
-          <div className="flex gap-3 sm:gap-4 overflow-x-auto pb-2 sm:pb-3 scroll-smooth">
+        <div className="lg:hidden w-screen -mx-4 sm:-mx-6 mb-8 sm:mb-10 overflow-x-hidden">
+          <div className="flex gap-3 sm:gap-4 pl-4 sm:pl-6">
             {SHOWCASE_ITEMS.map((item) => (
               <div
                 key={item.id}
