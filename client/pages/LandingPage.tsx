@@ -182,29 +182,6 @@ export default function LandingPage() {
               />
             </div>
           </div>
-
-          {/* Caption with Controls */}
-          <div className="flex items-center justify-center gap-4 mb-6 lg:mb-8">
-            <button
-              onClick={handlePrevSlide}
-              className="p-1.5 md:p-2 hover:bg-gray-100 transition-colors"
-              aria-label="Previous item"
-            >
-              <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 text-gray-700" />
-            </button>
-
-            <h3 className="text-lg md:text-xl font-bold text-[#2C2C2C] min-w-32 text-center">
-              {SHOWCASE_ITEMS[carouselIndex].label}
-            </h3>
-
-            <button
-              onClick={handleNextSlide}
-              className="p-1.5 md:p-2 hover:bg-gray-100 transition-colors"
-              aria-label="Next item"
-            >
-              <ChevronRight className="w-5 h-5 md:w-6 md:h-6 text-gray-700" />
-            </button>
-          </div>
         </div>
       </div>
 
