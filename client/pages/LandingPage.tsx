@@ -243,8 +243,8 @@ export default function LandingPage() {
                       Request Early Access
                     </h2>
                     <p className="text-sm text-gray-600 mb-6">
-                      Tell us about yourself and what you'd like to share with your
-                      community
+                      Tell us about yourself and what you'd like to share with
+                      your community
                     </p>
 
                     <form onSubmit={handleSubmit} className="space-y-4">
