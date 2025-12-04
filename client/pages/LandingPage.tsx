@@ -163,7 +163,7 @@ export default function LandingPage() {
             machine, a barbecue, a meeting room, or any other shared asset, you
             can manage availability and bookings effortlessly.
           </p>
-          <p className="text-xs sm:text-sm text-gray-700 leading-relaxed">
+          <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
             Perfect for communities, coworking spaces, residential complexes,
             and anyone looking to maximize resource utilization while building
             stronger connections with those around them.
