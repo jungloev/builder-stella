@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 
 interface EarlyAccessRequest {
   name: string;
@@ -7,14 +7,8 @@ interface EarlyAccessRequest {
   purpose: string;
 }
 
-// Configure nodemailer
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_PASSWORD,
-  },
-});
+// Initialize Resend client
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const handleEarlyAccess: RequestHandler = async (req, res) => {
   try {
@@ -33,23 +27,9 @@ export const handleEarlyAccess: RequestHandler = async (req, res) => {
       return res.status(400).json({ error: "Invalid email format" });
     }
 
-    // Send email to admin
-    const adminMailOptions = {
-      from: process.env.GMAIL_USER,
-      to: "jonathanjungloev@gmail.com",
-      subject: "New Early Access Request - Book-a-thing",
-      html: `
-        <h2>New Early Access Request</h2>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Intended Purpose:</strong></p>
-        <p>${purpose.replace(/\n/g, "<br>")}</p>
-      `,
-    };
-
     // Send confirmation email to user
-    const userMailOptions = {
-      from: process.env.GMAIL_USER,
+    await resend.emails.send({
+      from: "Book-a-thing <onboarding@resend.dev>",
       to: email,
       subject: "Thanks for signing up for Book-a-thing!",
       html: `
@@ -59,11 +39,21 @@ export const handleEarlyAccess: RequestHandler = async (req, res) => {
         <p>In the meantime, feel free to explore our website or reach out with any questions.</p>
         <p>Best regards,<br>The Book-a-thing Team</p>
       `,
-    };
+    });
 
-    // Send both emails
-    await transporter.sendMail(adminMailOptions);
-    await transporter.sendMail(userMailOptions);
+    // Send admin notification
+    await resend.emails.send({
+      from: "Book-a-thing <onboarding@resend.dev>",
+      to: "jonathanjungloev@gmail.com",
+      subject: "New Early Access Request - Book-a-thing",
+      html: `
+        <h2>New Early Access Request</h2>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Intended Purpose:</strong></p>
+        <p>${purpose.replace(/\n/g, "<br>")}</p>
+      `,
+    });
 
     return res.status(200).json({
       success: true,
