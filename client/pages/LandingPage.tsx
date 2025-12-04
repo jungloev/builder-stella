@@ -136,11 +136,11 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FDFDFB] flex flex-col">
-      {/* Header Section */}
-      <div className="flex-1 flex flex-col items-center justify-center px-4 py-8 max-w-3xl mx-auto w-full">
+    <div className="min-h-screen bg-[#FDFDFB] flex flex-col lg:flex-row items-center justify-center px-4 py-8">
+      {/* Left Content Section */}
+      <div className="flex-1 flex flex-col justify-center max-w-md w-full lg:pr-8">
         {/* Logo */}
-        <div className="mb-8 flex justify-center">
+        <div className="mb-8 flex lg:justify-start justify-center">
           <img
             src="/icon.svg"
             alt="Book-a-thing Logo"
@@ -150,80 +150,13 @@ export default function LandingPage() {
         </div>
 
         {/* Hero Title */}
-        <h1 className="font-alegreya text-4xl md:text-5xl font-bold text-center text-[#2C2C2C] mb-6 leading-snug">
+        <h1 className="font-alegreya text-4xl md:text-5xl font-bold lg:text-left text-center text-[#2C2C2C] mb-6 leading-snug">
           Book-a-thing is a very simple booking system with pretty much zero
           hazzle.
         </h1>
 
-        {/* Images - Desktop Grid / Mobile Carousel */}
-        <div className="w-full mb-12">
-          {/* Desktop Grid */}
-          <div className="hidden md:grid grid-cols-3 gap-2 md:gap-3">
-            {SHOWCASE_ITEMS.slice(0, 3).map((item) => (
-              <div
-                key={item.id}
-                className="aspect-[4/5] bg-gray-200 rounded-lg flex items-center justify-center text-sm font-medium text-gray-600 overflow-hidden hover:shadow-lg transition-shadow"
-              >
-                <img
-                  src={item.image}
-                  alt={item.label}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            ))}
-          </div>
-
-          {/* Mobile Carousel */}
-          <div className="md:hidden">
-            <div className="relative mb-4">
-              <div className="aspect-[4/5] bg-gray-200 rounded-lg flex items-center justify-center text-lg font-medium text-gray-600 overflow-hidden">
-                <img
-                  src={SHOWCASE_ITEMS[carouselIndex].image}
-                  alt={SHOWCASE_ITEMS[carouselIndex].label}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </div>
-
-            {/* Carousel Controls */}
-            <div className="flex items-center justify-between gap-2">
-              <button
-                onClick={handlePrevSlide}
-                className="p-2 rounded-full hover:bg-gray-200 transition-colors"
-                aria-label="Previous item"
-              >
-                <ChevronLeft className="w-5 h-5 text-gray-700" />
-              </button>
-
-              {/* Dots */}
-              <div className="flex justify-center gap-1 flex-1">
-                {SHOWCASE_ITEMS.map((_, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => setCarouselIndex(idx)}
-                    className={`h-2 rounded-full transition-all ${
-                      idx === carouselIndex
-                        ? "bg-gray-700 w-6"
-                        : "bg-gray-300 w-2"
-                    }`}
-                    aria-label={`Go to slide ${idx + 1}`}
-                  />
-                ))}
-              </div>
-
-              <button
-                onClick={handleNextSlide}
-                className="p-2 rounded-full hover:bg-gray-200 transition-colors"
-                aria-label="Next item"
-              >
-                <ChevronRight className="w-5 h-5 text-gray-700" />
-              </button>
-            </div>
-          </div>
-        </div>
-
         {/* Concept Explanation */}
-        <div className="space-y-4 text-center max-w-2xl mx-auto">
+        <div className="space-y-4 lg:text-left text-center mb-8">
           <p className="text-sm text-gray-700 leading-relaxed">
             Book-a-thing is a community sharing platform that makes it easy for
             neighbors to borrow and share resources. Whether it's a laundry
@@ -236,16 +169,72 @@ export default function LandingPage() {
             stronger connections with those around them.
           </p>
         </div>
-      </div>
 
-      {/* CTA Button */}
-      <div className="px-4 py-8 max-w-md mx-auto w-full">
+        {/* CTA Button */}
         <Button
           onClick={() => setIsModalOpen(true)}
           className="w-full h-14 bg-primary text-white text-lg font-semibold rounded-lg shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all"
         >
           Request early access
         </Button>
+      </div>
+
+      {/* Right Slideshow Section */}
+      <div className="flex-1 flex flex-col items-center justify-center w-full lg:pl-8 mt-12 lg:mt-0">
+        {/* Auto-Rotating Slideshow */}
+        <div className="w-full max-w-sm">
+          <div className="relative mb-6">
+            <div className="aspect-[4/5] bg-gray-200 rounded-xl flex items-center justify-center overflow-hidden shadow-lg">
+              <img
+                src={SHOWCASE_ITEMS[carouselIndex].image}
+                alt={SHOWCASE_ITEMS[carouselIndex].label}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </div>
+
+          {/* Caption */}
+          <div className="text-center mb-6">
+            <h3 className="text-lg font-semibold text-[#2C2C2C]">
+              {SHOWCASE_ITEMS[carouselIndex].label}
+            </h3>
+          </div>
+
+          {/* Carousel Controls */}
+          <div className="flex items-center justify-center gap-4">
+            <button
+              onClick={handlePrevSlide}
+              className="p-2 rounded-full hover:bg-gray-200 transition-colors"
+              aria-label="Previous item"
+            >
+              <ChevronLeft className="w-5 h-5 text-gray-700" />
+            </button>
+
+            {/* Dots */}
+            <div className="flex justify-center gap-2">
+              {SHOWCASE_ITEMS.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setCarouselIndex(idx)}
+                  className={`h-2 rounded-full transition-all ${
+                    idx === carouselIndex
+                      ? "bg-gray-700 w-6"
+                      : "bg-gray-300 w-2"
+                  }`}
+                  aria-label={`Go to slide ${idx + 1}`}
+                />
+              ))}
+            </div>
+
+            <button
+              onClick={handleNextSlide}
+              className="p-2 rounded-full hover:bg-gray-200 transition-colors"
+              aria-label="Next item"
+            >
+              <ChevronRight className="w-5 h-5 text-gray-700" />
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* Early Access Modal */}
