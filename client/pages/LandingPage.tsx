@@ -4,11 +4,36 @@ import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 
 const SHOWCASE_ITEMS = [
-  { id: 1, label: "Laundry" },
-  { id: 2, label: "Trailers" },
-  { id: 3, label: "BBQs" },
-  { id: 4, label: "Bikes" },
-  { id: 5, label: "Meeting Rooms" },
+  {
+    id: 1,
+    label: "Laundry",
+    image:
+      "https://cdn.builder.io/api/v1/image/assets%2Ff0e95b9de1014cc0953517d0eba702d7%2F9ef43bc1c8ec4d3ebe9ffc9eb3e80bb4?format=webp&width=800",
+  },
+  {
+    id: 2,
+    label: "Meeting Room",
+    image:
+      "https://cdn.builder.io/api/v1/image/assets%2Ff0e95b9de1014cc0953517d0eba702d7%2F6771fcd58440497a91274e049a9ed160?format=webp&width=800",
+  },
+  {
+    id: 3,
+    label: "Yoga",
+    image:
+      "https://cdn.builder.io/api/v1/image/assets%2Ff0e95b9de1014cc0953517d0eba702d7%2Fedd341b020c146249333333dc2c24e93?format=webp&width=800",
+  },
+  {
+    id: 4,
+    label: "Sup Board",
+    image:
+      "https://cdn.builder.io/api/v1/image/assets%2Ff0e95b9de1014cc0953517d0eba702d7%2F005e6b8d774144d1bd16d6ffd5c7069a?format=webp&width=800",
+  },
+  {
+    id: 5,
+    label: "Petanque",
+    image:
+      "https://cdn.builder.io/api/v1/image/assets%2Ff0e95b9de1014cc0953517d0eba702d7%2Ffa6c784d0bff4ebf835c46a5f8cf7ab9?format=webp&width=800",
+  },
 ];
 
 export default function LandingPage() {
