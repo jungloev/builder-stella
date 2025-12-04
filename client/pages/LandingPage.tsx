@@ -156,7 +156,7 @@ export default function LandingPage() {
                 className="aspect-square bg-gray-200 rounded-lg flex items-center justify-center text-sm font-medium text-gray-600 overflow-hidden hover:shadow-lg transition-shadow"
               >
                 <img
-                  src="https://cdn.builder.io/api/v1/image/assets%2Ff0e95b9de1014cc0953517d0eba702d7%2F071276aa60984589a8a461ede2ec4e8c?format=webp&width=800"
+                  src={item.image}
                   alt={item.label}
                   className="w-full h-full object-cover"
                 />
