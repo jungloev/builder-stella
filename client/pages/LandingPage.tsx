@@ -193,45 +193,26 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* Caption */}
-          <div className="text-center mb-6 lg:mb-8">
-            <h3 className="text-lg md:text-xl font-bold text-[#2C2C2C]">
-              {SHOWCASE_ITEMS[carouselIndex].label}
-            </h3>
-          </div>
-
-          {/* Carousel Controls */}
-          <div className="flex items-center justify-center gap-2 md:gap-4">
+          {/* Caption with Controls */}
+          <div className="flex items-center justify-center gap-4 mb-6 lg:mb-8">
             <button
               onClick={handlePrevSlide}
-              className="p-1.5 md:p-2 rounded-full hover:bg-gray-200 transition-colors"
+              className="p-1.5 md:p-2 hover:bg-gray-100 transition-colors"
               aria-label="Previous item"
             >
-              <ChevronLeft className="w-5 h-5 text-gray-700" />
+              <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 text-gray-700" />
             </button>
 
-            {/* Dots */}
-            <div className="flex justify-center gap-1.5 md:gap-2">
-              {SHOWCASE_ITEMS.map((_, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setCarouselIndex(idx)}
-                  className={`h-1.5 md:h-2 rounded-full transition-all ${
-                    idx === carouselIndex
-                      ? "bg-gray-700 w-5 md:w-6"
-                      : "bg-gray-300 w-1.5 md:w-2"
-                  }`}
-                  aria-label={`Go to slide ${idx + 1}`}
-                />
-              ))}
-            </div>
+            <h3 className="text-lg md:text-xl font-bold text-[#2C2C2C] min-w-32 text-center">
+              {SHOWCASE_ITEMS[carouselIndex].label}
+            </h3>
 
             <button
               onClick={handleNextSlide}
-              className="p-1.5 md:p-2 rounded-full hover:bg-gray-200 transition-colors"
+              className="p-1.5 md:p-2 hover:bg-gray-100 transition-colors"
               aria-label="Next item"
             >
-              <ChevronRight className="w-5 h-5 text-gray-700" />
+              <ChevronRight className="w-5 h-5 md:w-6 md:h-6 text-gray-700" />
             </button>
           </div>
         </div>
