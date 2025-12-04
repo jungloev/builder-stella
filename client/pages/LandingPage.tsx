@@ -145,16 +145,21 @@ export default function LandingPage() {
           hazzle.
         </h1>
 
-        {/* Mobile/Tablet Carousel - appears below headline */}
-        <div className="lg:hidden w-full mb-8 sm:mb-10">
-          <div className="relative w-full">
-            <div className="aspect-[4/5] w-32 sm:w-40 flex items-center justify-center overflow-hidden">
-              <img
-                src={SHOWCASE_ITEMS[carouselIndex].image}
-                alt={SHOWCASE_ITEMS[carouselIndex].label}
-                className="w-full h-full object-cover"
-              />
-            </div>
+        {/* Mobile/Tablet Filmstrip Carousel - appears below headline */}
+        <div className="lg:hidden w-full mb-8 sm:mb-10 overflow-hidden">
+          <div className="flex gap-3 sm:gap-4 overflow-x-auto pb-2 sm:pb-3 scroll-smooth">
+            {SHOWCASE_ITEMS.map((item) => (
+              <div
+                key={item.id}
+                className="aspect-[4/5] w-28 sm:w-32 flex-shrink-0 flex items-center justify-center overflow-hidden"
+              >
+                <img
+                  src={item.image}
+                  alt={item.label}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            ))}
           </div>
         </div>
 
