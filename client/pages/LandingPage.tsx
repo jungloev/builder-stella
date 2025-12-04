@@ -138,15 +138,28 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-[#FDFDFB] flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12 px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20 max-w-7xl mx-auto w-full">
       {/* Left Content Section */}
-      <div className="flex-1 flex flex-col justify-center w-full">
+      <div className="flex-1 flex flex-col justify-center w-full text-left">
         {/* Hero Title */}
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold lg:text-left text-center text-[#2C2C2C] mb-6 lg:mb-8 leading-tight tracking-tight">
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#2C2C2C] mb-6 lg:mb-8 leading-tight tracking-tight">
           Book-a-thing is a very simple booking system with pretty much zero
           hazzle.
         </h1>
 
+        {/* Mobile/Tablet Carousel - appears below headline */}
+        <div className="lg:hidden w-full mb-8 sm:mb-10">
+          <div className="relative w-full">
+            <div className="aspect-[4/5] w-32 sm:w-40 flex items-center justify-center overflow-hidden">
+              <img
+                src={SHOWCASE_ITEMS[carouselIndex].image}
+                alt={SHOWCASE_ITEMS[carouselIndex].label}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </div>
+        </div>
+
         {/* Concept Explanation */}
-        <div className="space-y-4 md:space-y-5 lg:text-left text-center mb-8 lg:mb-10">
+        <div className="space-y-4 md:space-y-5 mb-8 lg:mb-10">
           <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
             Book-a-thing is a community sharing platform that makes it easy for
             neighbors to borrow and share resources. Whether it's a laundry
@@ -169,10 +182,10 @@ export default function LandingPage() {
         </Button>
       </div>
 
-      {/* Right Slideshow Section */}
-      <div className="flex-1 flex flex-col items-center justify-center w-full mt-12 sm:mt-14 lg:mt-0">
+      {/* Desktop Slideshow Section */}
+      <div className="hidden lg:flex flex-1 flex-col items-center justify-center w-full">
         {/* Auto-Rotating Slideshow */}
-        <div className="w-full max-w-sm lg:max-w-md">
+        <div className="w-full max-w-md">
           <div className="relative mb-6 lg:mb-8">
             <div className="aspect-[4/5] flex items-center justify-center overflow-hidden">
               <img
