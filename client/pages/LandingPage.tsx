@@ -149,7 +149,7 @@ export default function LandingPage() {
         {/* Images - Desktop Grid / Mobile Carousel */}
         <div className="w-full mb-12">
           {/* Desktop Grid */}
-          <div className="hidden md:grid grid-cols-3 gap-3 md:gap-4">
+          <div className="hidden md:grid grid-cols-3 gap-2 md:gap-3">
             {SHOWCASE_ITEMS.slice(0, 3).map((item) => (
               <div
                 key={item.id}
