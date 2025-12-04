@@ -211,15 +211,15 @@ export default function LandingPage() {
             </button>
 
             {/* Dots */}
-            <div className="flex justify-center gap-2">
+            <div className="flex justify-center gap-1.5 md:gap-2">
               {SHOWCASE_ITEMS.map((_, idx) => (
                 <button
                   key={idx}
                   onClick={() => setCarouselIndex(idx)}
-                  className={`h-2 rounded-full transition-all ${
+                  className={`h-1.5 md:h-2 rounded-full transition-all ${
                     idx === carouselIndex
-                      ? "bg-gray-700 w-6"
-                      : "bg-gray-300 w-2"
+                      ? "bg-gray-700 w-5 md:w-6"
+                      : "bg-gray-300 w-1.5 md:w-2"
                   }`}
                   aria-label={`Go to slide ${idx + 1}`}
                 />
