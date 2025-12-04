@@ -153,7 +153,7 @@ export default function LandingPage() {
             {SHOWCASE_ITEMS.slice(0, 3).map((item) => (
               <div
                 key={item.id}
-                className="aspect-square bg-gray-200 rounded-lg flex items-center justify-center text-sm font-medium text-gray-600 overflow-hidden hover:shadow-lg transition-shadow"
+                className="aspect-[4/5] bg-gray-200 rounded-lg flex items-center justify-center text-sm font-medium text-gray-600 overflow-hidden hover:shadow-lg transition-shadow"
               >
                 <img
                   src={item.image}
