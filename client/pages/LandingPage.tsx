@@ -201,10 +201,10 @@ export default function LandingPage() {
           </div>
 
           {/* Carousel Controls */}
-          <div className="flex items-center justify-center gap-4">
+          <div className="flex items-center justify-center gap-2 md:gap-4">
             <button
               onClick={handlePrevSlide}
-              className="p-2 rounded-full hover:bg-gray-200 transition-colors"
+              className="p-1.5 md:p-2 rounded-full hover:bg-gray-200 transition-colors"
               aria-label="Previous item"
             >
               <ChevronLeft className="w-5 h-5 text-gray-700" />
