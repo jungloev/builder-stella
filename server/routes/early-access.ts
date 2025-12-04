@@ -7,9 +7,6 @@ interface EarlyAccessRequest {
   purpose: string;
 }
 
-// Initialize Resend client
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export const handleEarlyAccess: RequestHandler = async (req, res) => {
   try {
     const { name, email, purpose } = req.body as EarlyAccessRequest;
@@ -26,6 +23,9 @@ export const handleEarlyAccess: RequestHandler = async (req, res) => {
     if (!emailRegex.test(email)) {
       return res.status(400).json({ error: "Invalid email format" });
     }
+
+    // Initialize Resend client with API key
+    const resend = new Resend(process.env.RESEND_API_KEY);
 
     // Send confirmation email to user
     await resend.emails.send({
