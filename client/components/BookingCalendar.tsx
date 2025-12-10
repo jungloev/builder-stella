@@ -533,7 +533,7 @@ export function BookingCalendar({
               >
                 <button
                   onClick={() => handleBookingClick(booking)}
-                  className="w-full h-full bg-white border border-[#868686] rounded-lg p-1.5 flex flex-col items-start justify-start hover:shadow-md transition-shadow cursor-pointer"
+                  className="w-full h-full bg-white border border-[#868686] rounded-lg p-1.5 flex items-start justify-between hover:shadow-md transition-shadow cursor-pointer"
                 >
                   <span className="text-black text-sm font-medium font-roboto leading-5 tracking-[0.1px]">
                     {booking.startTime} – {booking.endTime}
