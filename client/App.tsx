@@ -20,8 +20,8 @@ export default function App() {
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/home" element={<ExploreCalendarsPage />} />
+            <Route path="/" element={<ExploreCalendarsPage />} />
+            <Route path="/landing" element={<LandingPage />} />
             <Route path="/:calendarName" element={<CalendarPage />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
