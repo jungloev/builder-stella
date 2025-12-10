@@ -431,7 +431,7 @@ export function BookingCalendar({
   // Calculate booking positions
   // 42px gap + ~16px for time slot div height = 58px per hour
   const PIXELS_PER_HOUR = 58;
-  const TOP_OFFSET = 24; // pt-6 padding on time slots container
+  const TOP_OFFSET = 32; // pt-6 padding (24px) + line center offset (8px)
   const bookingElements = useMemo(() => {
     return bookings.map((booking) => {
       const [startHour, startMin] = booking.startTime.split(":").map(Number);
