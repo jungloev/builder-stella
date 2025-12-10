@@ -79,7 +79,7 @@ export default function LandingPage() {
       if (logoClickTimeout.current) {
         clearTimeout(logoClickTimeout.current);
       }
-      navigate("/explore");
+      navigate("/home");
     }
   };
 

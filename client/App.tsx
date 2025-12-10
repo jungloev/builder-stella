@@ -21,7 +21,7 @@ export default function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<LandingPage />} />
-            <Route path="/explore" element={<ExploreCalendarsPage />} />
+            <Route path="/home" element={<ExploreCalendarsPage />} />
             <Route path="/:calendarName" element={<CalendarPage />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
