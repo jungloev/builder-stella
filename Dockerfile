@@ -6,17 +6,17 @@ WORKDIR /app
 # Enable pnpm
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
-# Copy lock file and package.json
+# Copy lock file and package.json first
 COPY pnpm-lock.yaml package.json ./
 
 # Install all dependencies (including devDependencies for build)
 RUN pnpm install --frozen-lockfile
 
-# Copy entire project
+# Copy everything else
 COPY . .
 
 # Build client (SPA) and server
-RUN pnpm build
+RUN npm run build:client && npm run build:server
 
 # Production stage
 FROM node:20-alpine
@@ -34,9 +34,6 @@ RUN pnpm install --frozen-lockfile --prod
 
 # Copy built output from builder stage
 COPY --from=builder /app/dist ./dist
-
-# Copy data directory if it exists
-COPY data ./data 2>/dev/null || true
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \

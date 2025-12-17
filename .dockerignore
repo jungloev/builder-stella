@@ -31,11 +31,9 @@ log.txt
 node_modules
 **/node_modules/**
 build
-data
 .env
 load-ids.txt
 
-server
 tmp
 types
 .git
