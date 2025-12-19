@@ -14,12 +14,14 @@ const distPath = path.join(__dirname, "../spa");
 app.use(express.static(distPath));
 
 // Handle React Router - serve index.html for all non-API routes
-app.get("*", (req, res) => {
+// Using express middleware instead of app.get("*") to avoid Express 5.x path-to-regexp issues
+app.use((req, res, next) => {
   // Don't serve index.html for API routes
   if (req.path.startsWith("/api/") || req.path.startsWith("/health")) {
-    return res.status(404).json({ error: "API endpoint not found" });
+    return next();
   }
 
+  // Serve index.html for all other routes (SPA fallback)
   res.sendFile(path.join(distPath, "index.html"));
 });
 

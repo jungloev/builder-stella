@@ -1,125 +1,118 @@
 # Coolify Deployment Guide for Builder Stella
 
-This document outlines two approaches to deploy your monorepo on Coolify. Choose **Setup A** for speed or **Setup B** for scalability.
+This guide explains how to deploy your application to Coolify with built-in environment variable validation.
 
 ---
 
 ## Current State
 
-Your project currently has:
-- Single `package.json` at root
-- `client/`, `server/`, `shared/` directories
-- Unified build: `pnpm build` builds both client and server
-- Single start command: `pnpm start` runs the Express server with SPA frontend
+Your project is already configured for Coolify deployment with:
+- ✅ Production-ready Dockerfile with multi-stage build
+- ✅ Environment variable validation on startup
+- ✅ Single `package.json` at root
+- ✅ Unified build: `npm run build` builds both client and server
+- ✅ Docker entrypoint script that fails fast if required env vars are missing
 
 ---
 
-## Setup A: Quick Deployment (Recommended for Now)
+## Quick Deployment (Recommended)
 
-**Pros**: Minimal changes, deploy in 10 minutes  
-**Cons**: Less ideal for multi-service scaling later
+**Pros**: Already configured, deploy in 5 minutes
+**Cons**: Requires Supabase setup
 
-### Step 1: Update Server to Respect PORT Environment Variable
+### Step 1: Prepare Your Supabase Project
 
-Edit [server/index.ts](server/index.ts) and find where the server starts (near the end of the file):
+1. Go to [Supabase Dashboard](https://supabase.com/dashboard)
+2. Create a new project or use an existing one
+3. Get your credentials from **Settings > API**:
+   - `SUPABASE_URL` (Project URL)
+   - `SUPABASE_ANON_KEY` (anon/public key)
 
-```typescript
-// Find this line or add it at the end:
-const PORT = process.env.PORT || 8080;
-const server = app.listen(PORT, "::", () => {
-  console.log(`Server listening on port ${PORT}`);
-});
-```
-
-### Step 2: Create Root `.env.example`
+### Step 2: Push to Git Repository
 
 ```bash
-# At project root, create .env.example
-SUPABASE_URL=https://your-project.supabase.co
-SUPABASE_ANON_KEY=your_anon_key_here
-RESEND_API_KEY=your_resend_key_here
-NODE_ENV=production
-PORT=3000
+git add .
+git commit -m "Ready for Coolify deployment"
+git push origin main
 ```
 
-### Step 3: Create Root Dockerfile
+### Step 3: Deploy on Coolify
 
-Create `Dockerfile` at project root:
+1. **Login to Coolify Dashboard**
+2. **Create New Application**:
+   - Click "New Resource" → "Application"
+   - Select your Git repository (GitHub, GitLab, or Gitea)
+   - Choose the branch to deploy (usually `main`)
 
-```dockerfile
-FROM node:20-alpine as builder
+3. **Configure Build Settings**:
+   - **Build Pack**: Docker
+   - **Dockerfile Location**: `./Dockerfile` (auto-detected)
+   - **Port**: `3000`
 
-WORKDIR /app
+4. **Set Required Environment Variables**:
+   ```env
+   SUPABASE_URL=https://your-project-id.supabase.co
+   SUPABASE_ANON_KEY=your-anon-key-here
+   ```
 
-# Enable pnpm
-RUN corepack enable && corepack prepare pnpm@latest --activate
+5. **Optional Environment Variables**:
+   ```env
+   PORT=3000                    # Server port (default: 3000)
+   RESEND_API_KEY=your_key      # For email notifications (optional)
+   PING_MESSAGE=custom_message  # Custom ping message (optional)
+   ```
 
-# Copy lock and manifest
-COPY pnpm-lock.yaml package.json ./
+6. **Deploy**: Click "Deploy" and wait for the build to complete
 
-# Install all dependencies
-RUN pnpm install --frozen-lockfile
+### What Happens During Deployment
 
-# Copy entire project
-COPY . .
+1. **Build Stage**:
+   - Installs all dependencies
+   - Builds frontend (React SPA)
+   - Builds backend (Express server)
 
-# Build client and server
-RUN pnpm build
+2. **Production Stage**:
+   - Creates minimal production image
+   - Installs only production dependencies
+   - Copies built assets
 
-# Production stage
-FROM node:20-alpine
-
-WORKDIR /app
-
-RUN corepack enable && corepack prepare pnpm@latest --activate
-
-# Copy lock and manifest
-COPY pnpm-lock.yaml package.json ./
-
-# Install production dependencies only
-RUN pnpm install --frozen-lockfile --prod
-
-# Copy built output
-COPY --from=builder /app/dist ./dist
-
-# Copy data files if needed
-COPY data ./data
-
-EXPOSE 3000
-
-ENV NODE_ENV=production
-
-CMD ["node", "dist/server/node-build.mjs"]
-```
-
-### Step 4: Update `.gitignore` (if needed)
-
-Ensure these are in `.gitignore`:
-```
-node_modules
-dist
-.env
-.env.local
-.env.*.local
-```
-
-### Step 5: Deploy on Coolify
-
-1. **Push to Git**: Push your repository to GitHub, GitLab, or Gitea
-2. **Add to Coolify**:
-   - Login to Coolify dashboard
-   - Click "New Application"
-   - Select your Git repository
-   - Choose "Docker" as deployment method
-   - Configure:
-     - **Build command**: `docker build -t myapp .`
-     - **Ports**: Map `3000` to `3000`
-     - **Environment Variables**: Add from `.env.example`
-   - Deploy
+3. **Startup**:
+   - ✅ Validates required environment variables
+   - ❌ **Fails immediately** if `SUPABASE_URL` or `SUPABASE_ANON_KEY` are missing
+   - ✅ Starts Express server serving both API and frontend
 
 ---
 
-## Setup B: Proper Monorepo Structure
+## Environment Variable Validation
+
+The Docker container includes automatic environment variable validation. On startup, it will:
+
+1. Check for required variables:
+   - `SUPABASE_URL`
+   - `SUPABASE_ANON_KEY`
+
+2. If any are missing, the container will:
+   - ❌ Display a clear error message
+   - ❌ Exit with code 1
+   - ❌ Prevent the application from starting in a broken state
+
+3. If all are present, you'll see:
+   ```
+   🚀 Starting Fusion Starter application...
+   🔍 Validating environment variables...
+   ✅ All required environment variables are set
+   📊 Configuration:
+     - SUPABASE_URL: https://your-project.supabase.co
+     - SUPABASE_ANON_KEY: [hidden]
+     - PORT: 3000
+     - NODE_ENV: production
+   🎯 Starting server...
+   🚀 Fusion Starter server running on port 3000
+   ```
+
+---
+
+## Alternative: Monorepo Structure (Future Scaling)
 
 **Pros**: Better organization, easier to scale to multiple services  
 **Cons**: Requires restructuring
@@ -372,45 +365,69 @@ Same as Setup A, but ensure the workspace is recognized by Coolify.
 
 ## Environment Variables Reference
 
-Create these in Coolify dashboard:
+### Required Variables
+
+These **must** be set in Coolify, or the container will fail to start:
 
 ```env
-# Supabase
-SUPABASE_URL=https://your-project.supabase.co
-SUPABASE_ANON_KEY=your_anon_key
+SUPABASE_URL=https://your-project-id.supabase.co
+SUPABASE_ANON_KEY=your-anon-key-here
+```
 
-# Email
-RESEND_API_KEY=your_resend_key
+### Optional Variables
 
-# Server
-NODE_ENV=production
-PORT=3000
+```env
+PORT=3000                          # Server port (default: 3000)
+NODE_ENV=production                # Node environment (default: production)
+RESEND_API_KEY=re_your_key_here   # For email notifications via Resend
+PING_MESSAGE=custom_message        # Custom message for /ping endpoint
 ```
 
 ---
 
-## Post-Deployment Checks
+## Post-Deployment Verification
 
-After deploying to Coolify, verify:
+After deploying to Coolify, test these endpoints:
 
-1. **Health endpoint**: `https://your-domain/health`
-   - Should return `{ "status": "ok" }`
+### 1. Health Check
+```bash
+curl https://your-domain/health
+```
+Expected response:
+```json
+{
+  "status": "ok",
+  "supabaseUrl": "set",
+  "supabaseKey": "set",
+  "env": "production"
+}
+```
 
-2. **API endpoint**: `https://your-domain/api/ping`
-   - Should return ping response
+### 2. API Ping
+```bash
+curl https://your-domain/api/ping
+```
+Expected response:
+```json
+{
+  "message": "ping"
+}
+```
 
-3. **Frontend loads**: Visit `https://your-domain/`
-   - React app should load
+### 3. Frontend
+Visit `https://your-domain/` in your browser - the React SPA should load.
 
 ---
 
-## Next Steps
+## Deployment Checklist
 
-- [ ] Choose Setup A or B
-- [ ] Follow steps 1-5 (A) or 1-10 (B)
-- [ ] Create Dockerfile
-- [ ] Push to Git
-- [ ] Add to Coolify
-- [ ] Configure environment variables
-- [ ] Deploy
-- [ ] Verify endpoints
+- [x] Dockerfile created and tested
+- [x] Environment variable validation implemented
+- [ ] Push code to Git repository
+- [ ] Create Supabase project and get credentials
+- [ ] Add application in Coolify dashboard
+- [ ] Configure required environment variables
+- [ ] Deploy and monitor logs
+- [ ] Verify health endpoint
+- [ ] Test API endpoints
+- [ ] Confirm frontend loads

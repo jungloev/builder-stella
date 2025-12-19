@@ -35,6 +35,10 @@ RUN pnpm install --frozen-lockfile --prod
 # Copy built output from builder stage
 COPY --from=builder /app/dist ./dist
 
+# Copy and set up the entrypoint script
+COPY docker-entrypoint.sh ./
+RUN chmod +x docker-entrypoint.sh
+
 # NOTE: Healthcheck disabled temporarily due to app startup issue with path-to-regexp
 # Will be re-enabled once the react-router build issue is resolved
 # HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
@@ -47,5 +51,5 @@ EXPOSE 3000
 ENV NODE_ENV=production
 ENV PORT=3000
 
-# Start application
-CMD ["node", "dist/server/node-build.mjs"]
+# Start application with validation
+CMD ["./docker-entrypoint.sh"]
